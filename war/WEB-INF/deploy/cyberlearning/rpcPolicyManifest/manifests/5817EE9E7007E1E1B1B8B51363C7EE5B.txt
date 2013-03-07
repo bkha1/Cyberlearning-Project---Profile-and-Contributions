@@ -1,0 +1,2 @@
+serviceClass: cyber.learning.project.client.GreetingService
+path: 1B1FB2C4300FF967E483719D2327B942.gwt.rpc
