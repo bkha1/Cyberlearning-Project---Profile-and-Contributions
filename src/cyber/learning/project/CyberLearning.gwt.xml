@@ -18,6 +18,16 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
+  
+  <!-- ########################################################## -->
+  <!-- # Modules needed to support the embedded YouTube player. # -->
+  <!-- ########################################################## -->
+  <inherits name="com.google.youtube.Player" />
+  <inherits name="com.googlecode.gwt.math.Math" />
+  <inherits name="sk.seges.acris.JSON" />
+  <inherits name="org.gwttime.Time" />
+  <inherits name="com.googlecode.gwtx.Java" />
+  <inherits name="sk.seges.acris.Widgets" />
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='cyber.learning.project.client.CyberLearning'/>

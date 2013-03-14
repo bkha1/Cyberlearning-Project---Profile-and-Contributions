@@ -16,6 +16,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Image;
+import com.google.youtube.client.YouTubeEmbeddedPlayer;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -51,6 +52,16 @@ public class CyberLearning implements EntryPoint {
 		// Use RootPanel.get() to get the entire body element
 		RootPanel rootPanel = RootPanel.get("bookContainer");
 		RootPanel.get("errorLabelContainer").add(errorLabel);
+		
+		/* Example code for embedding a YouTube clip.
+		 
+		   // String corresponds to the alphanumeric ID at the end of YouTube URL. //
+		   YouTubeEmbeddedPlayer ytPlayer = new YouTubeEmbeddedPlayer("zn7-fVtT16k");
+		   ytPlayer.setWidth("300px");
+		   ytPlayer.setHeight("300px");
+		   RootPanel.get().add(ytPlayer);
+		 */
+		
 		
 		VerticalPanel flowPanel = new VerticalPanel();
 		rootPanel.add(flowPanel, 100, 100);
