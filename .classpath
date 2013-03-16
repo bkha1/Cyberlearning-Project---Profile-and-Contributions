@@ -6,6 +6,14 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER/v2"/>
-	<classpathentry kind="lib" path="C:/Users/Elissa/workspace/CyberLearning/gquery-dnd-bundle-1.0.6.jar"/>
+	<classpathentry kind="lib" path="lib/acris-json-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/acris-widgets-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-math-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-math-server-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-youtube-api-1.0.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-youtube-api-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/gwttime-alpha.jar"/>
+	<classpathentry kind="lib" path="lib/gwtx-1.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/gquery-dnd-bundle-1.0.6.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
