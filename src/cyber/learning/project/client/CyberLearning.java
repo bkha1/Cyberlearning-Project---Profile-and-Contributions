@@ -1,5 +1,7 @@
 package cyber.learning.project.client;
 
+import com.allen_sauer.gwt.voices.client.Sound;
+import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -30,6 +32,9 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	 */
 	boolean toolbarVisible = false;
 	String selectedText; //Brian added
+	SoundController sController = new SoundController(); //sound stuff - brian
+	Sound sound = sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/test.ogg");
+	boolean sndOn = false;
 	TextArea someText = new TextArea();//moved this from inside onModuleLoad - Brian
 	
 	/**
@@ -119,6 +124,7 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		//contentPanel.add(toolBar);
 		//contentPanel.add(textArea);
 		textArea.setSize("100%","500px");
+		//end rich text editor stuff
         
 		
 		Button viewToolbarBtn = new Button("New button");
@@ -163,6 +169,25 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		//Window.alert(selectedText);
 	//}
 	//});
+		
+		//Sound Wrapper Stuff - Brian
+		Button sndButton = new Button("Play Test Sound");
+		toolbarPanel.add(sndButton);
+		sndButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				if(!sndOn)
+				{
+					sound.play();
+				}
+				else
+				{
+					sound.stop();
+				}
+				sndOn=!sndOn;
+			}
+		});//end sound test stuff
+		
+		
 		
 	}
 }
