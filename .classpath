@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="lib/gquery-dnd-bundle-1.0.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Brian/Desktop/gwt-voices-3.2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-voices-3.2.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/editor-0.1.4.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
