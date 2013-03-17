@@ -19,6 +19,9 @@
 
   <!-- Other module inherits                                      -->
   
+  <!--  Inherit sound support - Brian -->
+  <inherits name='com.allen_sauer.gwt.voices.gwt-voices'/>
+  
   <!-- ########################################################## -->
   <!-- # Modules needed to support the embedded YouTube player. # -->
   <!-- ########################################################## -->
