@@ -18,7 +18,8 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-
+  <inherits name='gwtquery.plugins.droppable.Droppable'/>
+  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='cyber.learning.project.client.CyberLearning'/>
 
