@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -103,9 +104,22 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		contentPanel.setSize("885px", "100%");
 		
 		//TextArea someText = new TextArea();
+		/*
 		someText.setText("     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut viverra pulvinar tellus et cursus. Nam viverra dapibus libero et consequat. Aenean imperdiet erat nec risus cursus ac pretium mauris ultrices. Aliquam mollis tellus at nibh bibendum fringilla. Quisque ac purus quis lectus auctor placerat. Maecenas eu lorem sed ligula consequat sagittis. Mauris pulvinar nulla a dolor lobortis vehicula. Quisque in elit vel felis aliquam pulvinar eu et nulla. Phasellus eu nibh velit. Pellentesque porttitor eros id arcu placerat aliquam. Duis eget arcu non magna pretium cursus in et nisl. Praesent sollicitudin pharetra risus hendrerit convallis. Vestibulum bibendum lobortis quam in faucibus. Morbi quis leo nibh. Quisque cursus euismod augue, eu malesuada libero interdum in. Quisque volutpat gravida ligula eget blandit.\r\n\r\n     Morbi sed fringilla erat. Suspendisse ut risus felis. Sed dolor nisi, feugiat non auctor vel, dictum vitae arcu. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean vel facilisis orci. Pellentesque in massa enim. Nunc facilisis rutrum laoreet.\r\n\r\n     Curabitur sollicitudin, ligula et porta tincidunt, nisl erat tempor nulla, et lobortis justo ligula in tellus. Donec nisi lectus, rutrum vel feugiat eu, aliquet eget lorem. Aenean eu ligula a justo varius sagittis ornare mattis felis. Curabitur id sapien massa. Vivamus facilisis viverra quam, sed blandit justo suscipit vel. Integer varius justo vel mauris dignissim imperdiet. Donec laoreet luctus adipiscing. Nam sit amet odio mauris. Ut sit amet mauris sit amet velit adipiscing elementum. Phasellus sed felis ac lacus aliquet interdum. Proin nulla turpis, imperdiet quis ultricies id, vehicula et ante. Phasellus tempor dolor eu ipsum laoreet feugiat. Vestibulum et mi eu neque volutpat placerat non quis lectus. Cras fringilla tempor sapien, sed pretium lorem condimentum nec. Nunc diam nisi, scelerisque a mollis ut, posuere sit amet mi. Sed aliquet tincidunt pharetra.\r\n\r\n     Vivamus varius arcu nulla. Pellentesque ut turpis non ante porttitor aliquet tempor vel libero. Vivamus massa ipsum, condimentum non suscipit sed, rutrum sed lorem. Praesent sit amet enim quam, vulputate auctor augue. Nunc lacinia consectetur odio et suscipit. Sed consequat feugiat diam, vel pharetra lectus pellentesque eget. Nam blandit, velit a varius eleifend, ipsum nibh commodo risus, eu ultricies turpis eros vel leo. In mattis ornare dolor, at mattis lacus feugiat a.\r\n\r\n     Curabitur fermentum pharetra purus, a tristique massa semper quis. Duis ut orci elit. Praesent posuere, sem sed mattis venenatis, turpis odio ullamcorper quam, vel hendrerit felis erat vulputate diam. Quisque sed justo eu mauris bibendum vehicula ac ac felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent lectus tellus, rutrum eu vehicula sit amet, egestas eu mi. Proin eget nisl sed nulla tempor accumsan. Nam adipiscing fermentum felis, quis porta arcu lacinia at. Fusce semper vehicula ligula, sed fermentum est accumsan ac. Etiam hendrerit luctus lorem, quis facilisis quam venenatis eget. Nulla facilisi. Vestibulum elementum, enim non scelerisque pellentesque, sapien sem viverra metus, nec egestas neque purus nec lorem. Sed risus sapien, ullamcorper ac sagittis non, ultricies et tortor. Curabitur pharetra accumsan augue, ut pellentesque lectus mattis et. Aliquam libero turpis, commodo volutpat convallis vitae, convallis non massa. Aliquam erat volutpat. ");
 		contentPanel.setWidget(0, 0, someText);
 		someText.setSize("100%", "500px");
+		*/
+		
+		//Rich Text Editor - Brian
+		final RichTextArea textArea = new RichTextArea();
+		final RichTextToolbar toolBar = new RichTextToolbar(textArea);
+		contentPanel.setWidget(0,0,toolBar);
+		textArea.setText("     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut viverra pulvinar tellus et cursus. Nam viverra dapibus libero et consequat. Aenean imperdiet erat nec risus cursus ac pretium mauris ultrices. Aliquam mollis tellus at nibh bibendum fringilla. Quisque ac purus quis lectus auctor placerat. Maecenas eu lorem sed ligula consequat sagittis. Mauris pulvinar nulla a dolor lobortis vehicula. Quisque in elit vel felis aliquam pulvinar eu et nulla. Phasellus eu nibh velit. Pellentesque porttitor eros id arcu placerat aliquam. Duis eget arcu non magna pretium cursus in et nisl. Praesent sollicitudin pharetra risus hendrerit convallis. Vestibulum bibendum lobortis quam in faucibus. Morbi quis leo nibh. Quisque cursus euismod augue, eu malesuada libero interdum in. Quisque volutpat gravida ligula eget blandit.\r\n\r\n     Morbi sed fringilla erat. Suspendisse ut risus felis. Sed dolor nisi, feugiat non auctor vel, dictum vitae arcu. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean vel facilisis orci. Pellentesque in massa enim. Nunc facilisis rutrum laoreet.\r\n\r\n     Curabitur sollicitudin, ligula et porta tincidunt, nisl erat tempor nulla, et lobortis justo ligula in tellus. Donec nisi lectus, rutrum vel feugiat eu, aliquet eget lorem. Aenean eu ligula a justo varius sagittis ornare mattis felis. Curabitur id sapien massa. Vivamus facilisis viverra quam, sed blandit justo suscipit vel. Integer varius justo vel mauris dignissim imperdiet. Donec laoreet luctus adipiscing. Nam sit amet odio mauris. Ut sit amet mauris sit amet velit adipiscing elementum. Phasellus sed felis ac lacus aliquet interdum. Proin nulla turpis, imperdiet quis ultricies id, vehicula et ante. Phasellus tempor dolor eu ipsum laoreet feugiat. Vestibulum et mi eu neque volutpat placerat non quis lectus. Cras fringilla tempor sapien, sed pretium lorem condimentum nec. Nunc diam nisi, scelerisque a mollis ut, posuere sit amet mi. Sed aliquet tincidunt pharetra.\r\n\r\n     Vivamus varius arcu nulla. Pellentesque ut turpis non ante porttitor aliquet tempor vel libero. Vivamus massa ipsum, condimentum non suscipit sed, rutrum sed lorem. Praesent sit amet enim quam, vulputate auctor augue. Nunc lacinia consectetur odio et suscipit. Sed consequat feugiat diam, vel pharetra lectus pellentesque eget. Nam blandit, velit a varius eleifend, ipsum nibh commodo risus, eu ultricies turpis eros vel leo. In mattis ornare dolor, at mattis lacus feugiat a.\r\n\r\n     Curabitur fermentum pharetra purus, a tristique massa semper quis. Duis ut orci elit. Praesent posuere, sem sed mattis venenatis, turpis odio ullamcorper quam, vel hendrerit felis erat vulputate diam. Quisque sed justo eu mauris bibendum vehicula ac ac felis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Praesent lectus tellus, rutrum eu vehicula sit amet, egestas eu mi. Proin eget nisl sed nulla tempor accumsan. Nam adipiscing fermentum felis, quis porta arcu lacinia at. Fusce semper vehicula ligula, sed fermentum est accumsan ac. Etiam hendrerit luctus lorem, quis facilisis quam venenatis eget. Nulla facilisi. Vestibulum elementum, enim non scelerisque pellentesque, sapien sem viverra metus, nec egestas neque purus nec lorem. Sed risus sapien, ullamcorper ac sagittis non, ultricies et tortor. Curabitur pharetra accumsan augue, ut pellentesque lectus mattis et. Aliquam libero turpis, commodo volutpat convallis vitae, convallis non massa. Aliquam erat volutpat. ");
+		contentPanel.setWidget(25,0,textArea);
+		//contentPanel.add(toolBar);
+		//contentPanel.add(textArea);
+		textArea.setSize("100%","500px");
+        
 		
 		Button viewToolbarBtn = new Button("New button");
 		flowPanel.add(viewToolbarBtn);
@@ -129,26 +143,26 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		viewToolbarBtn.setText("View Toolbar");
 		
 		//Highlighting Stuff - Brian
-		Button highlightBtn = new Button ("Highlight Selection");//, new ClickListener()
+		//Button highlightBtn = new Button ("Highlight Selection");//, new ClickListener()
 		/*{
 			public void onClick(Widget sender)
 			{
 				Window.alert("HOW HIGH?");
 			}
 		});*/
-		toolbarPanel.add(highlightBtn);
-		highlightBtn.setWidth("101px");
+		//toolbarPanel.add(highlightBtn);
+		//highlightBtn.setWidth("101px");
 		//String testText = someText.getSelectedText();
-	highlightBtn.addClickHandler(new ClickHandler()
-	{
-	public void onClick(ClickEvent event)
-	{
+	//highlightBtn.addClickHandler(new ClickHandler()
+	//{
+	//public void onClick(ClickEvent event)
+	//{
 		//someText.getSelectedText().toUpperCase();
 		//someText.
 		//someText.setReadOnly(true);
 		//Window.alert(selectedText);
-	}
-	});
+	//}
+	//});
 		
 	}
 }
