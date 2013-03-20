@@ -3,41 +3,46 @@ package cyber.learning.project.client;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 import com.google.gwt.core.client.EntryPoint; 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchCancelHandler;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ClickListener;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormHandler;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
 
 /**
@@ -48,11 +53,13 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	/**
 	 * Declare variables
 	 */
+	AbsolutePanel contentPanel = new AbsolutePanel();
 	String selectedText; //Brian added
 	boolean sndOn = false;
 	SoundController sController = new SoundController(); //sound stuff - brian
 	Sound sound = sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/test.ogg");
 	TextArea someText = new TextArea();//moved this from inside onModuleLoad - Brian
+	Image img;
 	
 	/**
 	 * The message displayed to the user when the server cannot be reached or
@@ -62,15 +69,22 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
 
-	private boolean toolbarVisible = true;
+	private boolean toolbarVisible = false;
 	private boolean resizeEnabled = false;
+	private String uploadFileName = "";
+	
+	public enum fileType {
+		IMAGE,
+		SOUND
+	};
 	
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
 		final Label errorLabel = new Label();
-	
+		final HorizontalPanel editHorizontalPanel_1 = new HorizontalPanel();
+
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		RootPanel rootPanel = RootPanel.get("bookContainer");
@@ -89,11 +103,12 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		rootPanel.add(flowPanel, 100, 100);
 		flowPanel.setSize("1000px", "600px");
 		
-		MenuBar menuBar = new MenuBar(false);
+		final MenuBar menuBar = new MenuBar(false);
 		flowPanel.add(menuBar);
 		
-		MenuItem mntmSearchtext = new MenuItem("Table of Contents", false, (Command) null);
+		MenuItem mntmSearchtext = new MenuItem("my freBook", false, (Command) null);
 		menuBar.addItem(mntmSearchtext);
+		menuBar.setSize("965px", "100%");
 		
 		HorizontalPanel contentHorizontalPanel = new HorizontalPanel();
 		flowPanel.add(contentHorizontalPanel);
@@ -103,17 +118,15 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		contentHorizontalPanel.add(toolbarPanel);
 		toolbarPanel.setSize("80px", "144px");
 		
-		final AbsolutePanel contentPanel = new AbsolutePanel();
 		contentHorizontalPanel.add(contentPanel);
 		contentPanel.setSize("885px", "600px");
 		
 		/*
 		 * Toolbar items for editing
-		 */
-		
+		 */	
 		//create "Text" item
-		final Button newTextArea = new Button("Text Area");
-		newTextArea.setSize("90px", "30px");
+		final PushButton newTextArea = new PushButton(new Image("cyberlearning/gwt/clean/images/text_icon.png"));
+		newTextArea.setSize("90px", "80px");
 		toolbarPanel.add(newTextArea);
 		//configure as draggable and add to content area
 		newTextArea.addClickHandler(new ClickHandler()
@@ -152,22 +165,26 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		});
 		
 		//create "Image" item
-		Button newImage = new Button("Image");
-		newImage.setSize("90px", "30px");
+		PushButton newImage = new PushButton(new Image("cyberlearning/gwt/clean/images/image_icon.PNG"));
+		newImage.setSize("90px", "90px");
 		toolbarPanel.add(newImage);
 		newImage.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				//allow user to upload sound file
+				editHorizontalPanel_1.add(uploadNewFile(fileType.IMAGE));				
 				//configure as draggable and add to toolbar
 				Widget draggableImage = createDraggableImage();
-				contentPanel.add(draggableImage);
+				contentPanel.add(draggableImage);	
+				
 			}		
 		});
+
 				
 		//create "Video" item
-		Button newVideo = new Button("Video");
-		newVideo.setSize("90px", "30px");
+		PushButton newVideo = new PushButton(new Image("cyberlearning/gwt/clean/images/video_icon.png"));
+		newVideo.setSize("90px", "70px");
 		toolbarPanel.add(newVideo);
 		newVideo.addClickHandler(new ClickHandler() {
 
@@ -180,18 +197,25 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		});
 		
 		//Sound Wrapper Stuff - Brian
-		Button sndButton = new Button("Test Sound");
-		sndButton.setSize("90px", "30px");
+		PushButton sndButton = new PushButton(new Image("cyberlearning/gwt/clean/images/sound_icon.png"));
+		sndButton.setSize("90px", "90px");
 		toolbarPanel.add(sndButton);
 		sndButton.addClickHandler(new ClickHandler() 
 		{
 			@Override
 			public void onClick(ClickEvent event) {
+				//allow user to upload sound file
+				editHorizontalPanel_1.add(uploadNewFile(fileType.SOUND));
+				//insert button to play user's sound
 				Widget draggableSound = createDraggableSound();
 				contentPanel.add(draggableSound);
 			}			
 		});//end sound test stuff
         
+		//after all elements added, hide toolbar - items start out in a weird place if it starts visible
+		DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
+		contentPanel.setSize("885px", "100%");					
+
 		
 		//create "Table" item
 		//CellTable<Object> cellTable = new CellTable<Object>();
@@ -228,7 +252,6 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		//}
 		//});
 		
-		HorizontalPanel editHorizontalPanel_1 = new HorizontalPanel();
 		flowPanel.add(editHorizontalPanel_1);
 		editHorizontalPanel_1.setWidth("100%");
 		
@@ -236,19 +259,19 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		editHorizontalPanel_1.add(viewToolbarBtn);
 		viewToolbarBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				toolbarVisible = !toolbarVisible;
 				if(toolbarVisible)
 				{
 					DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
 					toolbarPanel.setSize("0px", "100%");
-					contentPanel.setSize("965px", "100%");
+					contentPanel.setSize("885px", "100%");
 				}
 				else
 				{
 					DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "");
 					toolbarPanel.setSize("80px", "100%");
-					contentPanel.setSize("885px", "100%");					
+					contentPanel.setSize("965px", "100%");					
 				}
+				toolbarVisible = !toolbarVisible;				
 			}
 		});
 		viewToolbarBtn.setText("View Toolbar");
@@ -272,20 +295,27 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	Widget createDraggableImage()
 	{		
 		//configure as draggable
-		Image img = new Image("cyberlearning/gwt/clean/images/image_icon.PNG");
-		DraggableWidget<Image> draggableImage = new DraggableWidget<Image>(img);
+		Image newImg = new Image("cyberlearning/gwt/clean/images/image_icon.PNG");
+		DOM.setStyleAttribute(newImg.getElement(),  "border",  "2px solid blue");
+		DraggableWidget<Image> draggableImage = new DraggableWidget<Image>(newImg);
 		draggableImage.setDraggingCursor(Cursor.MOVE);
+		img = null;
 		
 		return draggableImage;
 	}
 	
 	Widget createDraggableVideo()
-	{	 
-		// String corresponds to the alphanumeric ID at the end of YouTube URL. //
+	{	
 		AbsolutePanel videoContainer = new AbsolutePanel();
 		videoContainer.setSize("300px", "300px");
 		DOM.setStyleAttribute(videoContainer.getElement(), "border", "2px solid blue");
-		YouTubeEmbeddedPlayer ytPlayer = new YouTubeEmbeddedPlayer("zn7-fVtT16k");
+	
+		//Prompt the user for a specific YouTube video
+		String alphaId = Window.prompt("Enter alphanumeric ID at the end of YouTube URL:", "");
+
+		// String corresponds to the alphanumeric ID at the end of YouTube URL. //
+		//YouTubeEmbeddedPlayer ytPlayer = new YouTubeEmbeddedPlayer("zn7-fVtT16k");
+		YouTubeEmbeddedPlayer ytPlayer = new YouTubeEmbeddedPlayer(alphaId);
 		ytPlayer.setWidth("300px");
 		ytPlayer.setHeight("300px");
 		videoContainer.add(ytPlayer);
@@ -296,26 +326,36 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	}
 	
 	Widget createDraggableSound()
-	{
-		Button newSound = new Button("Click to play");
+	{		
+		final Image playImg = new Image("cyberlearning/gwt/clean/images/play_icon.png");
+		final Image stopImg = new Image("cyberlearning/gwt/clean/images/stop_icon.png");
+		AbsolutePanel soundContainer = new AbsolutePanel();
+		soundContainer.setSize("52px", "52px");
+		DOM.setStyleAttribute(soundContainer.getElement(), "border", "2px solid blue");
+		final PushButton newSound = new PushButton(playImg);
+		newSound.setSize("50px", "50px");
+		soundContainer.add(newSound);
+		final DraggableWidget<AbsolutePanel> draggableButton = new DraggableWidget<AbsolutePanel>(soundContainer);
+		draggableButton.setDraggingCursor(Cursor.MOVE);
 		newSound.addClickHandler(new ClickHandler(){
 			@Override
 			public void onClick(ClickEvent event)
 			{
+				draggableButton.setDisabledDrag(true);
 				if(!sndOn)
 				{
 					sound.play();
+					newSound.getUpFace().setImage(stopImg);
 				}
 				else
 				{
 					sound.stop();
+					newSound.getUpFace().setImage(playImg);
 				}
 				sndOn=!sndOn;
+				draggableButton.setDisabledDrag(false);
 			}
 		});
-		
-		DraggableWidget<Button> draggableButton = new DraggableWidget<Button>(newSound);
-		draggableButton.setDraggingCursor(Cursor.MOVE);
 		
 		return draggableButton;
 	}
@@ -327,5 +367,76 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		draggableTable.setDisabledDrag(true);
 		
 		return draggableTable;		
+	}
+	
+	@SuppressWarnings("deprecation")
+	public FormPanel uploadNewFile(final fileType f)
+	{		
+		//Prompt the user for a specific sound
+		final FormPanel uploadForm = new FormPanel();
+		uploadForm.setAction(GWT.getModuleBaseURL() + "upload");
+		// Because we're going to add a FileUpload widget, we'll need to set the
+	    // form to use the POST method, and multipart MIME encoding.
+		uploadForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+		uploadForm.setMethod(FormPanel.METHOD_POST);
+
+	    // Create a panel to hold all of the form widgets.
+	    VerticalPanel panel = new VerticalPanel();
+	    uploadForm.setWidget(panel);
+
+	    // Create a TextBox, giving it a name so that it will be submitted.
+	    //final TextBox tb = new TextBox();
+	    //tb.setName("textBoxFormElement");
+	    //panel.add(tb);
+
+	    // Create a FileUpload widget.
+	    final FileUpload upload = new FileUpload();
+	    upload.setName("uploadFormElement");
+	    panel.add(upload);
+
+	    // Add a 'submit' button.
+	    panel.add(new Button("Submit", new ClickListener() {
+	      public void onClick(Widget sender) {
+	    	  uploadForm.submit();
+	      }
+	    }));
+
+	    // Add an event handler to the form.
+	    uploadForm.addFormHandler(new FormHandler() {
+	      public void onSubmit(FormSubmitEvent event) {
+	        // This event is fired just before the form is submitted. We can take
+	        // this opportunity to perform validation.
+	        //if (tb.getText().length() == 0) {
+	        //  Window.alert("The text box must not be empty");
+	        //  event.setCancelled(true);
+	        //}
+	        //else
+	        {
+	        	System.out.println(upload.getFilename());
+	        	uploadFileName = "cyberlearning/gwt/clean/uploads/" + upload.getFilename();
+	        	if(f == fileType.IMAGE)
+	        	{
+	        		img = new Image(uploadFileName);
+	        	}
+	        	else
+	        	{
+	        		//sound = sController.createSound(Sound.MIME_TYPE_AUDIO_MP4, uploadFileName);
+	        	}
+				uploadFileName.equals("");
+	        }
+	      }
+	      
+	      @Override
+	      public void onSubmitComplete(FormSubmitCompleteEvent event) {
+	        // When the form submission is successfully completed, this event is
+	        // fired. Assuming the service returned a response of type text/html,
+	        // we can get the result text here (see the FormPanel documentation for
+	        // further explanation).
+	        Window.alert(event.getResults());
+	      }
+	    });
+	    
+	    return uploadForm;
+	    
 	}
 }

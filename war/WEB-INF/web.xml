@@ -11,6 +11,16 @@
     <url-pattern>/cyberlearning/greet</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>uploadServlet</servlet-name>
+    <servlet-class>cyber.learning.project.server.MyFormHandler</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>uploadServlet</servlet-name>
+    <url-pattern>/cyberlearning/upload</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>CyberLearning.html</welcome-file>
