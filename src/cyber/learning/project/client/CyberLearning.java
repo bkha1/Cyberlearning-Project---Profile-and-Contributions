@@ -1,6 +1,6 @@
 package cyber.learning.project.client;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget; 
 
 import com.google.gwt.core.client.EntryPoint; 
 import com.google.gwt.core.client.GWT;
@@ -9,14 +9,12 @@ import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.TouchCancelEvent;
-import com.google.gwt.event.dom.client.TouchCancelHandler;
-import com.google.gwt.event.dom.client.TouchStartEvent;
-import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
@@ -26,18 +24,15 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -56,6 +51,7 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	AbsolutePanel contentPanel = new AbsolutePanel();
 	String selectedText; //Brian added
 	boolean sndOn = false;
+	boolean uploadVisible = false;
 	SoundController sController = new SoundController(); //sound stuff - brian
 	Sound sound = sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/test.ogg");
 	TextArea someText = new TextArea();//moved this from inside onModuleLoad - Brian
@@ -173,7 +169,11 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 			@Override
 			public void onClick(ClickEvent event) {
 				//allow user to upload sound file
-				editHorizontalPanel_1.add(uploadNewFile(fileType.IMAGE));				
+				if(!uploadVisible)
+				{	
+					editHorizontalPanel_1.add(uploadNewFile(fileType.IMAGE));
+					uploadVisible = true;
+				}
 				//configure as draggable and add to toolbar
 				Widget draggableImage = createDraggableImage();
 				contentPanel.add(draggableImage);	
@@ -205,7 +205,11 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 			@Override
 			public void onClick(ClickEvent event) {
 				//allow user to upload sound file
-				editHorizontalPanel_1.add(uploadNewFile(fileType.SOUND));
+				if(!uploadVisible)
+				{
+					editHorizontalPanel_1.add(uploadNewFile(fileType.SOUND));
+					uploadVisible = true;
+				}
 				//insert button to play user's sound
 				Widget draggableSound = createDraggableSound();
 				contentPanel.add(draggableSound);
@@ -337,9 +341,9 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		soundContainer.add(newSound);
 		final DraggableWidget<AbsolutePanel> draggableButton = new DraggableWidget<AbsolutePanel>(soundContainer);
 		draggableButton.setDraggingCursor(Cursor.MOVE);
-		newSound.addClickHandler(new ClickHandler(){
+		newSound.addDoubleClickHandler(new DoubleClickHandler(){
 			@Override
-			public void onClick(ClickEvent event)
+			public void onDoubleClick(DoubleClickEvent event)
 			{
 				draggableButton.setDisabledDrag(true);
 				if(!sndOn)
