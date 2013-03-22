@@ -49,12 +49,14 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	 * Declare variables
 	 */
 	AbsolutePanel contentPanel = new AbsolutePanel();
-	String selectedText; //Brian added
+	String selectedText; //Brian added -bkha1
 	boolean sndOn = false;
 	boolean uploadVisible = false;
-	SoundController sController = new SoundController(); //sound stuff - brian
-	Sound sound = sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/test.ogg");
-	TextArea someText = new TextArea();//moved this from inside onModuleLoad - Brian
+	SoundController sController = new SoundController(); //sound stuff - brian - bkha1
+	Sound sound; //= sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/air.ogg");
+	String sndLink;//will contain the url to the sound
+	TextArea sndArea = new TextArea();
+	TextArea someText = new TextArea();//moved this from inside onModuleLoad - Brian - bkha1
 	Image img;
 	
 	/**
@@ -196,7 +198,7 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 			}	
 		});
 		
-		//Sound Wrapper Stuff - Brian
+		//Sound Wrapper Stuff - Brian - bkha1
 		PushButton sndButton = new PushButton(new Image("cyberlearning/gwt/clean/images/sound_icon.png"));
 		sndButton.setSize("90px", "90px");
 		toolbarPanel.add(sndButton);
@@ -214,7 +216,23 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 				Widget draggableSound = createDraggableSound();
 				contentPanel.add(draggableSound);
 			}			
-		});//end sound test stuff
+		});
+		
+		Button sndOffButton = new Button("Sound Off");//button for sound off
+		//toolbarPanel.add(sndOffButton);
+		sndOffButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event) {
+				if(sndOn == true)
+				{
+				sound.stop();//turns off song if its playing
+				sndOn = false;
+				}
+			}
+		});
+		
+		sndArea.setText("http://www.public.asu.edu/~bkha1/air.ogg");//default link
+		
+		//end sound test stuff
         
 		//after all elements added, hide toolbar - items start out in a weird place if it starts visible
 		DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
@@ -261,6 +279,10 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		
 		Button viewToolbarBtn = new Button("New button");
 		editHorizontalPanel_1.add(viewToolbarBtn);
+		
+		editHorizontalPanel_1.add(sndArea);//added these for convenience and sound link testing -bkha
+		editHorizontalPanel_1.add(sndOffButton);//bkha1
+		
 		viewToolbarBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				if(toolbarVisible)
@@ -283,7 +305,7 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 	
 	Widget createDraggableText()
 	{
-		//Rich Text Editor - Brian
+		//Rich Text Editor - Brian - bkha1
 		RichTextArea textArea = new RichTextArea();
 		textArea.setText("\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut viverra pulvinar tellus et cursus. Nam viverra dapibus libero et consequat. Aenean imperdiet erat nec risus cursus ac pretium mauris ultrices. Aliquam mollis tellus at nibh bibendum fringilla. Quisque ac purus quis lectus auctor placerat. Maecenas eu lorem sed ligula consequat sagittis. Mauris pulvinar nulla a dolor lobortis vehicula. Quisque in elit vel felis aliquam pulvinar eu et nulla. Phasellus eu nibh velit. Pellentesque porttitor eros id arcu placerat aliquam. Duis eget arcu non magna pretium cursus in et nisl. Praesent sollicitudin pharetra risus hendrerit convallis. Vestibulum bibendum lobortis quam in faucibus. Morbi quis leo nibh. Quisque cursus euismod augue, eu malesuada libero interdum in. Quisque volutpat gravida ligula eget blandit.");		//contentPanel.setWidget(25,0,textArea);
 		textArea.setSize("200px","150px");
@@ -329,6 +351,7 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 		return draggableVideoContainer;
 	}
 	
+	//NOTE: dragging sound button seems to be buggy, cant get it to let go once i've clicked on the widget, always follows the cursor - bkha1
 	Widget createDraggableSound()
 	{		
 		final Image playImg = new Image("cyberlearning/gwt/clean/images/play_icon.png");
@@ -346,6 +369,20 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 			public void onDoubleClick(DoubleClickEvent event)
 			{
 				draggableButton.setDisabledDrag(true);
+				
+				//changed sound on logic cus toggling doesnt seem to work well enough - bkha1
+				if(!sndOn)
+				{
+					sndLink = sndArea.getText();//grabs link from textbox
+					sound = sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,sndLink);//sets up the sound
+					sound.setLooping(true);
+					//sound.play();
+					if(sound.play() == true)//plays sound
+					{
+					sndOn = true;
+					}
+				}
+				/*
 				if(!sndOn)
 				{
 					sound.play();
@@ -357,8 +394,11 @@ public class CyberLearning implements EntryPoint {//test comment for test commit
 					newSound.getUpFace().setImage(playImg);
 				}
 				sndOn=!sndOn;
+				*/
+				
 				draggableButton.setDisabledDrag(false);
 			}
+			
 		});
 		
 		return draggableButton;

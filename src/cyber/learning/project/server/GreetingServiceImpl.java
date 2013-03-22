@@ -1,6 +1,6 @@
 package cyber.learning.project.server;
 
-import cyber.learning.project.client.GreetingService; 
+import cyber.learning.project.client.GreetingService;
 import cyber.learning.project.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
