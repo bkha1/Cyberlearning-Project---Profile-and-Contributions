@@ -43,7 +43,7 @@ import com.google.youtube.client.YouTubeEmbeddedPlayer;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class CyberLearning implements EntryPoint {//test comment for test commit
+public class CyberLearning implements EntryPoint {//test comment
 	
 	/**
 	 * Declare variables
