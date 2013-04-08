@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 
@@ -243,9 +244,19 @@ final class PersistenceManager
     }
   }
 
+
+  private static Properties makeConnectionProperties()
+  {
+    final Properties properties = new Properties();
+    properties.setProperty("PRAGMA foreign_keys", "ON");
+    return properties;
+  }
+
+
   private static final Connection CONN;
   private static final Logger LOG;
   private static final Integer TABLE_COUNT;
+
 
   static
   {
@@ -258,7 +269,8 @@ final class PersistenceManager
     try
     {
       Class.forName("org.sqlite.JDBC");
-      CONN = getConnection("jdbc:sqlite:persistence.sql");
+      CONN = getConnection("jdbc:sqlite:persistence.sql",
+                           makeConnectionProperties());
       ensureDatabaseExistence();
     }
     catch (ClassNotFoundException ex)
