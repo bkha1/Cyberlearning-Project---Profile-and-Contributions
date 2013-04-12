@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import cyber.learning.project.shared.Enumerations.ComponentType;
 import cyber.learning.project.shared.Enumerations.RegionType;
-import cyber.learning.project.shared.changerequests.BookChangeRequest;
 import cyber.learning.project.shared.descs.AccountDesc;
 import cyber.learning.project.shared.descs.ComponentDesc;
 
@@ -37,6 +36,13 @@ public final class UpdateBookChangeRequest implements BookChangeRequest,
   public int getContainingBookID()
   {
     return target_.getContainingRegion().getContainingBook().getID();
+  }
+
+
+  @Override
+  public int getContainingBookOwnerID()
+  {
+    return target_.getContainingRegion().getContainingBook().getOwner().getID();
   }
 
 

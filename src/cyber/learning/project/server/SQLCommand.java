@@ -18,7 +18,7 @@ import java.sql.Types;
  * Note: The column index is one-based rather than zero-based, thus the first
  * column is '1' rather than '0'.
  */
-final class SQLCommand
+public final class SQLCommand
 {
   /**
    * @param columnIndex the one-based index of the boolean column

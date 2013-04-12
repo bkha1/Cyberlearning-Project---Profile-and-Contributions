@@ -8,6 +8,9 @@ public interface BookChangeRequest
   int getContainingBookID();
 
 
+  int getContainingBookOwnerID();
+
+
   int getContributorID();
 
 
@@ -18,6 +21,7 @@ public interface BookChangeRequest
 
 
   String getLocation();
+
 
 
   int getContentType();

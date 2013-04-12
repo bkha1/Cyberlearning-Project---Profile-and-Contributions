@@ -48,6 +48,13 @@ public final class NewBookChangeRequest implements BookChangeRequest,
 
 
   @Override
+  public int getContainingBookOwnerID()
+  {
+    return containingBook_.getOwner().getID();
+  }
+
+
+  @Override
   public int getContributorID()
   {
     return contributor_.getID();

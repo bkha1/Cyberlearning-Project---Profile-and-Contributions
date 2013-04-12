@@ -15,9 +15,9 @@ final class TableDirectory
       ")",
 
       // Books table
-      "CREATE TABLE IF NOT EXISTS \"books\" "  +
+      "CREATE TABLE IF NOT EXISTS \"books\" " +
       "(" +
-        "\"book_id\" INTEGER NOT NULL, " +
+        "\"book_id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
         "\"account_id\" INTEGER NOT NULL, " +
         "FOREIGN KEY(\"account_id\") REFERENCES \"accounts\"(\"account_id\")" +
       ")",
@@ -29,6 +29,7 @@ final class TableDirectory
         "\"book_id\" INTEGER NOT NULL, "+
         "\"location\" TEXT NOT NULL, " +
         "\"type\" INTEGER NOT NULL, " +
+        "\"isCanonical\" BOOL NO NULL, " +
         "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\")" +
       ")",
 
