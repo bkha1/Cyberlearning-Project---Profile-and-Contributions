@@ -15,28 +15,44 @@ final class TableDirectory
       ")",
 
       // Books table
-      "CREATE TABLE IF NOT EXISTS \"books\" " +
+      "CREATE TABLE IF NOT EXISTS \"books\" "  +
       "(" +
-        "\"book_id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
+        "\"book_id\" INTEGER NOT NULL, " +
+        "\"account_id\" INTEGER NOT NULL, " +
+        "FOREIGN KEY(\"account_id\") REFERENCES \"accounts\"(\"account_id\")" +
+      ")",
+
+      // Regions table
+      "CREATE TABLE IF NOT EXISTS \"regions\" " +
+      "(" +
+        "\"region_id\" INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
+        "\"book_id\" INTEGER NOT NULL, "+
+        "\"location\" TEXT NOT NULL, " +
+        "\"type\" INTEGER NOT NULL, " +
+        "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\")" +
+      ")",
+
+      // Components table
+      "CREATE TABLE IF NOT EXISTS \"components\" " +
+      "(" +
+        "\"comp_id\" INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
+        "\"region_id\" INTEGER NOT NULL, " +
+        "\"type\" INTEGER NOT NULL, " +
+        "\"value\" TEXT NOT NULL, " +
+        "FOREIGN KEY(\"region_id\") REFERENCES \"regions\"(\"region_id\")" +
       ")",
 
       // Contributions table
       "CREATE TABLE IF NOT EXISTS \"contributions\" " +
       "(" +
-        "\"contribution_id\" INTEGER PRIMARY KEY " +
-                            "AUTOINCREMENT NOT NULL UNIQUE, " +
-        "\"book_id\" INTEGER NOT NULL, " +
-        "\"component_id\" INTEGER, " +
-        "\"component_type\" INTEGER NOT NULL, " +
-        "\"position\" TEXT NOT NULL, " +
-        "\"contributor_id\" INTEGER, " +
-        "\"change_log\" TEXT, " +
+        "\"contrib_id\" INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
+        "\"comp_id\" INTEGER NOT NULL, " +
+        "\"account_id\" INTEGER NOT NULL, " +
+        "\"change_comment\" TEXT NOT NULL, " +
         "\"timestamp\" DATETIME NOT NULL, " +
-        "\"status\" INTEGER NOT NULL " +
-        // Foreign keys must be declared after all columns.
-        "FOREIGN KEY(\"book_ref_id\") REFERENCES \"books\"(\"book_id\"), " +
-        "FOREIGN KEY(\"contributor_id\") " +
-          "REFERENCES \"accounts\"(\"account_id\") " +
-       ")"
+        "\"acceptance_status\" INTEGER NOT NULL," +
+        "FOREIGN KEY(\"comp_id\") REFERENCES \"components\"(\"comp_id\"), " +
+        "FOREIGN KEY(\"account_id\") REFERENCES \"accounts\"(\"account_id\") " +
+      ")"
     };
 }

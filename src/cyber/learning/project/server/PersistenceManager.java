@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * database named 'persistence.sql'. The use of the supplied execution methods
  * ensures single-threaded access to the database.
  */
-final class PersistenceManager
+public final class PersistenceManager
 {
   /**
    * A mechanism that handles a tuple that satisfies a given search query.
@@ -260,10 +260,7 @@ final class PersistenceManager
 
   static
   {
-    /* This value will need to be updated when a new table is added to the
-     * database.
-     */
-    TABLE_COUNT = 1;
+    TABLE_COUNT = CREATION_COMMANDS.length;
 
     LOG = Logger.getLogger(PersistenceManager.class.getName());
     try

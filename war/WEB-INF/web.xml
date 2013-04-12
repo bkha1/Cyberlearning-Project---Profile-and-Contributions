@@ -2,21 +2,12 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>contributionService</servlet-name>
-    <servlet-class>cyber.learning.project.server.providers.ContributionServiceProvider</servlet-class>
+    <servlet-name>accountService</servlet-name>
+    <servlet-class>cyber.learning.project.server.providers.AccountServiceProvider</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>contributionService</servlet-name>
-    <url-pattern>/cyberlearning/contribution</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>storeService</servlet-name>
-    <servlet-class>cyber.learning.project.server.StoreServiceImpl</servlet-class>
-  </servlet> 
-  <servlet-mapping>
-    <servlet-name>storeService</servlet-name>
-    <url-pattern>/cyberlearning/store</url-pattern>
+    <servlet-name>accountService</servlet-name>
+    <url-pattern>/cyberlearning/account</url-pattern>
   </servlet-mapping>
 
 
