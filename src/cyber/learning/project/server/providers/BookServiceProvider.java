@@ -40,6 +40,7 @@ public final class BookServiceProvider
   @Override
   public CallbackPayload<Boolean> contribute(BookChangeRequest[] changeRequests)
   {
+
     for (BookChangeRequest cr : changeRequests)
     {
       if (cr.getComponentID() == -1)
