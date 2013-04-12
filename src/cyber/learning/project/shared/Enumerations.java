@@ -3,14 +3,38 @@ package cyber.learning.project.shared;
 
 public final class Enumerations
 {
+  public enum RegionType
+  {
+    ABSOLUTE, GRID;
+
+    public static RegionType toEnum(int type)
+    {
+      switch (type)
+      {
+        case 0:
+          return ABSOLUTE;
+        case 1:
+        default:
+          return GRID;
+      }
+    }
+
+
+    public static int toInteger(RegionType type)
+    {
+      return type.ordinal();
+    }
+  }
+
+
   public enum ComponentType
   {
     IMAGE, SOUND, TEXT, VIDEO;
 
 
-    public static ComponentType get(int value)
+    public static ComponentType toEnum(int type)
     {
-      switch (value)
+      switch (type)
       {
         case 0:
           return IMAGE;
@@ -19,34 +43,42 @@ public final class Enumerations
         case 2:
           return TEXT;
         case 3:
-          return VIDEO;
         default:
-          throw new IllegalStateException(
-            String.format("Unknown enum value: %s", value));
+          return VIDEO;
       }
+    }
+
+
+    public static int toInteger(ComponentType type)
+    {
+      return type.ordinal();
     }
   }
 
 
-  public enum ApprovalStatus
+  public enum AcceptanceStatus
   {
-    PENDING, APPROVED, REJECTED;
+    ACCEPTED, PENDING, REJECTED;
 
 
-    public static ApprovalStatus get(int value)
+    public static AcceptanceStatus toEnum(int type)
     {
-      switch (value)
+      switch (type)
       {
         case 0:
-          return PENDING;
+          return ACCEPTED;
         case 1:
-          return APPROVED;
+          return PENDING;
         case 2:
-          return REJECTED;
         default:
-          throw new IllegalStateException(
-            String.format("Unknown enum value: %s", value));
+          return REJECTED;
       }
+    }
+
+
+    public static int toInteger(AcceptanceStatus type)
+    {
+      return type.ordinal();
     }
   }
 

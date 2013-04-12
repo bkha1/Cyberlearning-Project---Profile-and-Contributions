@@ -4,25 +4,26 @@ import java.io.Serializable;
 
 
 @SuppressWarnings("serial")
-public final class BookDesc implements Serializable
+public final class BookDesc extends BaseDesc
+                            implements Serializable
 {
-  public BookDesc()
+  public BookDesc() {}
+
+
+  public BookDesc(int id,
+                  AccountDesc owner,
+                  RegionDesc[] regions)
   {
-    // Appease the GWT compiler with a nullary constructor.
+    super(id);
+    owner_ = owner;
   }
 
 
-  public BookDesc(int id)
+  public AccountDesc getOwner()
   {
-    id_ = id;
+    return owner_;
   }
 
 
-  public int getID()
-  {
-    return id_;
-  }
-
-
-  private int id_;
+  private AccountDesc owner_;
 }

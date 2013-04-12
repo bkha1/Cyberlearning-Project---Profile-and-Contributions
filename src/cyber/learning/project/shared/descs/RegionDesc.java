@@ -2,36 +2,57 @@ package cyber.learning.project.shared.descs;
 
 import java.io.Serializable;
 
+import cyber.learning.project.shared.Enumerations.RegionType;
+
 
 
 @SuppressWarnings("serial")
-public final class RegionDesc implements Serializable
+public final class RegionDesc extends BaseDesc
+                              implements Serializable
 {
-  public RegionDesc()
+  public RegionDesc() {}
+
+
+  public RegionDesc(int id,
+                    BookDesc container,
+                    ComponentDesc content,
+                    String location,
+                    int type)
   {
-    // Appease the GWT compiler with a nullary constructor.
+    super(id);
+    container_ = container;
+    content_ = content;
+    location_ = location;
+    type_ = type;
   }
 
 
-  public RegionDesc(int id, BookDesc book)
+  public BookDesc getContainingBook()
   {
-    id_ = id;
-    book_ = book;
+    return container_;
   }
 
 
-  public int getID()
+  public ComponentDesc getContent()
   {
-    return id_;
+    return content_;
   }
 
 
-  public BookDesc getBook()
+  public String location()
   {
-    return book_;
+    return location_;
   }
 
 
-  private int id_;
-  private BookDesc book_;
+  public RegionType getRegionType()
+  {
+    return RegionType.toEnum(type_);
+  }
+
+
+  private BookDesc container_;
+  private ComponentDesc content_;
+  private String location_;
+  private int type_;
 }

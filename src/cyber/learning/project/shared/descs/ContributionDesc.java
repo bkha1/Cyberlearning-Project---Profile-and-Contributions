@@ -1,71 +1,37 @@
 package cyber.learning.project.shared.descs;
 
-import static cyber.learning.project.shared.Enumerations.ApprovalStatus.get;
-
 import java.io.Serializable;
 import java.sql.Date;
 
-import cyber.learning.project.shared.Enumerations.ApprovalStatus;
+import cyber.learning.project.shared.Enumerations.AcceptanceStatus;
 
 
 @SuppressWarnings("serial")
-public final class ContributionDesc implements Serializable
+public final class ContributionDesc extends BaseDesc
+                                    implements Serializable
 {
-  public ContributionDesc()
-  {
-    // Appease the GWT compiler with a nullary constructor.
-  }
+  public ContributionDesc() {}
 
 
   public ContributionDesc(int id,
-                          BookDesc target,
-                          ComponentDesc proposed,
+                          ComponentDesc target,
                           AccountDesc contributor,
-                          String changeLog,
-                          Date proposalTime,
-                          int status)
+                          String changeComment,
+                          Date timestamp,
+                          int acceptanceStatus)
   {
-    contributionID_ = id;
-    targetedBook_ = target;
-    proposedModification_ = proposed;
+    super(id);
+    target_ = target;
     contributor_ = contributor;
-    changeLog_ = changeLog;
-    timestamp_ = proposalTime;
-    status_ = status;
+    changeComment_ = changeComment;
+    timestamp_ = timestamp;
+    acceptanceStatus_ = acceptanceStatus;
   }
 
 
-  public ContributionDesc(BookDesc target,
-                          ComponentDesc proposed,
-                          AccountDesc contributor,
-                          String changeLog,
-                          ApprovalStatus status)
+  public ComponentDesc getTargetedComponent()
   {
-    targetedBook_ = target;
-    proposedModification_ = proposed;
-    contributor_ = contributor;
-    changeLog_ = changeLog;
-    timestamp_ = new Date(System.currentTimeMillis());
-    status_ = status.ordinal();
-  }
-
-
-  int getContributionID()
-  {
-    /* Not used thus package-private scoped. */
-    return contributionID_;
-  }
-
-
-  public BookDesc getTargetedBook()
-  {
-    return targetedBook_;
-  }
-
-
-  public ComponentDesc getProposed()
-  {
-    return proposedModification_;
+    return target_;
   }
 
 
@@ -75,29 +41,27 @@ public final class ContributionDesc implements Serializable
   }
 
 
-  public String getChangeLog()
+  public String getChangeComment()
   {
-    return changeLog_;
+    return changeComment_;
   }
 
 
-  public Date getTimestamp()
+  public Date getContributionTime()
   {
     return timestamp_;
   }
 
 
-  public ApprovalStatus getStatus()
+  public AcceptanceStatus getAcceptanceStatus()
   {
-    return get(status_);
+    return AcceptanceStatus.toEnum(acceptanceStatus_);
   }
 
 
-  private int contributionID_;
-  private BookDesc targetedBook_;
-  private ComponentDesc proposedModification_;
+  private ComponentDesc target_;
   private AccountDesc contributor_;
-  private String changeLog_;
+  private String changeComment_;
   private Date timestamp_;
-  private int status_;
+  private int acceptanceStatus_;
 }
