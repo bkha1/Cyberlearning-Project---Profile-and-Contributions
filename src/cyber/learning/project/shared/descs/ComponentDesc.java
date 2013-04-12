@@ -28,6 +28,12 @@ public final class ComponentDesc extends BaseDesc
   }
 
 
+  public String getContentValue()
+  {
+    return value_;
+  }
+
+
   public RegionDesc getContainingRegion()
   {
     return container_;
@@ -35,5 +41,6 @@ public final class ComponentDesc extends BaseDesc
 
 
   private int type_;
+  private String value_;
   private RegionDesc container_;
 }
