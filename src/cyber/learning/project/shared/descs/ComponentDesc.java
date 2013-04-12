@@ -22,7 +22,7 @@ public final class ComponentDesc extends BaseDesc
   }
 
 
-  public ComponentType getType()
+  public ComponentType getComponentType()
   {
     return ComponentType.toEnum(type_);
   }

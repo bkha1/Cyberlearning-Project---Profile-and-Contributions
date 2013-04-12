@@ -39,7 +39,7 @@ public final class RegionDesc extends BaseDesc
   }
 
 
-  public String location()
+  public String getLocation()
   {
     return location_;
   }

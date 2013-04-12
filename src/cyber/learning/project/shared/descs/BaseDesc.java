@@ -11,6 +11,12 @@ abstract class BaseDesc
   }
 
 
+  public int getID()
+  {
+    return id_;
+  }
+
+
   public boolean isEqualTo(BaseDesc inspectee)
   {
     return inspectee.id_ == id_;
