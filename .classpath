@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/acris-json-1.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/acris-widgets-1.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/appengine-endpoints.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gquery-dnd-bundle-1.0.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-math-2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-voices-3.2.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-youtube-api-1.0.2-sources.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-youtube-api-1.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwttime-alpha.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwtx-1.5.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.7.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

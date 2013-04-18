@@ -313,7 +313,7 @@ public class CyberLearning implements EntryPoint {//test comment
         @Override
         public void onClick(ClickEvent event)
         {
-          TestDBAdapter.test();
+          //TestDBAdapter.test();
         }
       });
 	}
