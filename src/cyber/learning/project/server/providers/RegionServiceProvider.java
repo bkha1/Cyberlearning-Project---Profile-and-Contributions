@@ -54,32 +54,7 @@ public final class RegionServiceProvider extends RemoteServiceServlet
   public
   CallbackPayload<RegionDesc[]> getCanonicalRegionsForBook(BookDesc container)
   {
-    try
-    {
-      final SQLCommand command = makeParameterizedCommandFor(GET_REGIONS);
-      command.setInt(1, container.getID());
-      command.setBinary(2, true);
-
-      final Collection<RegionDesc> regions = new LinkedList<>();
-      searchFor(
-        command, true,
-        new QueryTupleResultSink()
-        {
-          @Override
-          public void putTo(ResultSet tuple) throws SQLException
-          {
-            final ComponentDesc cDesc =
-              new ComponentDesc(tuple.getInt("cid"),
-                                tuple.getInt("c_type"),
-                                tuple.getString("c_value"));
-          }
-        });
-      return null;
-    }
-    catch (Throwable t)
-    {
-      return make(t, RegionDesc[].class);
-    }
+    return get(container, true);
   }
 
 
@@ -87,7 +62,7 @@ public final class RegionServiceProvider extends RemoteServiceServlet
   public
   CallbackPayload<RegionDesc[]> getProposedRegionsForBook(BookDesc container)
   {
-    return null;
+    return get(container, true);
   }
 
 
@@ -124,13 +99,53 @@ public final class RegionServiceProvider extends RemoteServiceServlet
                                                    compDesc,
                                                    location,
                                                    type);
-      compDesc.setRegionType(regionDesc);
+      compDesc.setRegionDesc(regionDesc);
 
       return make(regionDesc);
     }
     catch (Throwable t)
     {
       return make(t, RegionDesc.class);
+    }
+  }
+
+
+  private static CallbackPayload<RegionDesc[]> get(final BookDesc container,
+                                                   boolean isCanonical)
+  {
+    try
+    {
+      final SQLCommand command = makeParameterizedCommandFor(GET_REGIONS);
+      command.setInt(1, container.getID());
+      command.setBinary(2, isCanonical);
+
+      final Collection<RegionDesc> regions = new LinkedList<>();
+      searchFor(
+        command, true,
+        new QueryTupleResultSink()
+        {
+          @Override
+          public void putTo(ResultSet tuple) throws SQLException
+          {
+            final ComponentDesc cDesc =
+              new ComponentDesc(tuple.getInt("cid"),
+                                tuple.getInt("c_type"),
+                                tuple.getString("c_value"));
+            final RegionDesc rDesc =
+              new RegionDesc(tuple.getInt("rid"),
+                             container,
+                             cDesc,
+                             tuple.getString("loc"),
+                             tuple.getInt("r_type"));
+            cDesc.setRegionDesc(rDesc);
+            regions.add(rDesc);
+          }
+        });
+      return make(regions.toArray(new RegionDesc[regions.size()]));
+    }
+    catch (Throwable t)
+    {
+      return make(t, RegionDesc[].class);
     }
   }
 
@@ -157,45 +172,18 @@ public final class RegionServiceProvider extends RemoteServiceServlet
     "INSERT INTO \"components\" (\"region_id\", \"type\", \"value\") " +
     "VALUES (?1,?2,?3)";
   private static final String GET_REGIONS =
-    "SELECT \"tmp3\".\"rid\" as \"rid\", " +
-           "\"tmp3\".\"loc\" as \"loc\", " +
-           "\"tmp3\".\"r_type\" as \"r_type\", " +
-           "\"tmp3\".\"cid\" as \"cid\", " +
-           "\"tmp3\".\"c_type\" as \"c_type\", " +
-           "\"tmp3\".\"c_value\" as \"c_value\", " +
-           "\"tmp3\".\"bid\" as \"bid\", " +
-           "\"tmp3\".\"subject\" as \"subject\", " +
-           "\"accounts\".\"account_id\" as \"aid\", " +
-           "\"accounts\".\"username\" as \"username\" " +
-    "FROM \"accounts\" " +
+    "SELECT \"tmp1\".*, " +
+           "\"comp_id\" as \"cid\", " +
+           "\"components\".\"type\" as \"c_type\", " +
+           "\"components\".\"value\" as \"c_value\" " +
+    "FROM \"components\" " +
       "INNER JOIN " +
       "(" +
-        "SELECT \"tmp2\".\"rid\" as \"rid\", " +
-               "\"tmp2\".\"loc\" as \"loc\", " +
-               "\"tmp2\".\"r_type\" as \"r_type\", " +
-               "\"tmp2\".\"cid\" as \"cid\", " +
-               "\"tmp2\".\"c_type\" as \"c_type\", " +
-               "\"tmp2\".\"c_value\" as \"c_value\", " +
-               "\"books\".\"book_id\" as \"bid\", " +
-               "\"books\".\"account_id\" as \"aid\", " +
-               "\"books\".\"subject\"  as \"subject\" " +
-        "FROM \"books\" " +
-          "INNER JOIN " +
-          "(" +
-            "SELECT \"tmp1\".*, " +
-                   "\"comp_id\" as \"cid\", " +
-                   "\"components\".\"type\" as \"c_type\", " +
-                   "\"components\".\"value\" as \"c_value\" " +
-            "FROM \"components\" " +
-            "INNER JOIN " +
-            "(" +
-              "SELECT \"region_id\" as \"rid\", " +
-                     "\"book_id\" as \"bid\", " +
-                     "\"location\" as \"loc\", " +
-                     "\"type\" as \"r_type\" " +
-              "FROM \"regions\" " +
+        "SELECT \"region_id\" as \"rid\", " +
+               "\"book_id\" as \"bid\", " +
+               "\"location\" as \"loc\", " +
+               "\"type\" as \"r_type\" " +
+        "FROM \"regions\" " +
               "WHERE \"book_id\"=?1 AND \"isCanonical\"=1 " +
-            ") \"tmp1\" ON \"tmp1\".\"rid\"=\"components\".\"region_id\" " +
-          ") \"tmp2\" ON \"tmp2\".\"bid\"=\"books\".\"book_id\" "  +
-      ") \"tmp3\" ON \"tmp3\".\"aid\"=\"accounts\".\"account_id\" ";
+      ") \"tmp1\" ON \"tmp1\".\"rid\"=\"components\".\"region_id\" ";
 }

@@ -22,7 +22,7 @@ public final class ComponentDesc extends BaseDesc
   }
 
 
-  public void setRegionType(RegionDesc container)
+  public void setRegionDesc(RegionDesc container)
   {
     container_ = container;
   }
