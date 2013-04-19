@@ -30,12 +30,16 @@ import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
@@ -81,234 +85,312 @@ public class CyberLearning implements EntryPoint {//test comment
 	 */
 	@Override
   public void onModuleLoad() {
-		final Label errorLabel = new Label();
-		final HorizontalPanel editHorizontalPanel_1 = new HorizontalPanel();
+	  RootPanel rootPanel = RootPanel.get("bookContainer");
+	  rootPanel.setSize("500px", "500px");
 
-		// Add the nameField and sendButton to the RootPanel
-		// Use RootPanel.get() to get the entire body element
-		RootPanel rootPanel = RootPanel.get("bookContainer");
-		RootPanel.get("errorLabelContainer").add(errorLabel);
-
-		/* Example code for embedding a YouTube clip.
-
-		   // String corresponds to the alphanumeric ID at the end of YouTube URL. //
-		   YouTubeEmbeddedPlayer ytPlayer = new YouTubeEmbeddedPlayer("zn7-fVtT16k");
-		   ytPlayer.setWidth("300px");
-		   ytPlayer.setHeight("300px");
-		   RootPanel.get().add(ytPlayer);
-		 */
-
-		VerticalPanel flowPanel = new VerticalPanel();
-		rootPanel.add(flowPanel, 100, 100);
-		flowPanel.setSize("1000px", "600px");
-
-		final MenuBar menuBar = new MenuBar(false);
-		flowPanel.add(menuBar);
-
-		MenuItem mntmSearchtext = new MenuItem("my freBook", false, (Command) null);
-		menuBar.addItem(mntmSearchtext);
-		menuBar.setSize("965px", "100%");
-
-		HorizontalPanel contentHorizontalPanel = new HorizontalPanel();
-		flowPanel.add(contentHorizontalPanel);
-		contentHorizontalPanel.setSize("100%", "500px");
-
-		final VerticalPanel toolbarPanel = new VerticalPanel();
-		contentHorizontalPanel.add(toolbarPanel);
-		toolbarPanel.setSize("80px", "144px");
-
-		contentHorizontalPanel.add(contentPanel);
-		contentPanel.setSize("885px", "600px");
-
-		/*
-		 * Toolbar items for editing
-		 */
-		//create "Text" item
-		final PushButton newTextArea = new PushButton(new Image("cyberlearning/gwt/clean/images/text_icon.png"));
-		newTextArea.setSize("90px", "80px");
-		toolbarPanel.add(newTextArea);
-		//configure as draggable and add to content area
-		newTextArea.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event) {
-				//create the new draggable object
-				final Widget draggableText = createDraggableText();
-				RichTextToolbar toolBar = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText).getOriginalWidget());
-				contentPanel.add(toolBar, 0, 0);
-				contentPanel.add(draggableText, 0, 50);
-				draggableText.setSize("90%", "75px");
-
-				//use "CTRL" key to alternate between drag and resize mode
-				newTextArea.addMouseDownHandler(new MouseDownHandler()
-				{
-
-					@Override
-					public void onMouseDown(MouseDownEvent event) {
-						//if "CTRL" key pressed, user resizing widget
-						if(event.isControlKeyDown())
-						{
-							((DraggableWidget<TextArea>) draggableText).setDisabledDrag(true);
-						}
-					}
-				});
-				newTextArea.addMouseUpHandler(new MouseUpHandler()
-				{
-					@Override
-					public void onMouseUp(MouseUpEvent event) {
-						((DraggableWidget<TextArea>) draggableText).setDisabledDrag(false);
-					}
-
-				});
-			}
-		});
-
-		//create "Image" item
-		PushButton newImage = new PushButton(new Image("cyberlearning/gwt/clean/images/image_icon.PNG"));
-		newImage.setSize("90px", "90px");
-		toolbarPanel.add(newImage);
-		newImage.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				//allow user to upload sound file
-				if(!uploadVisible)
-				{
-					editHorizontalPanel_1.add(uploadNewFile(fileType.IMAGE));
-					uploadVisible = true;
-				}
-				//configure as draggable and add to toolbar
-				Widget draggableImage = createDraggableImage();
-				contentPanel.add(draggableImage);
-
-			}
-		});
+	  final HorizontalPanel outer = new HorizontalPanel();
+    rootPanel.setSize("500px", "500px");
+	  rootPanel.add(outer);
+	  outer.add(loadProposalPane());
+	}
 
 
-		//create "Video" item
-		PushButton newVideo = new PushButton(new Image("cyberlearning/gwt/clean/images/video_icon.png"));
-		newVideo.setSize("90px", "70px");
-		toolbarPanel.add(newVideo);
-		newVideo.addClickHandler(new ClickHandler() {
+	private Widget loadProposalPane()
+	{
+	  final TabPanel proposalPanel = new TabPanel();
+	  proposalPanel.setSize("1000px", "500px");
 
-			@Override
-			public void onClick(ClickEvent event) {
-				//configure as draggable and add to toolbar
-				Widget draggableVideo = createDraggableVideo();
-				contentPanel.add(draggableVideo);
-			}
-		});
+	  proposalPanel.add(getPendingPanel(), "Pending");
+	  proposalPanel.add(getHistoricalPanel(), "Accepted");
+	  proposalPanel.add(getHistoricalPanel(), "Rejected");
 
-		//Sound Wrapper Stuff - Brian - bkha1
-		PushButton sndButton = new PushButton(new Image("cyberlearning/gwt/clean/images/sound_icon.png"));
-		sndButton.setSize("90px", "90px");
-		toolbarPanel.add(sndButton);
-		sndButton.addClickHandler(new ClickHandler()
-		{
-			@Override
-			public void onClick(ClickEvent event) {
-				//allow user to upload sound file
-				if(!uploadVisible)
-				{
-					editHorizontalPanel_1.add(uploadNewFile(fileType.SOUND));
-					uploadVisible = true;
-				}
-				//insert button to play user's sound
-				Widget draggableSound = createDraggableSound();
-				contentPanel.add(draggableSound);
-			}
-		});
+	  return proposalPanel;
+	}
 
-		Button sndOffButton = new Button("Sound Off");//button for sound off
-		//toolbarPanel.add(sndOffButton);
-		sndOffButton.addClickHandler(new ClickHandler(){
-			@Override
+
+	private static Panel getHistoricalPanel()
+	{
+    final HorizontalPanel historicalPanel = new HorizontalPanel();
+
+    historicalPanel.setSize("1000px", "500px");
+    final ListBox pendingList = new ListBox(true);
+    historicalPanel.add(pendingList);
+    pendingList.setSize("250px", "500px");
+    final VerticalPanel previewAndCommentPanel = new VerticalPanel();
+    historicalPanel.add(previewAndCommentPanel);
+    final RichTextArea previewArea = new RichTextArea();
+    previewAndCommentPanel.add(previewArea);
+    previewArea.setSize("750px", "450px");
+    final TextBox changeLogTextBox = new TextBox();
+    changeLogTextBox.setSize("750px", "50px");
+    previewAndCommentPanel.add(changeLogTextBox);
+
+    return historicalPanel;
+	}
+
+
+	private static Panel getPendingPanel()
+	{
+	  final HorizontalPanel pendingPanel = new HorizontalPanel();
+
+	  pendingPanel.setSize("1000px", "500px");
+	  final ListBox pendingList = new ListBox(true);
+	  pendingPanel.add(pendingList);
+	  pendingList.setSize("250px", "500px");
+	  final VerticalPanel previewCommentAndControlPanel = new VerticalPanel();
+	  pendingPanel.add(previewCommentAndControlPanel);
+	  final RichTextArea previewArea = new RichTextArea();
+	  previewCommentAndControlPanel.add(previewArea);
+	  previewArea.setSize("750px", "400px");
+	  final TextBox changeLogTextBox = new TextBox();
+	  changeLogTextBox.setSize("750px", "50px");
+	  previewCommentAndControlPanel.add(changeLogTextBox);
+	  final HorizontalPanel controlPanel = new HorizontalPanel();
+	  previewCommentAndControlPanel.add(controlPanel);
+	  controlPanel.setSize("750px", "25px");
+	  final Button acceptButton = new Button("Accept");
+	  final Button rejectButton = new Button("Reject");
+	  final Button upVoteButton = new Button("UpVote");
+	  final Button downVoteButton = new Button("DownVote");
+	  controlPanel.add(acceptButton);
+	  controlPanel.add(rejectButton);
+	  controlPanel.add(upVoteButton);
+	  controlPanel.add(downVoteButton);
+
+	  return pendingPanel;
+	}
+
+
+	private void loadEditablePane()
+	{
+    final Label errorLabel = new Label();
+    final HorizontalPanel editHorizontalPanel_1 = new HorizontalPanel();
+
+    // Add the nameField and sendButton to the RootPanel
+    // Use RootPanel.get() to get the entire body element
+    RootPanel rootPanel = RootPanel.get("bookContainer");
+    RootPanel.get("errorLabelContainer").add(errorLabel);
+
+    /* Example code for embedding a YouTube clip.
+
+       // String corresponds to the alphanumeric ID at the end of YouTube URL. //
+       YouTubeEmbeddedPlayer ytPlayer = new YouTubeEmbeddedPlayer("zn7-fVtT16k");
+       ytPlayer.setWidth("300px");
+       ytPlayer.setHeight("300px");
+       RootPanel.get().add(ytPlayer);
+     */
+
+    VerticalPanel flowPanel = new VerticalPanel();
+    rootPanel.add(flowPanel, 100, 100);
+    flowPanel.setSize("1000px", "600px");
+
+    final MenuBar menuBar = new MenuBar(false);
+    flowPanel.add(menuBar);
+
+    MenuItem mntmSearchtext = new MenuItem("my freBook", false, (Command) null);
+    menuBar.addItem(mntmSearchtext);
+    menuBar.setSize("965px", "100%");
+
+    HorizontalPanel contentHorizontalPanel = new HorizontalPanel();
+    flowPanel.add(contentHorizontalPanel);
+    contentHorizontalPanel.setSize("100%", "500px");
+
+    final VerticalPanel toolbarPanel = new VerticalPanel();
+    contentHorizontalPanel.add(toolbarPanel);
+    toolbarPanel.setSize("80px", "144px");
+
+    contentHorizontalPanel.add(contentPanel);
+    contentPanel.setSize("885px", "600px");
+
+    /*
+     * Toolbar items for editing
+     */
+    //create "Text" item
+    final PushButton newTextArea = new PushButton(new Image("cyberlearning/gwt/clean/images/text_icon.png"));
+    newTextArea.setSize("90px", "80px");
+    toolbarPanel.add(newTextArea);
+    //configure as draggable and add to content area
+    newTextArea.addClickHandler(new ClickHandler()
+    {
+      @Override
       public void onClick(ClickEvent event) {
-				if(sndOn == true)
-				{
-				sound.stop();//turns off song if its playing
-				sndOn = false;
-				}
-			}
-		});
+        //create the new draggable object
+        final Widget draggableText = createDraggableText();
+        RichTextToolbar toolBar = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText).getOriginalWidget());
+        contentPanel.add(toolBar, 0, 0);
+        contentPanel.add(draggableText, 0, 50);
+        draggableText.setSize("90%", "75px");
 
-		sndArea.setText("http://www.public.asu.edu/~bkha1/air.ogg");//default link
+        //use "CTRL" key to alternate between drag and resize mode
+        newTextArea.addMouseDownHandler(new MouseDownHandler()
+        {
 
-		//end sound test stuff
+          @Override
+          public void onMouseDown(MouseDownEvent event) {
+            //if "CTRL" key pressed, user resizing widget
+            if(event.isControlKeyDown())
+            {
+              ((DraggableWidget<TextArea>) draggableText).setDisabledDrag(true);
+            }
+          }
+        });
+        newTextArea.addMouseUpHandler(new MouseUpHandler()
+        {
+          @Override
+          public void onMouseUp(MouseUpEvent event) {
+            ((DraggableWidget<TextArea>) draggableText).setDisabledDrag(false);
+          }
 
-		//after all elements added, hide toolbar - items start out in a weird place if it starts visible
-		DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
-		contentPanel.setSize("885px", "100%");
+        });
+      }
+    });
 
+    //create "Image" item
+    PushButton newImage = new PushButton(new Image("cyberlearning/gwt/clean/images/image_icon.PNG"));
+    newImage.setSize("90px", "90px");
+    toolbarPanel.add(newImage);
+    newImage.addClickHandler(new ClickHandler() {
 
-		//create "Table" item
-		//CellTable<Object> cellTable = new CellTable<Object>();
-		//Column<Object, ?> col = null;
-		//cellTable.addColumn(col);
-		//configure as draggable and add to toolbar
-		//Widget draggableTable = createDraggableTable(cellTable);
-		//toolbarPanel.add(draggableTable);
-		//draggableTable.setSize("90%", "141px");
-
-		/*
-		 * Content area for reading
-		 */
-
-		//Highlighting Stuff - Brian
-		//Button highlightBtn = new Button ("Highlight Selection");//, new ClickListener()
-		/*{
-			public void onClick(Widget sender)
-			{
-				Window.alert("HOW HIGH?");
-			}
-		});*/
-		//toolbarPanel.add(highlightBtn);
-		//highlightBtn.setWidth("101px");
-		//String testText = someText.getSelectedText();
-		//highlightBtn.addClickHandler(new ClickHandler()
-		//{
-		//public void onClick(ClickEvent event)
-		//{
-			//someText.getSelectedText().toUpperCase();
-			//someText.
-			//someText.setReadOnly(true);
-			//Window.alert(selectedText);
-		//}
-		//});
-
-		flowPanel.add(editHorizontalPanel_1);
-		editHorizontalPanel_1.setWidth("100%");
-
-		Button viewToolbarBtn = new Button("New button");
-		editHorizontalPanel_1.add(viewToolbarBtn);
-
-		editHorizontalPanel_1.add(sndArea);//added these for convenience and sound link testing -bkha
-		editHorizontalPanel_1.add(sndOffButton);//bkha1
-
-		viewToolbarBtn.addClickHandler(new ClickHandler() {
-			@Override
+      @Override
       public void onClick(ClickEvent event) {
-				if(toolbarVisible)
-				{
-					DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
-					toolbarPanel.setSize("0px", "100%");
-					contentPanel.setSize("885px", "100%");
-				}
-				else
-				{
-					DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "");
-					toolbarPanel.setSize("80px", "100%");
-					contentPanel.setSize("965px", "100%");
-				}
-				toolbarVisible = !toolbarVisible;
-			}
-		});
-		viewToolbarBtn.setText("View Toolbar");
+        //allow user to upload sound file
+        if(!uploadVisible)
+        {
+          editHorizontalPanel_1.add(uploadNewFile(fileType.IMAGE));
+          uploadVisible = true;
+        }
+        //configure as draggable and add to toolbar
+        Widget draggableImage = createDraggableImage();
+        contentPanel.add(draggableImage);
 
-		Button proposalOverlayBtn = new Button("See Proposals");
-		editHorizontalPanel_1.add(proposalOverlayBtn);
-		proposalOverlayBtn.addClickHandler(
-		  new ClickHandler()
+      }
+    });
+
+
+    //create "Video" item
+    PushButton newVideo = new PushButton(new Image("cyberlearning/gwt/clean/images/video_icon.png"));
+    newVideo.setSize("90px", "70px");
+    toolbarPanel.add(newVideo);
+    newVideo.addClickHandler(new ClickHandler() {
+
+      @Override
+      public void onClick(ClickEvent event) {
+        //configure as draggable and add to toolbar
+        Widget draggableVideo = createDraggableVideo();
+        contentPanel.add(draggableVideo);
+      }
+    });
+
+    //Sound Wrapper Stuff - Brian - bkha1
+    PushButton sndButton = new PushButton(new Image("cyberlearning/gwt/clean/images/sound_icon.png"));
+    sndButton.setSize("90px", "90px");
+    toolbarPanel.add(sndButton);
+    sndButton.addClickHandler(new ClickHandler()
+    {
+      @Override
+      public void onClick(ClickEvent event) {
+        //allow user to upload sound file
+        if(!uploadVisible)
+        {
+          editHorizontalPanel_1.add(uploadNewFile(fileType.SOUND));
+          uploadVisible = true;
+        }
+        //insert button to play user's sound
+        Widget draggableSound = createDraggableSound();
+        contentPanel.add(draggableSound);
+      }
+    });
+
+    Button sndOffButton = new Button("Sound Off");//button for sound off
+    //toolbarPanel.add(sndOffButton);
+    sndOffButton.addClickHandler(new ClickHandler(){
+      @Override
+      public void onClick(ClickEvent event) {
+        if(sndOn == true)
+        {
+        sound.stop();//turns off song if its playing
+        sndOn = false;
+        }
+      }
+    });
+
+    sndArea.setText("http://www.public.asu.edu/~bkha1/air.ogg");//default link
+
+    //end sound test stuff
+
+    //after all elements added, hide toolbar - items start out in a weird place if it starts visible
+    DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
+    contentPanel.setSize("885px", "100%");
+
+
+    //create "Table" item
+    //CellTable<Object> cellTable = new CellTable<Object>();
+    //Column<Object, ?> col = null;
+    //cellTable.addColumn(col);
+    //configure as draggable and add to toolbar
+    //Widget draggableTable = createDraggableTable(cellTable);
+    //toolbarPanel.add(draggableTable);
+    //draggableTable.setSize("90%", "141px");
+
+    /*
+     * Content area for reading
+     */
+
+    //Highlighting Stuff - Brian
+    //Button highlightBtn = new Button ("Highlight Selection");//, new ClickListener()
+    /*{
+      public void onClick(Widget sender)
+      {
+        Window.alert("HOW HIGH?");
+      }
+    });*/
+    //toolbarPanel.add(highlightBtn);
+    //highlightBtn.setWidth("101px");
+    //String testText = someText.getSelectedText();
+    //highlightBtn.addClickHandler(new ClickHandler()
+    //{
+    //public void onClick(ClickEvent event)
+    //{
+      //someText.getSelectedText().toUpperCase();
+      //someText.
+      //someText.setReadOnly(true);
+      //Window.alert(selectedText);
+    //}
+    //});
+
+    flowPanel.add(editHorizontalPanel_1);
+    editHorizontalPanel_1.setWidth("100%");
+
+    Button viewToolbarBtn = new Button("New button");
+    editHorizontalPanel_1.add(viewToolbarBtn);
+
+    editHorizontalPanel_1.add(sndArea);//added these for convenience and sound link testing -bkha
+    editHorizontalPanel_1.add(sndOffButton);//bkha1
+
+    viewToolbarBtn.addClickHandler(new ClickHandler() {
+      @Override
+      public void onClick(ClickEvent event) {
+        if(toolbarVisible)
+        {
+          DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "hidden");
+          toolbarPanel.setSize("0px", "100%");
+          contentPanel.setSize("885px", "100%");
+        }
+        else
+        {
+          DOM.setStyleAttribute(toolbarPanel.getElement(), "visibility", "");
+          toolbarPanel.setSize("80px", "100%");
+          contentPanel.setSize("965px", "100%");
+        }
+        toolbarVisible = !toolbarVisible;
+      }
+    });
+    viewToolbarBtn.setText("View Toolbar");
+
+    Button proposalOverlayBtn = new Button("See Proposals");
+    editHorizontalPanel_1.add(proposalOverlayBtn);
+    proposalOverlayBtn.addClickHandler(
+      new ClickHandler()
       {
         @Override
         public void onClick(ClickEvent event)
