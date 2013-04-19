@@ -1,6 +1,7 @@
 package cyber.learning.project.server;
 
 
+/* Hiyo */
 final class TableDirectory
 {
   static String[] CREATION_COMMANDS =
@@ -11,7 +12,30 @@ final class TableDirectory
       "(" +
         "\"account_id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
         "\"username\" TEXT NOT NULL UNIQUE, " +
-        "\"password\" TEXT NOT NULL" +
+        "\"password\" TEXT NOT NULL, " +
+        "\"learning_style\" TEXT, " +
+        "\"education_level\" TEXT, " +
+        "\"age\" INTEGER " +
+      ")",
+
+      // Profile table
+      "CREATE TABLE IF NOT EXISTS \"profile\" " +
+      "( " +
+        "\"profile_id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, " +
+        "\"learning_ability\" INTEGER NOT NULL, " +
+        "\"learning_interest\" INTEGER NOT NULL, " +
+        "\"prior_knowledge\" INTEGER NOT NULL " +
+      ")",
+
+      // Account-Subject_Profile-xref table
+      "CREATE TABLE IF NOT EXISTS \"account-profile-xref\" " +
+      "(" +
+        "\"account_id\" INTEGER NOT NULL, " +
+        "\"subject_profile_id\" INTEGER NOT NULL, " +
+        "FOREIGN KEY(\"account_id\") " +
+          "REFERENCES \"accounts\"(\"account_id\"), " +
+        "FOREIGN KEY(\"subject_profile_id\") " +
+          "REFERENCES \"subject_profile\"(\"subject_profile_id\") " +
       ")",
 
       // Books table
@@ -19,7 +43,19 @@ final class TableDirectory
       "(" +
         "\"book_id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
         "\"account_id\" INTEGER NOT NULL, " +
+        "\"subject\" TEXT NOT NULL, " +
         "FOREIGN KEY(\"account_id\") REFERENCES \"accounts\"(\"account_id\")" +
+      ")",
+
+      // Page table
+      "CREATE TABLE IF NOT EXISTS \"pages\" " +
+      "(" +
+        "\"page_id\" INTEGER NOT NULL UNIQUE, " +
+        "\"book_id\" INTEGER NOT NULL, " +
+        "\"region_id\" INTEGER NOT NULL, " +
+        "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\"), " +
+        "FOREIGN KEY(\"region_id\") REFERENCES \"regions\"(\"region_id\"), " +
+        "PRIMARY KEY (\"page_id\", \"book_id\") " +
       ")",
 
       // Regions table
@@ -51,6 +87,7 @@ final class TableDirectory
         "\"account_id\" INTEGER NOT NULL, " +
         "\"change_comment\" TEXT NOT NULL, " +
         "\"timestamp\" DATETIME NOT NULL, " +
+        "\"votes\" INTEGER NOT NULL, " +
         "\"acceptance_status\" INTEGER NOT NULL," +
         "FOREIGN KEY(\"comp_id\") REFERENCES \"components\"(\"comp_id\"), " +
         "FOREIGN KEY(\"account_id\") REFERENCES \"accounts\"(\"account_id\") " +

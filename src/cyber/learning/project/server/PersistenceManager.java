@@ -38,13 +38,17 @@ public final class PersistenceManager
      * </b>
      *
      * @param tuple the result query
+     * @throws SQLException if an error occurred while reading an element of the
+     *                      current tuple
      */
-    void putTo(ResultSet tuple);
+    void putTo(ResultSet tuple) throws SQLException;
   }
 
 
   /**
-   * Retrieves the connection to the relational database.
+   * Retrieves the connection to the relational database. This connection's
+   * property enables eager commits. For batch or multi-stage transactions, use
+   * the connection provided by #getMultistagedDatabaseConnection().
    * </p>
    * The retrieved connection must be used with extreme care as this connection
    * is used by other consumers. Early termination of the connection or other
@@ -63,7 +67,35 @@ public final class PersistenceManager
   public static
   Connection getDatabaseConnection()
   {
-    return CONN;
+    return EAGER_CONN;
+  }
+
+
+  /**
+   * Retrieves the connection to the relational database. This connection's
+   * property enables batch or multi-staged (i.e. save points and rollbacks)
+   * transactions. The connection needs to be configured per use to initiate a
+   * multi-stage transaction. For more details, see
+   * http://docs.oracle.com/javase/tutorial/jdbc/basics/transactions.html.
+   * </p>
+   * The retrieved connection must be used with extreme care as this connection
+   * is used by other consumers. Early termination of the connection or other
+   * adjustments may result in catastrophic failure of the application and/or
+   * lead to an inconsistent state of the database.
+   * </p>
+   * <b>
+   *   Note: All access to the database must be synchronized against the static
+   *         instance of the {@link PersistenceManager}. Failure to enforce this
+   *         concurrency invariant may result in an inconsistent state of the
+   *         database.
+   * </b>
+   *
+   * @return the connection to the database
+   */
+  public static
+  Connection getMultistagedDatabaseConnection()
+  {
+    return MULTI_STAGED_CONN;
   }
 
 
@@ -74,7 +106,7 @@ public final class PersistenceManager
    * @throws SQLException if the underlying database connection is closed or the
    *                      update command is corrupt and malformed
    */
-  public static
+  public static synchronized
   void insertTuple(SQLCommand command) throws SQLException
   {
     executeModification(command.getStatment(), false);
@@ -90,7 +122,7 @@ public final class PersistenceManager
    * @throws SQLException if the underlying database connection is closed or the
    *                      update command is corrupt and malformed
    */
-  public static
+  public static synchronized
   int insertTupleWithAutoIncrementingID(SQLCommand command)
     throws SQLException
   {
@@ -105,7 +137,7 @@ public final class PersistenceManager
    * @throws SQLException if the underlying database connection is closed or the
    *                      update command is corrupt and malformed
    */
-  public static
+  public static synchronized
   void updateTuple(SQLCommand command) throws SQLException
   {
     executeModification(command.getStatment(), false);
@@ -120,10 +152,10 @@ public final class PersistenceManager
    * @throws SQLException if the underlying database connection is closed
    * @see {@link SQLCommand}
    */
-  public static
+  public static synchronized
   SQLCommand makeParameterizedCommandFor(String command) throws SQLException
   {
-    return new SQLCommand(CONN, command);
+    return new SQLCommand(EAGER_CONN, command);
   }
 
 
@@ -131,12 +163,16 @@ public final class PersistenceManager
    * Searches for multiple tuples that satisfies the given prepared query.
    *
    * @param searchQuery the prepared query that may return multiple tuples
+   * @param ignoreIterationError true to continue processing after catching an
+   *                             error while processing a tuple
    * @param sink a store which accepts a result tuple
    * @throws SQLException if the underlying database connection was closed or
    *                      the supplied query was corrupt and malformed
    */
-  public static
-  void searchFor(SQLCommand searchQuery, QueryTupleResultSink sink)
+  public static synchronized
+  void searchFor(SQLCommand searchQuery,
+                 boolean ignoreIterationError,
+                 QueryTupleResultSink sink)
     throws SQLException
   {
     final PreparedStatement ps = searchQuery.getStatment();
@@ -145,7 +181,17 @@ public final class PersistenceManager
       final ResultSet rs = ps.executeQuery();
       while (rs.next())
       {
-        sink.putTo(rs);
+        try
+        {
+          sink.putTo(rs);
+        }
+        catch (SQLException ex)
+        {
+          if (!ignoreIterationError)
+          {
+            throw ex;
+          }
+        }
       }
     }
     finally
@@ -164,7 +210,7 @@ public final class PersistenceManager
    * @throws SQLException if the underlying database connection was closed or
    *                      the supplied query was corrupt and malformed
    */
-  public static <T>
+  public static synchronized <T>
   T searchForScalar(SQLCommand searchQuery, Class<T> expectedType)
     throws SQLException
   {
@@ -190,7 +236,7 @@ public final class PersistenceManager
 
   private static void ensureDatabaseExistence() throws SQLException
   {
-    final Statement queryForUserTableCount = CONN.createStatement();
+    final Statement queryForUserTableCount = EAGER_CONN.createStatement();
     try
     {
       final ResultSet result =
@@ -201,7 +247,7 @@ public final class PersistenceManager
       {
         for (String tableCreationCommand : CREATION_COMMANDS)
         {
-          final Statement createTable = CONN.createStatement();
+          final Statement createTable = EAGER_CONN.createStatement();
           try
           {
             createTable.executeUpdate(tableCreationCommand);
@@ -253,7 +299,8 @@ public final class PersistenceManager
   }
 
 
-  private static final Connection CONN;
+  private static final Connection EAGER_CONN;
+  private static final Connection MULTI_STAGED_CONN;
   private static final Logger LOG;
   private static final Integer TABLE_COUNT;
 
@@ -266,8 +313,10 @@ public final class PersistenceManager
     try
     {
       Class.forName("org.sqlite.JDBC");
-      CONN = getConnection("jdbc:sqlite:persistence.sql",
-                           makeConnectionProperties());
+      EAGER_CONN = getConnection("jdbc:sqlite:persistence.sql",
+                                  makeConnectionProperties());
+      MULTI_STAGED_CONN = getConnection("jdbc:sqlite:persistence.sql",
+                                        makeConnectionProperties());
       ensureDatabaseExistence();
     }
     catch (ClassNotFoundException ex)

@@ -23,7 +23,6 @@ public interface BookChangeRequest
   String getLocation();
 
 
-
   int getContentType();
 
 

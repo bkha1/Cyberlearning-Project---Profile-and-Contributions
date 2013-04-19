@@ -12,10 +12,11 @@ public final class BookDesc extends BaseDesc
 
   public BookDesc(int id,
                   AccountDesc owner,
-                  RegionDesc[] regions)
+                  String subject)
   {
     super(id);
     owner_ = owner;
+    subject_ = subject;
   }
 
 
@@ -25,5 +26,12 @@ public final class BookDesc extends BaseDesc
   }
 
 
+  public String getSubject()
+  {
+    return subject_;
+  }
+
+
   private AccountDesc owner_;
+  private String subject_;
 }

@@ -52,6 +52,18 @@ public final class CallbackPayload<T> implements Serializable
   }
 
 
+  public static <T> CallbackPayload<T> make(T result)
+  {
+    return new CallbackPayload<T>(result);
+  }
+
+
+  public static <T> CallbackPayload<T> make(Throwable error, Class<T> type)
+  {
+    return new CallbackPayload<T>(error);
+  }
+
+
   private T result_;
   private Throwable error_;
 }
