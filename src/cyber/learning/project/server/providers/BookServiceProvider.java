@@ -12,9 +12,8 @@ import cyber.learning.project.shared.descs.RegionDesc;
 
 
 @SuppressWarnings("serial")
-public final class BookServiceProvider
-  extends RemoteServiceServlet
-  implements BookService
+public final class BookServiceProvider extends RemoteServiceServlet
+                                       implements BookService
 {
   @Override
   public CallbackPayload<BookDesc> create()
@@ -38,8 +37,8 @@ public final class BookServiceProvider
 
 
   @Override
-  public CallbackPayload<ProposedContributions>
-  getProposedContributions(BookDesc book)
+  public
+  CallbackPayload<ProposedContributions> getProposedContributions(BookDesc book)
   {
     return null;
   }

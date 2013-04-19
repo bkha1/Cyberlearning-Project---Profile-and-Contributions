@@ -1,7 +1,6 @@
 package cyber.learning.project.server;
 
 
-/* Hiyo */
 final class TableDirectory
 {
   static String[] CREATION_COMMANDS =
@@ -65,7 +64,7 @@ final class TableDirectory
         "\"book_id\" INTEGER NOT NULL, "+
         "\"location\" TEXT NOT NULL, " +
         "\"type\" INTEGER NOT NULL, " +
-        "\"isCanonical\" BOOL NO NULL, " +
+        "\"isCanonical\" BOOL NOT NULL, " +
         "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\")" +
       ")",
 

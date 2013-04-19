@@ -14,10 +14,16 @@ public final class ComponentDesc extends BaseDesc
 
   public ComponentDesc(int id,
                        int type,
-                       RegionDesc container)
+                       String value)
   {
     super(id);
     type_ = type;
+    value_ = value;
+  }
+
+
+  public void setRegionType(RegionDesc container)
+  {
     container_ = container;
   }
 
