@@ -18,6 +18,7 @@ public final class ContributionDesc extends BaseDesc
                           AccountDesc contributor,
                           String changeComment,
                           Date timestamp,
+                          int votes,
                           int acceptanceStatus)
   {
     super(id);
@@ -25,6 +26,7 @@ public final class ContributionDesc extends BaseDesc
     contributor_ = contributor;
     changeComment_ = changeComment;
     timestamp_ = timestamp;
+    votes_ = votes;
     acceptanceStatus_ = acceptanceStatus;
   }
 
@@ -53,6 +55,12 @@ public final class ContributionDesc extends BaseDesc
   }
 
 
+  public int getVotes()
+  {
+    return votes_;
+  }
+
+
   public AcceptanceStatus getAcceptanceStatus()
   {
     return AcceptanceStatus.toEnum(acceptanceStatus_);
@@ -63,5 +71,6 @@ public final class ContributionDesc extends BaseDesc
   private AccountDesc contributor_;
   private String changeComment_;
   private Date timestamp_;
+  private int votes_;
   private int acceptanceStatus_;
 }
