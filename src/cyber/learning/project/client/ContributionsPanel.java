@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -14,23 +15,71 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import cyber.learning.project.shared.CallbackPayload;
+import cyber.learning.project.shared.descs.AccountDesc;
+import cyber.learning.project.shared.descs.ComponentDesc;
 import cyber.learning.project.shared.descs.ContributionDesc;
 
 
-final class ContributionsPanel extends HorizontalPanel
+final class ContributionsPanel extends TabPanel
 {
-  public ContributionsPanel()
+	private final ComponentDesc component_;
+	private final AccountDesc editor_;
+  public ContributionsPanel(ComponentDesc component, AccountDesc editor)
   {
-    final TabPanel proposalPanel = new TabPanel();
-    proposalPanel.setSize("1000px", "500px");
 
-    proposalPanel.add(getLoadingPanel(), "Pending");
-    proposalPanel.add(getLoadingPanel(), "Accepted");
-    proposalPanel.add(getLoadingPanel(), "Rejected");
+    setSize("1000px", "500px");
 
-    proposalPanel.selectTab(0);
-    proposalPanel.addSelectionHandler(new LoadPanel(proposalPanel));
+    //test contributionDescs
+    /*
+    ContributionDesc testContribution1 = new ContributionDesc(1, component, editor, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
+    ContributionDesc testContribution2 = new ContributionDesc(2, component, editor, "another change comment", new Date(System.currentTimeMillis()),2,0);
+
+    ContributionDesc[] testContributions = new ContributionDesc[2];
+    testContributions[0] = testContribution1;
+    testContributions[1] = testContribution2;
+    */
+
+    //add(getLoadingPanel(), "Pending");
+    add(getPendingPanel(), "Pending");
+
+    //add(getLoadingPanel(), "Accepted");
+    add(getHistoricalPanel(), "Accepted");
+
+    add(getLoadingPanel(), "Rejected");
+
+
+
+    selectTab(0);
+    addSelectionHandler(new LoadPanel(this));
+
+    final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
+      new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
+      {
+
+        @Override
+        public void onFailure(Throwable arg0) {
+          // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onSuccess(CallbackPayload<ContributionDesc[]> arg0)
+        {
+
+          if(arg0.hasResult())
+          {
+            arg0.getResult();
+          }
+
+        }
+
+      };
+
+    component_ = component;
+    editor_ = editor;
   }
+
 
 
   private static Panel getLoadingPanel()
@@ -43,7 +92,7 @@ final class ContributionsPanel extends HorizontalPanel
 
 
   @SuppressWarnings("unused")
-  private static Panel getPendingPanel(Iterable<ContributionDesc> contributions)
+  private static Panel getPendingPanel()//Iterable<ContributionDesc> contributions)
   {
     final HorizontalPanel pendingPanel = new HorizontalPanel();
 
@@ -150,6 +199,8 @@ final class ContributionsPanel extends HorizontalPanel
     public void onClick(ClickEvent acceptedClicked)
     {
 
+      //should change the acceptance status of a ContributionDesc to 0 (accepted)
+
     }
   }
 
@@ -159,6 +210,7 @@ final class ContributionsPanel extends HorizontalPanel
     @Override
     public void onClick(ClickEvent rejectedClicked)
     {
+      //should change the acceptance status of a ContributionDesc to 1(rejected)
 
     }
   }
@@ -169,6 +221,7 @@ final class ContributionsPanel extends HorizontalPanel
     @Override
     public void onClick(ClickEvent likedClicked)
     {
+      //should increment votes of ContributionDesc
 
     }
   }
@@ -179,7 +232,7 @@ final class ContributionsPanel extends HorizontalPanel
     @Override
     public void onClick(ClickEvent dislikeClicked)
     {
-
+      //should increment votes of ContributionDesc
     }
   }
 
@@ -206,4 +259,5 @@ final class ContributionsPanel extends HorizontalPanel
   {
 
   }
+
 }
