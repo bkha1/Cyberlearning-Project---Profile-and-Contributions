@@ -30,16 +30,12 @@ import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
@@ -93,72 +89,6 @@ public class CyberLearning implements EntryPoint {//test comment
 	  rootPanel.add(outer);
 	  //outer.add(loadProposalPane());
 	  outer.add(SearchUI.createSearchUI());
-	}
-
-
-	private Widget loadProposalPane()
-	{
-	  final TabPanel proposalPanel = new TabPanel();
-	  proposalPanel.setSize("1000px", "500px");
-
-	  proposalPanel.add(getPendingPanel(), "Pending");
-	  proposalPanel.add(getHistoricalPanel(), "Accepted");
-	  proposalPanel.add(getHistoricalPanel(), "Rejected");
-
-	  return proposalPanel;
-	}
-
-
-	private static Panel getHistoricalPanel()
-	{
-    final HorizontalPanel historicalPanel = new HorizontalPanel();
-
-    historicalPanel.setSize("1000px", "500px");
-    final ListBox pendingList = new ListBox(true);
-    historicalPanel.add(pendingList);
-    pendingList.setSize("250px", "500px");
-    final VerticalPanel previewAndCommentPanel = new VerticalPanel();
-    historicalPanel.add(previewAndCommentPanel);
-    final RichTextArea previewArea = new RichTextArea();
-    previewAndCommentPanel.add(previewArea);
-    previewArea.setSize("750px", "450px");
-    final TextBox changeLogTextBox = new TextBox();
-    changeLogTextBox.setSize("750px", "50px");
-    previewAndCommentPanel.add(changeLogTextBox);
-
-    return historicalPanel;
-	}
-
-
-	private static Panel getPendingPanel()
-	{
-	  final HorizontalPanel pendingPanel = new HorizontalPanel();
-
-	  pendingPanel.setSize("1000px", "500px");
-	  final ListBox pendingList = new ListBox(true);
-	  pendingPanel.add(pendingList);
-	  pendingList.setSize("250px", "500px");
-	  final VerticalPanel previewCommentAndControlPanel = new VerticalPanel();
-	  pendingPanel.add(previewCommentAndControlPanel);
-	  final RichTextArea previewArea = new RichTextArea();
-	  previewCommentAndControlPanel.add(previewArea);
-	  previewArea.setSize("750px", "400px");
-	  final TextBox changeLogTextBox = new TextBox();
-	  changeLogTextBox.setSize("750px", "50px");
-	  previewCommentAndControlPanel.add(changeLogTextBox);
-	  final HorizontalPanel controlPanel = new HorizontalPanel();
-	  previewCommentAndControlPanel.add(controlPanel);
-	  controlPanel.setSize("750px", "25px");
-	  final Button acceptButton = new Button("Accept");
-	  final Button rejectButton = new Button("Reject");
-	  final Button upVoteButton = new Button("UpVote");
-	  final Button downVoteButton = new Button("DownVote");
-	  controlPanel.add(acceptButton);
-	  controlPanel.add(rejectButton);
-	  controlPanel.add(upVoteButton);
-	  controlPanel.add(downVoteButton);
-
-	  return pendingPanel;
 	}
 
 
