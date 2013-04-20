@@ -91,7 +91,8 @@ public class CyberLearning implements EntryPoint {//test comment
 	  final HorizontalPanel outer = new HorizontalPanel();
     rootPanel.setSize("500px", "500px");
 	  rootPanel.add(outer);
-	  outer.add(loadProposalPane());
+	  //outer.add(loadProposalPane());
+	  outer.add(SearchUI.createSearchUI());
 	}
 
 
