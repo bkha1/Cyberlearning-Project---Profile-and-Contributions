@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
 filesCopiedToWebInfLib=
-gaeDatanucleusVersion=v2
+gaeDatanucleusVersion=
 gaeHrdEnabled=true
 gaeIsEclipseDefaultInstPath=true
 googleCloudSqlEnabled=false

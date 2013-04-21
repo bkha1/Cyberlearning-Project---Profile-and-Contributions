@@ -1,6 +1,6 @@
 package cyber.learning.project.client;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget; 
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;  
 
 import com.google.gwt.core.client.EntryPoint; 
 import com.google.gwt.core.client.GWT;
@@ -24,9 +24,11 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -48,10 +50,11 @@ public class CyberLearning implements EntryPoint {//test comment
 	/**
 	 * Declare variables
 	 */
-	AbsolutePanel contentPanel = new AbsolutePanel();
+	SplitLayoutPanel contentPanel = new SplitLayoutPanel();
 	String selectedText; //Brian added -bkha1
 	boolean sndOn = false;
 	boolean uploadVisible = false;
+	boolean selectTemplateVisible = false;
 	SoundController sController = new SoundController(); //sound stuff - brian - bkha1
 	Sound sound; //= sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/air.ogg");
 	String sndLink;//will contain the url to the sound
@@ -74,7 +77,14 @@ public class CyberLearning implements EntryPoint {//test comment
 	public enum fileType {
 		IMAGE,
 		SOUND
-	};
+	}; 
+	
+	private enum templateType {
+		TITLE_PAGE,
+		TXT_IMG,
+		TXT_VIDEO,
+		BLANK
+	}
 	
 	/**
 	 * This is the entry point method.
@@ -86,6 +96,7 @@ public class CyberLearning implements EntryPoint {//test comment
 		// Add the nameField and sendButton to the RootPanel
 		// Use RootPanel.get() to get the entire body element
 		RootPanel rootPanel = RootPanel.get("bookContainer");
+		rootPanel.setSize("1200", "800");
 		RootPanel.get("errorLabelContainer").add(errorLabel);
 	
 		/* Example code for embedding a YouTube clip.
@@ -104,7 +115,7 @@ public class CyberLearning implements EntryPoint {//test comment
 		final MenuBar menuBar = new MenuBar(false);
 		flowPanel.add(menuBar);
 		
-		MenuItem mntmSearchtext = new MenuItem("my freBook", false, (Command) null);
+		MenuItem mntmSearchtext = new MenuItem("A Sample freBook", false, (Command) null);
 		menuBar.addItem(mntmSearchtext);
 		menuBar.setSize("965px", "100%");
 		
@@ -134,8 +145,10 @@ public class CyberLearning implements EntryPoint {//test comment
 				//create the new draggable object
 				final Widget draggableText = createDraggableText();
 				RichTextToolbar toolBar = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText).getOriginalWidget());
-				contentPanel.add(toolBar, 0, 0);
-				contentPanel.add(draggableText, 0, 50);
+				//contentPanel.add(toolBar, 0, 0);
+				contentPanel.add(toolBar);
+				//contentPanel.add(draggableText, 0, 50);
+				contentPanel.add(draggableText);
 				draggableText.setSize("90%", "75px");
 				
 				//use "CTRL" key to alternate between drag and resize mode
@@ -177,7 +190,7 @@ public class CyberLearning implements EntryPoint {//test comment
 					uploadVisible = true;
 				}
 				//configure as draggable and add to toolbar
-				Widget draggableImage = createDraggableImage();
+				Widget draggableImage = createDraggableImage("cyberlearning/gwt/clean/images/image_icon.PNG");
 				contentPanel.add(draggableImage);	
 				
 			}		
@@ -202,6 +215,7 @@ public class CyberLearning implements EntryPoint {//test comment
 		PushButton sndButton = new PushButton(new Image("cyberlearning/gwt/clean/images/sound_icon.png"));
 		sndButton.setSize("90px", "90px");
 		toolbarPanel.add(sndButton);
+		
 		sndButton.addClickHandler(new ClickHandler() 
 		{
 			@Override
@@ -216,6 +230,23 @@ public class CyberLearning implements EntryPoint {//test comment
 				Widget draggableSound = createDraggableSound();
 				contentPanel.add(draggableSound);
 			}			
+		});
+		
+		// create new "Page"
+		PushButton pageButton = new PushButton(new Image("cyberlearning/gwt/clean/images/page_icon.png"));
+		toolbarPanel.add(pageButton);
+		pageButton.setSize("90px", "90px");
+		pageButton.addClickHandler(new ClickHandler()
+		{
+			@Override
+			public void onClick(ClickEvent event) {
+				if(!selectTemplateVisible)
+				{
+					//contentPanel.add(selectPageTemplate(), 200, 50);
+					contentPanel.add(selectPageTemplate());
+					selectTemplateVisible = true;
+				}
+			}	
 		});
 		
 		Button sndOffButton = new Button("Sound Off");//button for sound off
@@ -277,11 +308,38 @@ public class CyberLearning implements EntryPoint {//test comment
 		flowPanel.add(editHorizontalPanel_1);
 		editHorizontalPanel_1.setWidth("100%");
 		
+		// Add button to show/hide toolbar
 		Button viewToolbarBtn = new Button("New button");
 		editHorizontalPanel_1.add(viewToolbarBtn);
+		viewToolbarBtn.setSize("100px", "40px");
 		
-		editHorizontalPanel_1.add(sndArea);//added these for convenience and sound link testing -bkha
-		editHorizontalPanel_1.add(sndOffButton);//bkha1
+		// Add buttons to enable scrolling between pages
+		PushButton scrollLeftButton = new PushButton(new Image("cyberlearning/gwt/clean/images/left_arrow_icon.PNG"));
+		scrollLeftButton.setSize("75px", "75px");
+		editHorizontalPanel_1.add(scrollLeftButton);	
+		scrollLeftButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Add code to pull next page from database and display				
+			}
+			
+		});
+		
+		PushButton scrollRightButton = new PushButton(new Image("cyberlearning/gwt/clean/images/right_arrow_icon.PNG"));
+		scrollRightButton.setSize("75px", "75px");
+		editHorizontalPanel_1.add(scrollRightButton);
+		scrollLeftButton.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				// TODO Add code to pull next page from database and display				
+			}
+			
+		});
+		
+		//editHorizontalPanel_1.add(sndArea);//added these for convenience and sound link testing -bkha
+		//editHorizontalPanel_1.add(sndOffButton);//bkha1
 		
 		viewToolbarBtn.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -318,10 +376,10 @@ public class CyberLearning implements EntryPoint {//test comment
 		return draggableText;
 	}
 	
-	Widget createDraggableImage()
+	Widget createDraggableImage(String iconLocation)
 	{		
 		//configure as draggable
-		Image newImg = new Image("cyberlearning/gwt/clean/images/image_icon.PNG");
+		Image newImg = new Image(iconLocation);
 		DOM.setStyleAttribute(newImg.getElement(),  "border",  "2px solid blue");
 		DraggableWidget<Image> draggableImage = new DraggableWidget<Image>(newImg);
 		draggableImage.setDraggingCursor(Cursor.MOVE);
@@ -480,7 +538,144 @@ public class CyberLearning implements EntryPoint {//test comment
 	      }
 	    });
 	    
-	    return uploadForm;
+	    return uploadForm; 
+	}
+	
+	@SuppressWarnings("deprecation")
+	public FormPanel selectPageTemplate()
+	{		
+		// Create our main form
+		final FormPanel templateSelectionForm = new FormPanel();
+
+	    // Create a panel to hold all of the form widgets.
+	    VerticalPanel panel = new VerticalPanel();
+	    HorizontalPanel topRowPanel = new HorizontalPanel();
+	    HorizontalPanel bottomRowPanel = new HorizontalPanel();
+	    panel.add(topRowPanel);
+	    panel.add(bottomRowPanel);
+	    templateSelectionForm.setWidget(panel);
+
+	    // Create a PushButton for each predefined template.
+	    topRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/title_template.PNG"), new ClickListener() {
+	      public void onClick(Widget sender) {	    	  
+	    	 addNewPage(templateType.TITLE_PAGE);
+	    	  selectTemplateVisible = false;
+	      }
+	    }));
 	    
+	    topRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/template_1.PNG"), new ClickListener() {
+		      public void onClick(Widget sender) {
+		    	  addNewPage(templateType.TXT_IMG);
+		    	  selectTemplateVisible = false;
+		      }
+		    }));
+	    
+	    bottomRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/template_2.PNG"), new ClickListener() {
+		      public void onClick(Widget sender) {
+		    	  addNewPage(templateType.TXT_VIDEO);
+		    	  selectTemplateVisible = false;
+		      }
+		    }));
+	    
+	    bottomRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/template_3.PNG"), new ClickListener() {
+		      public void onClick(Widget sender) {
+			    	addNewPage(templateType.BLANK);
+			    	selectTemplateVisible = false;
+		      }
+		    }));
+	    
+	    return templateSelectionForm;  
+	}
+	
+	public void addNewPage(templateType template)
+	{
+		contentPanel.clear();
+		switch(template) {
+			case TITLE_PAGE:
+				// title text
+				Widget draggableText1 = createDraggableText();
+				RichTextToolbar toolBar1 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText1).getOriginalWidget());
+				//contentPanel.add(toolBar, 0, 0);
+				contentPanel.addNorth(draggableText1, 256);
+				//contentPanel.add(draggableText, 0, 50);
+				//contentPanel.add(toolBar);
+				draggableText1.setSize("95%", "95%");
+				// title image
+				Widget draggableImage1 = createDraggableImage("cyberlearning/gwt/clean/images/bookworm.jpg");
+				contentPanel.add(draggableImage1);
+				break;
+				
+			case TXT_IMG:
+				VerticalPanel westPanel = new VerticalPanel();				
+				// text
+				Widget draggableText2 = createDraggableText();
+				RichTextToolbar toolBar2 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText2).getOriginalWidget());
+				//contentPanel.add(toolBar, 0, 0);
+				westPanel.add(draggableText2);
+				//contentPanel.add(draggableText, 0, 50);
+				//contentPanel.add(toolBar);
+				draggableText2.setSize("95%", "50%");
+				// image
+				Widget draggableImage2 = createDraggableImage("cyberlearning/gwt/clean/images/bookworm.jpg");
+				draggableImage2.setSize("95%", "50%");
+				westPanel.add(draggableImage2);
+				westPanel.setSize("95%", "95%");
+				
+				VerticalPanel eastPanel = new VerticalPanel();
+				// text
+				Widget draggableText3 = createDraggableText();
+				RichTextToolbar toolBar3 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText3).getOriginalWidget());
+				//contentPanel.add(toolBar, 0, 0);
+				eastPanel.add(draggableText3);
+				//contentPanel.add(draggableText, 0, 50);
+				//contentPanel.add(toolBar);
+				draggableText3.setSize("95%", "95%");
+				eastPanel.setSize("95%", "95%");
+				
+				contentPanel.addWest(westPanel, 400);
+				contentPanel.add(eastPanel);
+				break;
+				
+			case TXT_VIDEO:
+				VerticalPanel westPanel2 = new VerticalPanel();				
+				// text
+				Widget draggableText4 = createDraggableText();
+				RichTextToolbar toolBar4 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText4).getOriginalWidget());
+				//contentPanel.add(toolBar, 0, 0);
+				westPanel2.add(draggableText4);
+				//contentPanel.add(draggableText, 0, 50);
+				//contentPanel.add(toolBar);
+				draggableText4.setSize("95%", "50%");
+				// video
+				Widget draggableVideo1 = createDraggableVideo();
+				draggableVideo1.setSize("95%", "50%");
+				westPanel2.add(draggableVideo1);
+				westPanel2.setSize("95%", "95%");
+				
+				VerticalPanel eastPanel2 = new VerticalPanel();
+				// text
+				Widget draggableText5 = createDraggableText();
+				RichTextToolbar toolBar5 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText5).getOriginalWidget());
+				//contentPanel.add(toolBar, 0, 0);
+				eastPanel2.add(draggableText5);
+				//contentPanel.add(draggableText, 0, 50);
+				//contentPanel.add(toolBar);
+				draggableText5.setSize("95%", "95%");
+				eastPanel2.setSize("95%", "95%");
+				
+				contentPanel.addWest(westPanel2, 400);
+				contentPanel.add(eastPanel2);
+				break;
+				
+			case BLANK:
+				break;
+		}
+	}
+	
+	public LayoutPanel loadExistingPage(int pageNum)
+	{
+		// TODO
+		
+		return null;
 	}
 }

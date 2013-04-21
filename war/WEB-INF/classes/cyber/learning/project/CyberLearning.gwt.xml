@@ -18,6 +18,11 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
+  <inherits name='gwtquery.plugins.droppable.Droppable'/>
+  
+  
+  <!--  Inherit sound support - Brian -->
+  <inherits name='com.allen_sauer.gwt.voices.gwt-voices'/>
   
   <!-- ########################################################## -->
   <!-- # Modules needed to support the embedded YouTube player. # -->
@@ -35,5 +40,7 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>
+  
+  
 
 </module>
