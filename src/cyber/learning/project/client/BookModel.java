@@ -23,6 +23,8 @@ final class BookModel
 
   public Iterable<BookDesc> getRegionsForPage(PageDesc page)
   {
+	  //container_.getOwner().isEqualTo(user_);
+	  //user_.getID()
     return null;
   }
 

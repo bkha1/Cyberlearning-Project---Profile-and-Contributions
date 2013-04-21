@@ -40,6 +40,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
 
+import cyber.learning.project.shared.descs.AccountDesc;
+import cyber.learning.project.shared.descs.ComponentDesc;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -88,7 +91,9 @@ public class CyberLearning implements EntryPoint {//test comment
     rootPanel.setSize("500px", "500px");
 	  rootPanel.add(outer);
 	  //outer.add(loadProposalPane());
-	  outer.add(SearchUI.createSearchUI());
+	  //outer.add(SearchUI.createSearchUI());
+	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,"")));
+
 	}
 
 
@@ -140,6 +145,8 @@ public class CyberLearning implements EntryPoint {//test comment
     final PushButton newTextArea = new PushButton(new Image("cyberlearning/gwt/clean/images/text_icon.png"));
     newTextArea.setSize("90px", "80px");
     toolbarPanel.add(newTextArea);
+
+
     //configure as draggable and add to content area
     newTextArea.addClickHandler(new ClickHandler()
     {
