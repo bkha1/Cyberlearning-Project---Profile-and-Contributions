@@ -1,5 +1,9 @@
 package cyber.learning.project.client;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -31,20 +35,30 @@ final class ContributionsPanel extends TabPanel
     setSize("1000px", "500px");
 
     //test contributionDescs
-    /*
+
     ContributionDesc testContribution1 = new ContributionDesc(1, component, editor, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
     ContributionDesc testContribution2 = new ContributionDesc(2, component, editor, "another change comment", new Date(System.currentTimeMillis()),2,0);
 
+    /*
     ContributionDesc[] testContributions = new ContributionDesc[2];
     testContributions[0] = testContribution1;
     testContributions[1] = testContribution2;
     */
 
-    //add(getLoadingPanel(), "Pending");
-    add(getPendingPanel(), "Pending");
+    /*ArrayList<ContributionDesc> testcontr;
+    testcontr = new ArrayList<ContributionDesc>;*/
 
-    //add(getLoadingPanel(), "Accepted");
-    add(getHistoricalPanel(), "Accepted");
+    ArrayList<ContributionDesc> testList = new ArrayList<ContributionDesc>();
+    testList.add(testContribution1);
+    testList.add(testContribution2);
+
+
+
+    //add(getLoadingPanel(), "Pending");
+    add(getPendingPanel(testList), "Pending");
+
+    add(getLoadingPanel(), "Accepted");
+    //add(getHistoricalPanel(), "Accepted");
 
     add(getLoadingPanel(), "Rejected");
 
@@ -92,12 +106,19 @@ final class ContributionsPanel extends TabPanel
 
 
   @SuppressWarnings("unused")
-  private static Panel getPendingPanel()//Iterable<ContributionDesc> contributions)
+  private static Panel getPendingPanel(Iterable<ContributionDesc> contributions)
   {
     final HorizontalPanel pendingPanel = new HorizontalPanel();
 
     pendingPanel.setSize("1000px", "500px");
     final ListBox pendingList = new ListBox(true);
+    //add contributions stuff to the pending list
+    for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
+    {
+      ContributionDesc item = i.next();
+      pendingList.addItem(item.getContributionTime().toString());
+    }
+
     pendingPanel.add(pendingList);
     pendingList.setSize("250px", "500px");
 
