@@ -34,7 +34,7 @@ final class ContributionsPanel extends TabPanel
 
     setSize("1000px", "500px");
 
-    //test contributionDescs
+    //dummy contributionDescs for testing
 
     ContributionDesc testContribution1 = new ContributionDesc(1, component, editor, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
     ContributionDesc testContribution2 = new ContributionDesc(2, component, editor, "another change comment", new Date(System.currentTimeMillis()),2,0);
@@ -116,7 +116,7 @@ final class ContributionsPanel extends TabPanel
     for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
     {
       ContributionDesc item = i.next();
-      pendingList.addItem(item.getContributionTime().toString());
+      pendingList.addItem(item.getContributionTime().toString() + "-" + item.getContributor().getUsername());
     }
 
     pendingPanel.add(pendingList);
