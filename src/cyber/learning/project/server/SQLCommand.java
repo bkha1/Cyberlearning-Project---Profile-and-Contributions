@@ -256,8 +256,31 @@ public final class SQLCommand
   }
 
 
-  SQLCommand(Connection conn, String command) throws SQLException
+  /**
+   * Notify that the current tuple has been completed and can be added to the
+   * pending batch transaction.
+   *
+   * @throws IllegalStateException if the bound database connection is not a
+   *                               multi-staged connection
+   * @throws SQLException if the completed tuple cannot be added to the batch
+   */
+  public void tupleComplete() throws IllegalStateException, SQLException
   {
+    if (!allowBatching_)
+    {
+      throw new IllegalStateException("Bound connection isn't multi-staged");
+    }
+    else
+    {
+      parameterizedCommand_.addBatch();
+    }
+  }
+
+
+  SQLCommand(Connection conn, String command, boolean allowBatching)
+    throws SQLException
+  {
+    allowBatching_ = allowBatching;
     parameterizedCommand_ = conn.prepareStatement(command,
                                                   RETURN_GENERATED_KEYS);
   }
@@ -269,5 +292,6 @@ public final class SQLCommand
   }
 
 
+  private final boolean allowBatching_;
   private final PreparedStatement parameterizedCommand_;
 }
