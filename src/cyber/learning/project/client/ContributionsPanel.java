@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -34,10 +36,17 @@ final class ContributionsPanel extends TabPanel
 
     setSize("1000px", "500px");
 
-    //dummy contributionDescs for testing
+    //dummy accounts
+    AccountDesc testEditor1 = new AccountDesc(1, "test1");
+    AccountDesc testEditor2 = new AccountDesc(1, "test2");
 
-    ContributionDesc testContribution1 = new ContributionDesc(1, component, editor, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
-    ContributionDesc testContribution2 = new ContributionDesc(2, component, editor, "another change comment", new Date(System.currentTimeMillis()),2,0);
+    //dummy components
+    ComponentDesc testComp1 = new ComponentDesc(1, 2, "content1");//text type
+    ComponentDesc testComp2 = new ComponentDesc(2, 2, "content2");
+
+    //dummy contributionDescs for testing
+    ContributionDesc testContribution1 = new ContributionDesc(101, testComp1, testEditor1, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
+    ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testEditor2, "another change comment", new Date(System.currentTimeMillis()),2,0);
 
     /*
     ContributionDesc[] testContributions = new ContributionDesc[2];
@@ -106,18 +115,14 @@ final class ContributionsPanel extends TabPanel
 
 
   @SuppressWarnings("unused")
-  private static Panel getPendingPanel(Iterable<ContributionDesc> contributions)
+  private static Panel getPendingPanel(final Iterable<ContributionDesc> contributions)
   {
     final HorizontalPanel pendingPanel = new HorizontalPanel();
 
     pendingPanel.setSize("1000px", "500px");
     final ListBox pendingList = new ListBox(true);
-    //add contributions stuff to the pending list
-    for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
-    {
-      ContributionDesc item = i.next();
-      pendingList.addItem(item.getContributionTime().toString() + "-" + item.getContributor().getUsername());
-    }
+
+
 
     pendingPanel.add(pendingList);
     pendingList.setSize("250px", "500px");
@@ -130,6 +135,40 @@ final class ContributionsPanel extends TabPanel
     final TextBox changeLogTextBox = new TextBox();
     changeLogTextBox.setSize("750px", "50px");
     previewCommentAndControlPanel.add(changeLogTextBox);
+
+    //add contributions stuff to the pending list, assigns contribution's unique id to the value of the item in the list
+    for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
+    {
+      ContributionDesc item = i.next();
+      pendingList.addItem(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - " + item.getID(), "" + item.getID());
+    }
+
+    //gets the selected item and display the contents and comments on the side
+    //pendingList.setSelectedIndex(0);//default selection
+    pendingList.addChangeHandler(new ChangeHandler()
+    {
+      @Override
+      public void onChange(ChangeEvent event)
+      {
+        int selectedIndex = pendingList.getSelectedIndex();
+
+        if(selectedIndex > -1)
+        {
+          for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
+          {
+            ContributionDesc item = i.next();
+
+            if(item.getID() == Integer.parseInt(pendingList.getValue(selectedIndex)))
+            {
+              previewArea.setText(item.getTargetedComponent().getContentValue());//get component's value
+              changeLogTextBox.setText(item.getChangeComment());//sets comment box
+            }
+          }//end for loop
+        }//end if statement
+      }//end onChange
+    }//end addChangeHandler
+    );
+
     final HorizontalPanel controlPanel = new HorizontalPanel();
     previewCommentAndControlPanel.add(controlPanel);
     controlPanel.setSize("750px", "25px");
