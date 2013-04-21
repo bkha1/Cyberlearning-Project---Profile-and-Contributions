@@ -49,23 +49,21 @@ final class TableDirectory
       // Page table
       "CREATE TABLE IF NOT EXISTS \"pages\" " +
       "(" +
-        "\"page_id\" INTEGER NOT NULL UNIQUE, " +
+        "\"page_id\" INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
         "\"book_id\" INTEGER NOT NULL, " +
-        "\"region_id\" INTEGER NOT NULL, " +
-        "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\"), " +
-        "FOREIGN KEY(\"region_id\") REFERENCES \"regions\"(\"region_id\"), " +
-        "PRIMARY KEY (\"page_id\", \"book_id\") " +
+        "\"isCanonical\" BOOL NOT NULL, " +
+        "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\")" +
       ")",
 
       // Regions table
       "CREATE TABLE IF NOT EXISTS \"regions\" " +
       "(" +
         "\"region_id\" INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
-        "\"book_id\" INTEGER NOT NULL, "+
+        "\"page_id\" INTEGER NOT NULL, "+
         "\"location\" TEXT NOT NULL, " +
         "\"type\" INTEGER NOT NULL, " +
         "\"isCanonical\" BOOL NOT NULL, " +
-        "FOREIGN KEY(\"book_id\") REFERENCES \"books\"(\"book_id\")" +
+        "FOREIGN KEY(\"page_id\") REFERENCES \"pages\"(\"page_id\")" +
       ")",
 
       // Components table
@@ -82,13 +80,17 @@ final class TableDirectory
       "CREATE TABLE IF NOT EXISTS \"contributions\" " +
       "(" +
         "\"contrib_id\" INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
-        "\"comp_id\" INTEGER NOT NULL, " +
+        "\"target_comp_id\" INTEGER NOT NULL, " +
+        "\"proposed_comp_id\" INTEGER NOT NULL, " +
         "\"account_id\" INTEGER NOT NULL, " +
         "\"change_comment\" TEXT NOT NULL, " +
         "\"timestamp\" DATETIME NOT NULL, " +
         "\"votes\" INTEGER NOT NULL, " +
         "\"acceptance_status\" INTEGER NOT NULL," +
-        "FOREIGN KEY(\"comp_id\") REFERENCES \"components\"(\"comp_id\"), " +
+        "FOREIGN KEY(\"target_comp_id\") " +
+          "REFERENCES \"components\"(\"comp_id\"), " +
+        "FOREIGN KEY(\"proposed_comp_id\") " +
+          "REFERENCES \"components\"(\"comp_id\"), " +
         "FOREIGN KEY(\"account_id\") REFERENCES \"accounts\"(\"account_id\") " +
       ")"
     };

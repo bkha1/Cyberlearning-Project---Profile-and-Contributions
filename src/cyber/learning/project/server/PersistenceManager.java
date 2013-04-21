@@ -155,7 +155,27 @@ public final class PersistenceManager
   public static synchronized
   SQLCommand makeParameterizedCommandFor(String command) throws SQLException
   {
-    return new SQLCommand(EAGER_CONN, command);
+    return new SQLCommand(EAGER_CONN, command, false);
+  }
+
+
+  /**
+   * Creates a SQL command whose parameters can be established via setters and
+   * is only suitable for use with a multi-staged database connection whose
+   * manager <b>must</b> manage the commitment flag.
+   *
+   * @param multiStagedConnection a multi-staged database connection
+   * @param command the parameterized SQL command
+   * @return a SQL command whose parameters can be set via setter methods
+   * @throws SQLException if the underlying database connection is closed
+   * @see {@link SQLCommand}
+   */
+  public static synchronized
+  SQLCommand makeBatchParameterizedCommandFor(Connection multiStagedConnection,
+                                              String command)
+    throws SQLException
+  {
+    return new SQLCommand(multiStagedConnection, command, true);
   }
 
 
