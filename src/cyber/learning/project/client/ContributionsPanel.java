@@ -54,10 +54,10 @@ final class ContributionsPanel extends TabPanel
     ComponentDesc testComp4 = new ComponentDesc(4, 2, "Day of the Tentacle, also known as Maniac Mansion II: Day of the Tentacle,[1][2] is a 1993 graphic adventure game developed and published by LucasArts. It is the sequel to the 1987 game Maniac Mansion. The game's plot follows Bernard Bernoulli and his friends Hoagie and Laverne as they attempt to stop the evil Purple Tentacle, a sentient, disembodied tentacle, from taking over the world. The player takes control of the three and solves puzzles while using time travel to explore different periods of history.");
 
     //dummy contributionDescs for testing
-    ContributionDesc testContribution1 = new ContributionDesc(101, testComp1, testEditor1, "It's a rubber chicken with a pulley in the middle", new Date(System.currentTimeMillis()), 1, 0);
-    ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testEditor2, "How about some delicious turtle soup??", new Date(System.currentTimeMillis()),2,0);
-    ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testEditor3, "RUN! IT'S ROBERT FROST!", new Date(System.currentTimeMillis()),3,0);
-    ContributionDesc testContribution4 = new ContributionDesc(104, testComp4, testEditor4, "Well, what possible harm could one insane, mutant tentacle do?", new Date(System.currentTimeMillis()),4,0);
+    ContributionDesc testContribution1 = new ContributionDesc(101, testComp1, testComp1, testEditor1, "It's a rubber chicken with a pulley in the middle", new Date(System.currentTimeMillis()), 1, 0);
+    ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testComp2, testEditor2, "How about some delicious turtle soup??", new Date(System.currentTimeMillis()),2,0);
+    ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testComp3, testEditor3, "RUN! IT'S ROBERT FROST!", new Date(System.currentTimeMillis()),3,0);
+    ContributionDesc testContribution4 = new ContributionDesc(104, testComp4, testComp4, testEditor4, "Well, what possible harm could one insane, mutant tentacle do?", new Date(System.currentTimeMillis()),4,0);
 
     /*
     ContributionDesc[] testContributions = new ContributionDesc[2];

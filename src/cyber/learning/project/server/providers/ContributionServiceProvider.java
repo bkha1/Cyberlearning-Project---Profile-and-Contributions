@@ -77,6 +77,7 @@ public final class ContributionServiceProvider
           final ContributionDesc source = changeRequest.getContributionSource();
           updated.add(new ContributionDesc(targetID,
                                            source.getTargetedComponent(),
+                                           source.getProposedComponent(),
                                            source.getContributor(),
                                            source.getChangeComment(),
                                            source.getContributionTime(),
@@ -85,6 +86,8 @@ public final class ContributionServiceProvider
 
           command.tupleComplete();
         }
+        command.executeBatch();
+        multiStaged.setAutoCommit(true);
       }
 
       return make(updated.toArray(new ContributionDesc[updated.size()]));
@@ -116,16 +119,19 @@ public final class ContributionServiceProvider
           {
             proposals.add(
               new ContributionDesc(
-                tuple.getInt("contribID"),
-                new ComponentDesc(tuple.getInt("proposedCompID"),
-                                  tuple.getInt("compType"),
-                                  tuple.getString("compValue")),
-                new AccountDesc(tuple.getInt("accountID"),
+                tuple.getInt("contrib_id"),
+                new ComponentDesc(tuple.getInt("target_comp_id"),
+                                  tuple.getInt("target_type"),
+                                  tuple.getString("target_value")),
+                new ComponentDesc(tuple.getInt("proposed_comp_id"),
+                                  tuple.getInt("proposed_type"),
+                                  tuple.getString("proposed_value")),
+                new AccountDesc(tuple.getInt("account_id"),
                                 tuple.getString("username")),
-                tuple.getString("changeComment"),
+                tuple.getString("change_comment"),
                 tuple.getDate("timestamp"),
-                tuple.getInt("voteCount"),
-                tuple.getInt("acceptanceStatus")));
+                tuple.getInt("votes"),
+                tuple.getInt("acceptance_status")));
           }
         });
       return make(proposals.toArray(new ContributionDesc[proposals.size()]));
@@ -138,42 +144,57 @@ public final class ContributionServiceProvider
 
 
   public static final String GET =
-    "SELECT \"tmp2\".\"contribID\" as \"contribID\", " +
-           "\"tmp2\".\"changeComment\" as \"changeComment\", " +
-           "\"tmp2\".\"timestamp\" as \"timestamp\", " +
-           "\"tmp2\".\"voteCount\" as \"voteCount\", " +
-           "\"tmp2\".\"acceptanceStatus\" as \"acceptanceStatus\", " +
-           "\"tmp2\".\"proposedCompID\" as \"proposedCompID\", " +
-           "\"tmp2\".\"compType\" as \"compType\", " +
-           "\"tmp2\".\"compValue\" as \"compValue\", " +
-           "\"accounts\".\"account_id\" as \"accountID\", " +
+    "SELECT \"tmp3\".\"contrib_id\" as \"contrib_id\", " +
+           "\"tmp3\".\"change_comment\" as \"change_comment\", " +
+           "\"tmp3\".\"timestamp\" as \"timestamp\", " +
+           "\"tmp3\".\"votes\" as \"votes\", " +
+           "\"tmp3\".\"acceptance_status\" as \"acceptance_status\", " +
+           "\"tmp3\".\"target_comp_id\" as \"target_comp_id\", " +
+           "\"tmp3\".\"target_type\" as \"target_type\", " +
+           "\"tmp3\".\"target_value\" as \"target_value\", " +
+           "\"tmp3\".\"proposed_comp_id\" as \"proposed_comp_id\", " +
+           "\"tmp3\".\"proposed_type\" as \"proposed_type\", " +
+           "\"tmp3\".\"proposed_value\" as \"proposed_value\", " +
+           "\"accounts\".\"account_id\" as \"account_id\", " +
            "\"accounts\".\"username\" as \"username\" " +
     "FROM \"accounts\" " +
       "INNER JOIN " +
-      "( " +
-         "SELECT \"tmp1\".\"contribID\" as \"contribID\", " +
-                "\"tmp1\".\"changeComment\" as \"changeComment\", " +
-                "\"tmp1\".\"ts\" as \"timestamp\", " +
-                "\"tmp1\".\"voteCount\" as \"voteCount\", " +
-                "\"tmp1\".\"acceptanceStatus\" as \"acceptanceStatus\", " +
-                "\"components\".\"comp_id\" as \"proposedCompID\", " +
-                "\"components\".\"type\" as \"compType\", " +
-                "\"components\".\"value\" as \"compValue\", " +
-                "\"tmp1\".\"accountID\" as \"accountID\" " +
-         "FROM \"components\" " +
-         "INNER JOIN " +
-         "(" +
-           "SELECT \"contrib_id\" as \"contribID\", " +
-                  "\"proposed_comp_id\" as \"proposedCompID\", " +
-                  "\"account_id\" as \"accountID\", " +
-                  "\"change_comment\" as \"changeComment\", " +
-                  "\"timestamp\" as \"ts\", " +
-                  "\"votes\" as \"voteCount\", " +
-                  "\"acceptance_status\" as \"acceptanceStatus\" " +
-           "FROM \"contributions\" " +
-           "WHERE \"target_comp_id\"=?1 AND \"acceptance_status\"=?2 " +
-         ") \"tmp1\" ON \"tmp1\".\"proposedCompID\" = \"components\".\"comp_id\" " +
-      ") \"tmp2\" ON \"tmp2\".\"accountID\" = \"accounts\".\"account_id\"";
+      "(" +
+        "SELECT \"tmp2\".\"contrib_id\" as \"contrib_id\", " +
+               "\"tmp2\".\"change_comment\" as \"change_comment\", " +
+               "\"tmp2\".\"timestamp\" as \"timestamp\", " +
+               "\"tmp2\".\"votes\" as \"votes\", " +
+               "\"tmp2\".\"acceptance_status\" as \"acceptance_status\", " +
+               "\"tmp2\".\"account_id\" as \"account_id\", " +
+               "\"tmp2\".\"target_comp_id\" as \"target_comp_id\", " +
+               "\"tmp2\".\"target_type\" as \"target_type\", " +
+               "\"tmp2\".\"target_value\" as \"target_value\", " +
+               "\"components\".\"comp_id\" as \"proposed_comp_id\", " +
+               "\"components\".\"type\" as \"proposed_type\", " +
+               "\"components\".\"value\" as \"proposed_value\" " +
+        "FROM \"components\" " +
+          "INNER JOIN " +
+          "(" +
+            "SELECT \"tmp1\".\"contrib_id\" as \"contrib_id\", " +
+                   "\"tmp1\".\"change_comment\" as \"change_comment\", " +
+                   "\"tmp1\".\"timestamp\" as \"timestamp\", " +
+                   "\"tmp1\".\"votes\" as \"votes\", " +
+                   "\"tmp1\".\"acceptance_status\" as \"acceptance_status\", " +
+                   "\"tmp1\".\"account_id\" as \"account_id\", " +
+                   "\"tmp1\".\"proposed_comp_id\" as \"proposed_comp_id\", " +
+                   "\"components\".\"comp_id\" as \"target_comp_id\", " +
+                   "\"components\".\"type\" as \"target_type\", " +
+                   "\"components\".\"value\" as \"target_value\" " +
+            "FROM \"components\" " +
+            "INNER JOIN " +
+            "(" +
+              "SELECT * " +
+              "FROM \"contributions\" " +
+              "WHERE target_comp_id=?1 AND acceptance_status=?2 " +
+            ") \"tmp1\" ON \"tmp1\".\"target_comp_id\"=\"components\".\"comp_id\" " +
+          ") \"tmp2\" ON \"tmp2\".\"proposed_comp_id\"=\"components\".\"comp_id\" " +
+      ") \"tmp3\" ON \"tmp3\".\"account_id\"=\"accounts\".\"account_id\"";
+;
   private static final String UPDATE =
     "UPDATE \"contributions\" " +
     "SET \"votes\" = ?1, " +
