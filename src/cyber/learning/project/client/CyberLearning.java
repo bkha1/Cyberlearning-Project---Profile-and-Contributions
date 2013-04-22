@@ -1,6 +1,6 @@
 package cyber.learning.project.client;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget; 
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 import com.allen_sauer.gwt.voices.client.Sound;
 import com.allen_sauer.gwt.voices.client.SoundController;
@@ -30,14 +30,14 @@ import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
@@ -80,7 +80,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	public enum fileType {
 		IMAGE,
 		SOUND
-	}; 
+	};
 
 	private enum templateType {
 		TITLE_PAGE,
@@ -88,7 +88,7 @@ public class CyberLearning implements EntryPoint {//test comment
 		TXT_VIDEO,
 		BLANK
 	}
-	
+
 	/**
 	 * This is the entry point method.
 	 */
@@ -103,6 +103,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	  //outer.add(loadProposalPane());
 	  //outer.add(SearchUI.createSearchUI());
 	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,"")));
+	  //loadEditablePane();
 
 	}
 
@@ -236,7 +237,7 @@ public class CyberLearning implements EntryPoint {//test comment
     PushButton sndButton = new PushButton(new Image("cyberlearning/gwt/clean/images/sound_icon.png"));
     sndButton.setSize("90px", "90px");
     toolbarPanel.add(sndButton);
-		
+
     sndButton.addClickHandler(new ClickHandler()
     {
       @Override
@@ -267,9 +268,9 @@ public class CyberLearning implements EntryPoint {//test comment
 					contentPanel.add(selectPageTemplate());
 					selectTemplateVisible = true;
 				}
-			}	
+			}
 		});
-		
+
     Button sndOffButton = new Button("Sound Off");//button for sound off
     //toolbarPanel.add(sndOffButton);
     sndOffButton.addClickHandler(new ClickHandler(){
@@ -338,16 +339,16 @@ public class CyberLearning implements EntryPoint {//test comment
 		// Add buttons to enable scrolling between pages
 		PushButton scrollLeftButton = new PushButton(new Image("cyberlearning/gwt/clean/images/left_arrow_icon.PNG"));
 		scrollLeftButton.setSize("75px", "75px");
-		editHorizontalPanel_1.add(scrollLeftButton);	
+		editHorizontalPanel_1.add(scrollLeftButton);
 		scrollLeftButton.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Add code to pull next page from database and display				
+				// TODO Add code to pull next page from database and display
 			}
-			
+
 		});
-		
+
 		PushButton scrollRightButton = new PushButton(new Image("cyberlearning/gwt/clean/images/right_arrow_icon.PNG"));
 		scrollRightButton.setSize("75px", "75px");
 		editHorizontalPanel_1.add(scrollRightButton);
@@ -355,11 +356,11 @@ public class CyberLearning implements EntryPoint {//test comment
 
 			@Override
 			public void onClick(ClickEvent event) {
-				// TODO Add code to pull next page from database and display				
+				// TODO Add code to pull next page from database and display
 			}
-			
+
 		});
-		
+
 		//editHorizontalPanel_1.add(sndArea);//added these for convenience and sound link testing -bkha
 		//editHorizontalPanel_1.add(sndOffButton);//bkha1
 
@@ -575,12 +576,12 @@ public class CyberLearning implements EntryPoint {//test comment
 	      }
 	    });
 
-	    return uploadForm; 
+	    return uploadForm;
 	}
-	    
+
 	@SuppressWarnings("deprecation")
 	public FormPanel selectPageTemplate()
-	{		
+	{
 		// Create our main form
 		final FormPanel templateSelectionForm = new FormPanel();
 
@@ -594,36 +595,40 @@ public class CyberLearning implements EntryPoint {//test comment
 
 	    // Create a PushButton for each predefined template.
 	    topRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/title_template.PNG"), new ClickListener() {
-	      public void onClick(Widget sender) {	    	  
+	      @Override
+        public void onClick(Widget sender) {
 	    	 addNewPage(templateType.TITLE_PAGE);
 	    	  selectTemplateVisible = false;
 	      }
 	    }));
-	    
+
 	    topRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/template_1.PNG"), new ClickListener() {
-		      public void onClick(Widget sender) {
+		      @Override
+          public void onClick(Widget sender) {
 		    	  addNewPage(templateType.TXT_IMG);
 		    	  selectTemplateVisible = false;
 		      }
 		    }));
-	    
+
 	    bottomRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/template_2.PNG"), new ClickListener() {
-		      public void onClick(Widget sender) {
+		      @Override
+          public void onClick(Widget sender) {
 		    	  addNewPage(templateType.TXT_VIDEO);
 		    	  selectTemplateVisible = false;
 		      }
 		    }));
-	    
+
 	    bottomRowPanel.add(new PushButton(new Image("cyberlearning/gwt/clean/images/template_3.PNG"), new ClickListener() {
-		      public void onClick(Widget sender) {
+		      @Override
+          public void onClick(Widget sender) {
 			    	addNewPage(templateType.BLANK);
 			    	selectTemplateVisible = false;
 		      }
 		    }));
-	    
-	    return templateSelectionForm;  
+
+	    return templateSelectionForm;
 	}
-	
+
 	public void addNewPage(templateType template)
 	{
 		contentPanel.clear();
@@ -641,9 +646,9 @@ public class CyberLearning implements EntryPoint {//test comment
 				Widget draggableImage1 = createDraggableImage("cyberlearning/gwt/clean/images/bookworm.jpg");
 				contentPanel.add(draggableImage1);
 				break;
-				
+
 			case TXT_IMG:
-				VerticalPanel westPanel = new VerticalPanel();				
+				VerticalPanel westPanel = new VerticalPanel();
 				// text
 				Widget draggableText2 = createDraggableText();
 				RichTextToolbar toolBar2 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText2).getOriginalWidget());
@@ -657,7 +662,7 @@ public class CyberLearning implements EntryPoint {//test comment
 				draggableImage2.setSize("95%", "50%");
 				westPanel.add(draggableImage2);
 				westPanel.setSize("95%", "95%");
-				
+
 				VerticalPanel eastPanel = new VerticalPanel();
 				// text
 				Widget draggableText3 = createDraggableText();
@@ -668,13 +673,13 @@ public class CyberLearning implements EntryPoint {//test comment
 				//contentPanel.add(toolBar);
 				draggableText3.setSize("95%", "95%");
 				eastPanel.setSize("95%", "95%");
-				
+
 				contentPanel.addWest(westPanel, 400);
 				contentPanel.add(eastPanel);
 				break;
-				
+
 			case TXT_VIDEO:
-				VerticalPanel westPanel2 = new VerticalPanel();				
+				VerticalPanel westPanel2 = new VerticalPanel();
 				// text
 				Widget draggableText4 = createDraggableText();
 				RichTextToolbar toolBar4 = new RichTextToolbar(((DraggableWidget<RichTextArea>) draggableText4).getOriginalWidget());
@@ -688,7 +693,7 @@ public class CyberLearning implements EntryPoint {//test comment
 				draggableVideo1.setSize("95%", "50%");
 				westPanel2.add(draggableVideo1);
 				westPanel2.setSize("95%", "95%");
-				
+
 				VerticalPanel eastPanel2 = new VerticalPanel();
 				// text
 				Widget draggableText5 = createDraggableText();
@@ -699,20 +704,20 @@ public class CyberLearning implements EntryPoint {//test comment
 				//contentPanel.add(toolBar);
 				draggableText5.setSize("95%", "95%");
 				eastPanel2.setSize("95%", "95%");
-				
+
 				contentPanel.addWest(westPanel2, 400);
 				contentPanel.add(eastPanel2);
 				break;
-				
+
 			case BLANK:
 				break;
 		}
 	}
-	
+
 	public LayoutPanel loadExistingPage(int pageNum)
 	{
 		// TODO
-		
+
 		return null;
 	}
 }
