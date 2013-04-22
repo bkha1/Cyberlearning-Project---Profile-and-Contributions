@@ -29,8 +29,8 @@ import cyber.learning.project.shared.descs.ContributionDesc;
 
 final class ContributionsPanel extends TabPanel
 {
-	private final ComponentDesc component_;
-	private final AccountDesc editor_;
+  private final ComponentDesc component_;
+  private final AccountDesc editor_;
   public ContributionsPanel(ComponentDesc component, AccountDesc editor)
   {
 
@@ -38,15 +38,18 @@ final class ContributionsPanel extends TabPanel
 
     //dummy accounts
     AccountDesc testEditor1 = new AccountDesc(1, "test1");
-    AccountDesc testEditor2 = new AccountDesc(1, "test2");
+    AccountDesc testEditor2 = new AccountDesc(2, "test2");
+    AccountDesc testEditor3 = new AccountDesc(3, "test3");
 
     //dummy components
-    ComponentDesc testComp1 = new ComponentDesc(1, 2, "content1");//text type
-    ComponentDesc testComp2 = new ComponentDesc(2, 2, "content2");
+    ComponentDesc testComp1 = new ComponentDesc(1, 2, "Monkey Island 2: LeChuck's Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret of Monkey Island, and the sixth LucasArts game to use the SCUMM engine. It was the first game to use the iMUSE sound system.");//text type
+    ComponentDesc testComp2 = new ComponentDesc(2, 2, "Psychonauts is a platform video game created by Tim Schafer, developed by Double Fine Productions and published by Majesco, starring the voice of Richard Horvitz as Raz. The game was released on April 19, 2005, for the Xbox, April 26 for Microsoft Windows and June 21 for PlayStation 2. It was released on Steam on Oct 11, 2006, as an Xbox Original through Xbox Live Marketplace, and on the GameTap subscription service.[1] On November 5, 2009, Psychonauts also became available through the online distribution service GOG.com through their partnership with Majesco. In September 2011, a new version with support for Steamworks features, including a Mac OS X port, was released. In May 2012, a Linux port was released through the Humble Indie Bundle V. The PS2 version was re-released on PlayStation Network on August 28, 2012.");
+    ComponentDesc testComp3 = new ComponentDesc(3, 2, "Grim Fandango is a dark comedy neo-noir Windows adventure game released by LucasArts in 1998, primarily written by Tim Schafer. It is the first adventure game by LucasArts to use 3D computer graphics overlaid on pre-rendered, static backgrounds. As with other LucasArts adventure games, the player must converse with other characters and examine, collect, and use objects correctly to solve puzzles in order to progress.");
 
     //dummy contributionDescs for testing
     ContributionDesc testContribution1 = new ContributionDesc(101, testComp1, testEditor1, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
     ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testEditor2, "another change comment", new Date(System.currentTimeMillis()),2,0);
+    ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testEditor3, "blahblahblahblahblahblahblahblahblahblahblahblahblahblah", new Date(System.currentTimeMillis()),3,0);
 
     /*
     ContributionDesc[] testContributions = new ContributionDesc[2];
@@ -60,6 +63,7 @@ final class ContributionsPanel extends TabPanel
     ArrayList<ContributionDesc> testList = new ArrayList<ContributionDesc>();
     testList.add(testContribution1);
     testList.add(testContribution2);
+    testList.add(testContribution3);
 
 
 
@@ -132,9 +136,15 @@ final class ContributionsPanel extends TabPanel
     final RichTextArea previewArea = new RichTextArea();
     previewCommentAndControlPanel.add(previewArea);
     previewArea.setSize("750px", "400px");
+
+    final HorizontalPanel commentAndVotePanel = new HorizontalPanel();
     final TextBox changeLogTextBox = new TextBox();
-    changeLogTextBox.setSize("750px", "50px");
-    previewCommentAndControlPanel.add(changeLogTextBox);
+    changeLogTextBox.setSize("650px", "50px");
+    commentAndVotePanel.add(changeLogTextBox);
+    final TextBox voteTextBox = new TextBox();
+    voteTextBox.setSize("80px", "50px");
+    commentAndVotePanel.add(voteTextBox);
+    previewCommentAndControlPanel.add(commentAndVotePanel);//.add(changeLogTextBox);
 
     //add contributions stuff to the pending list, assigns contribution's unique id to the value of the item in the list
     for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
@@ -162,12 +172,17 @@ final class ContributionsPanel extends TabPanel
             {
               previewArea.setText(item.getTargetedComponent().getContentValue());//get component's value
               changeLogTextBox.setText(item.getChangeComment());//sets comment box
+              voteTextBox.setText(item.getVotes() + " Votes");
             }
           }//end for loop
         }//end if statement
       }//end onChange
     }//end addChangeHandler
     );
+
+    //previewArea.
+    //changeLogTextBox.setReadOnly(true);
+    //voteTextBox.setReadOnly(true);
 
     final HorizontalPanel controlPanel = new HorizontalPanel();
     previewCommentAndControlPanel.add(controlPanel);
