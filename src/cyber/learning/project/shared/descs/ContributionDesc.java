@@ -15,6 +15,7 @@ public final class ContributionDesc extends BaseDesc
 
   public ContributionDesc(int id,
                           ComponentDesc target,
+                          ComponentDesc proposed,
                           AccountDesc contributor,
                           String changeComment,
                           Date timestamp,
@@ -34,6 +35,12 @@ public final class ContributionDesc extends BaseDesc
   public ComponentDesc getTargetedComponent()
   {
     return target_;
+  }
+
+
+  public ComponentDesc getProposedComponent()
+  {
+    return proposed_;
   }
 
 
@@ -68,6 +75,7 @@ public final class ContributionDesc extends BaseDesc
 
 
   private ComponentDesc target_;
+  private ComponentDesc proposed_;
   private AccountDesc contributor_;
   private String changeComment_;
   private Date timestamp_;

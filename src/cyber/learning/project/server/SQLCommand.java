@@ -277,6 +277,17 @@ public final class SQLCommand
   }
 
 
+  /**
+   * Executes the batched transactions against the persistence store.
+   *
+   * @throws SQLException if an error occurred while executing the transaction
+   */
+  public void executeBatch() throws SQLException
+  {
+    parameterizedCommand_.executeBatch();
+  }
+
+
   SQLCommand(Connection conn, String command, boolean allowBatching)
     throws SQLException
   {
