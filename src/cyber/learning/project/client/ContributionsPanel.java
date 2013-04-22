@@ -31,15 +31,17 @@ final class ContributionsPanel extends TabPanel
 {
   private final ComponentDesc component_;
   private final AccountDesc editor_;
+  //private ContributionDesc selectedItem = new ContributionDesc();
+
   public ContributionsPanel(ComponentDesc component, AccountDesc editor)
   {
 
     setSize("1000px", "500px");
 
     //dummy accounts
-    AccountDesc testEditor1 = new AccountDesc(1, "test1");
-    AccountDesc testEditor2 = new AccountDesc(2, "test2");
-    AccountDesc testEditor3 = new AccountDesc(3, "test3");
+    AccountDesc testEditor1 = new AccountDesc(1, "testUser1");
+    AccountDesc testEditor2 = new AccountDesc(2, "testUser2");
+    AccountDesc testEditor3 = new AccountDesc(3, "testUser3");
 
     //dummy components
     ComponentDesc testComp1 = new ComponentDesc(1, 2, "Monkey Island 2: LeChuck's Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret of Monkey Island, and the sixth LucasArts game to use the SCUMM engine. It was the first game to use the iMUSE sound system.");//text type
@@ -47,9 +49,9 @@ final class ContributionsPanel extends TabPanel
     ComponentDesc testComp3 = new ComponentDesc(3, 2, "Grim Fandango is a dark comedy neo-noir Windows adventure game released by LucasArts in 1998, primarily written by Tim Schafer. It is the first adventure game by LucasArts to use 3D computer graphics overlaid on pre-rendered, static backgrounds. As with other LucasArts adventure games, the player must converse with other characters and examine, collect, and use objects correctly to solve puzzles in order to progress.");
 
     //dummy contributionDescs for testing
-    ContributionDesc testContribution1 = new ContributionDesc(101, testComp1, testEditor1, "the change comment", new Date(System.currentTimeMillis()), 1, 0);
-    ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testEditor2, "another change comment", new Date(System.currentTimeMillis()),2,0);
-    ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testEditor3, "blahblahblahblahblahblahblahblahblahblahblahblahblahblah", new Date(System.currentTimeMillis()),3,0);
+    ContributionDesc testContribution1 = new ContributionDesc(101, testComp1, testEditor1, "It's a rubber chicken with a pulley in the middle", new Date(System.currentTimeMillis()), 1, 0);
+    ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testEditor2, "How about some delicious turtle soup??", new Date(System.currentTimeMillis()),2,0);
+    ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testEditor3, "RUN! IT'S ROBERT FROST!", new Date(System.currentTimeMillis()),3,0);
 
     /*
     ContributionDesc[] testContributions = new ContributionDesc[2];
@@ -70,10 +72,11 @@ final class ContributionsPanel extends TabPanel
     //add(getLoadingPanel(), "Pending");
     add(getPendingPanel(testList), "Pending");
 
-    add(getLoadingPanel(), "Accepted");
-    //add(getHistoricalPanel(), "Accepted");
+    //add(getLoadingPanel(), "Accepted");
+    add(getHistoricalPanel(), "Accepted");
 
-    add(getLoadingPanel(), "Rejected");
+    //add(getLoadingPanel(), "Rejected");
+    add(getHistoricalPanel(), "Rejected");
 
 
 
@@ -117,9 +120,10 @@ final class ContributionsPanel extends TabPanel
     return panel;
   }
 
+  ContributionDesc item = new ContributionDesc();
 
   @SuppressWarnings("unused")
-  private static Panel getPendingPanel(final Iterable<ContributionDesc> contributions)
+  private Panel getPendingPanel(final Iterable<ContributionDesc> contributions)
   {
     final HorizontalPanel pendingPanel = new HorizontalPanel();
 
@@ -138,22 +142,29 @@ final class ContributionsPanel extends TabPanel
     previewArea.setSize("750px", "400px");
 
     final HorizontalPanel commentAndVotePanel = new HorizontalPanel();
-    final TextBox changeLogTextBox = new TextBox();
-    changeLogTextBox.setSize("650px", "50px");
+    final TextBox changeLogTextBox = new TextBox(); //changeLogTextBox will hold the user comments
+    changeLogTextBox.setSize("550px", "50px");
     commentAndVotePanel.add(changeLogTextBox);
-    final TextBox voteTextBox = new TextBox();
+    final TextBox nameTextBox = new TextBox(); //nameTextBox will hold the username
+    nameTextBox.setSize("90px", "50px");
+    commentAndVotePanel.add(nameTextBox);
+    final TextBox voteTextBox = new TextBox(); //voteTextBox will hold the number of votes the contribution has
     voteTextBox.setSize("80px", "50px");
     commentAndVotePanel.add(voteTextBox);
     previewCommentAndControlPanel.add(commentAndVotePanel);//.add(changeLogTextBox);
 
+    //ContributionDesc selectedItem;
+    //ContributionDesc item = new ContributionDesc();
+
     //add contributions stuff to the pending list, assigns contribution's unique id to the value of the item in the list
     for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
     {
-      ContributionDesc item = i.next();
+      //ContributionDesc item = i.next();
+      item = i.next();
       pendingList.addItem(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - " + item.getID(), "" + item.getID());
     }
 
-    //gets the selected item and display the contents and comments on the side
+    //gets the selected item by comparing the ContributionDesc ID and the selected item in pending List's value and display the contents and comments on the side
     //pendingList.setSelectedIndex(0);//default selection
     pendingList.addChangeHandler(new ChangeHandler()
     {
@@ -166,19 +177,27 @@ final class ContributionsPanel extends TabPanel
         {
           for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
           {
-            ContributionDesc item = i.next();
+            item = i.next();
 
             if(item.getID() == Integer.parseInt(pendingList.getValue(selectedIndex)))
             {
+              //selectedItem = item;
               previewArea.setText(item.getTargetedComponent().getContentValue());//get component's value
               changeLogTextBox.setText(item.getChangeComment());//sets comment box
+              nameTextBox.setText(item.getContributor().getUsername());
               voteTextBox.setText(item.getVotes() + " Votes");
+              break;
             }
           }//end for loop
         }//end if statement
       }//end onChange
     }//end addChangeHandler
     );
+
+    /*
+    previewArea.setText(item.getTargetedComponent().getContentValue());//get component's value
+    changeLogTextBox.setText(item.getChangeComment());//sets comment box
+    voteTextBox.setText(item.getVotes() + " Votes");*/
 
     //previewArea.
     //changeLogTextBox.setReadOnly(true);
@@ -188,9 +207,53 @@ final class ContributionsPanel extends TabPanel
     previewCommentAndControlPanel.add(controlPanel);
     controlPanel.setSize("750px", "25px");
     final Button acceptButton = new Button("Accept");
+    acceptButton.addClickHandler(new ClickHandler()//clickhandler for the accept button
+    {
+      @Override
+      public void onClick(ClickEvent event)
+      {
+        changeLogTextBox.setText("I AM CLICKING ON THE ACCEPT BUTTON");
+      }
+    }
+    );
+
     final Button rejectButton = new Button("Reject");
+    rejectButton.addClickHandler(new ClickHandler()//clickhandler for the reject button
+    {
+      @Override
+      public void onClick(ClickEvent event)
+      {
+        changeLogTextBox.setText("I AM CLICKING ON THE REJECT BUTTON");
+      }
+    }
+    );
+
     final Button upVoteButton = new Button("UpVote");
+    upVoteButton.addClickHandler(new ClickHandler()//clickhandler for the upvote button
+    {
+      @Override
+      public void onClick(ClickEvent event)
+      {
+        changeLogTextBox.setText("I AM CLICKING ON THE UPVOTE BUTTON");
+        voteTextBox.setText(item.getVotes() + 1 + " Votes");
+        //TODO: make this permanent
+      }
+    }
+    );
+
     final Button downVoteButton = new Button("DownVote");
+    downVoteButton.addClickHandler(new ClickHandler()//clickhandler for the downvote button
+    {
+      @Override
+      public void onClick(ClickEvent event)
+      {
+        changeLogTextBox.setText("I AM CLICKING ON THE DOWNVOTE BUTTON");
+        voteTextBox.setText(item.getVotes() - 1 + " Votes");
+        //TODO: make this permanent
+      }
+    }
+    );
+
     controlPanel.add(acceptButton);
     controlPanel.add(rejectButton);
     controlPanel.add(upVoteButton);
