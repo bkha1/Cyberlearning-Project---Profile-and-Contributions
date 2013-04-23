@@ -67,14 +67,14 @@ public final class ContributionServiceProvider
         for (ContributionChangeRequest changeRequest : changeRequests)
         {
           final int targetID = changeRequest.getContributionID();
-          final int voteCount = changeRequest.getNewVoteCount();
-          final int acceptance = changeRequest.getNewAcceptanceStatus();
+          final int voteCount = changeRequest.getVotes();
+          final int acceptance = changeRequest.getAcceptanceStatus();
 
           command.setInt(1, voteCount);
           command.setInt(2, acceptance);
           command.setInt(3, targetID);
 
-          final ContributionDesc source = changeRequest.getContributionSource();
+          final ContributionDesc source = changeRequest.getContribution();
           updated.add(new ContributionDesc(targetID,
                                            source.getTargetedComponent(),
                                            source.getProposedComponent(),
