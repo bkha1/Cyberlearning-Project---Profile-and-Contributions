@@ -216,6 +216,7 @@ final class ContributionsPanel extends TabPanel
     final HorizontalPanel controlPanel = new HorizontalPanel();
     previewCommentAndControlPanel.add(controlPanel);
     controlPanel.setSize("750px", "25px");
+
     final Button acceptButton = new Button("Accept");
     acceptButton.addClickHandler(new ClickHandler()//clickhandler for the accept button
     {
@@ -226,6 +227,7 @@ final class ContributionsPanel extends TabPanel
 
         int selectedIndex = pendingList.getSelectedIndex();
 
+        //takes the selected item and moves it to the accepted tab
         if(selectedIndex > -1)
         {
           for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
@@ -245,6 +247,16 @@ final class ContributionsPanel extends TabPanel
             }
           }//end for loop
         }//end if statement
+
+        //takes the rest of the items in pending and moves them to the rejected tab
+        for(Iterator<ContributionDesc> i = contributions.iterator(); i.hasNext();)
+        {
+          item = i.next();
+
+          rejectedList.add(item);
+          pendingList.removeItem(0);
+          i.remove();
+        }//end for loop
 
         //refresh panels
         remove(2);
