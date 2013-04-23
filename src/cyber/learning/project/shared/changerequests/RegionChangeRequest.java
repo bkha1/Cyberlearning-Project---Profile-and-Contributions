@@ -1,7 +1,9 @@
 package cyber.learning.project.shared.changerequests;
 
-import cyber.learning.project.shared.descs.BookDesc;
 import cyber.learning.project.shared.descs.ComponentChangeRequest;
+import cyber.learning.project.shared.descs.PageDesc;
+import cyber.learning.project.shared.descs.RegionDesc;
+
 
 
 public interface RegionChangeRequest
@@ -9,14 +11,23 @@ public interface RegionChangeRequest
   int getRegionID();
 
 
-  BookDesc getContainingBook();
+  int getContainingPageID();
 
 
   String getLocation();
 
 
-  int getType();
+  int getRegionType();
 
 
-  ComponentChangeRequest getComponentChangeRequest();
+  boolean isCanonical();
+
+
+  Iterable<? extends ComponentChangeRequest> getModifiedComponents();
+
+
+  RegionDesc getRegion();
+
+
+  PageDesc getContainingPage();
 }

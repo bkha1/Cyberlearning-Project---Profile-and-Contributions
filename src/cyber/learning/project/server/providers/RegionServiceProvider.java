@@ -1,6 +1,5 @@
 package cyber.learning.project.server.providers;
 
-import static cyber.learning.project.server.PersistenceManager.insertTupleWithAutoIncrementingID;
 import static cyber.learning.project.server.PersistenceManager.makeParameterizedCommandFor;
 import static cyber.learning.project.server.PersistenceManager.searchFor;
 import static cyber.learning.project.shared.CallbackPayload.make;
@@ -70,43 +69,44 @@ public final class RegionServiceProvider extends RemoteServiceServlet
   CallbackPayload<RegionDesc> create(RegionChangeRequest regionCR,
                                      boolean isCanonical)
   {
-    try
-    {
-      final SQLCommand rCommand =
-        makeParameterizedCommandFor(isCanonical ?
-                                    CREATE_CANONICAL : CREATE_PROPOSED);
-      final BookDesc bDesc = regionCR.getContainingBook();
-      final String location = regionCR.getLocation();
-      final int type = regionCR.getType();
-      rCommand.setInt(1, bDesc.getID());
-      rCommand.setString(2, location);
-      rCommand.setInt(3, type);
-      final int regionID = insertTupleWithAutoIncrementingID(rCommand);
-
-      final SQLCommand cCommand = makeParameterizedCommandFor(CREATE_COMPONENT);
-      final int compType = regionCR.getComponentChangeRequest().getType();
-      final String compValue = regionCR.getComponentChangeRequest().getValue();
-      cCommand.setInt(1, regionID);
-      cCommand.setInt(2, compType);
-      cCommand.setString(3, compValue);
-
-      final int compID = insertTupleWithAutoIncrementingID(cCommand);
-      final ComponentDesc compDesc = new ComponentDesc(compID,
-                                                       compType,
-                                                       compValue);
-      final RegionDesc regionDesc = new RegionDesc(regionID,
-                                                   bDesc,
-                                                   compDesc,
-                                                   location,
-                                                   type);
-      compDesc.setRegionDesc(regionDesc);
-
-      return make(regionDesc);
-    }
-    catch (Throwable t)
-    {
-      return make(t, RegionDesc.class);
-    }
+//    try
+//    {
+//      final SQLCommand rCommand =
+//        makeParameterizedCommandFor(isCanonical ?
+//                                    CREATE_CANONICAL : CREATE_PROPOSED);
+//      final BookDesc bDesc = regionCR.getContainingBook();
+//      final String location = regionCR.getLocation();
+//      final int type = regionCR.getType();
+//      rCommand.setInt(1, bDesc.getID());
+//      rCommand.setString(2, location);
+//      rCommand.setInt(3, type);
+//      final int regionID = insertTupleWithAutoIncrementingID(rCommand);
+//
+//      final SQLCommand cCommand = makeParameterizedCommandFor(CREATE_COMPONENT);
+//      final int compType = regionCR.getComponentChangeRequest().getType();
+//      final String compValue = regionCR.getComponentChangeRequest().getValue();
+//      cCommand.setInt(1, regionID);
+//      cCommand.setInt(2, compType);
+//      cCommand.setString(3, compValue);
+//
+//      final int compID = insertTupleWithAutoIncrementingID(cCommand);
+//      final ComponentDesc compDesc = new ComponentDesc(compID,
+//                                                       compType,
+//                                                       compValue);
+//      final RegionDesc regionDesc = new RegionDesc(regionID,
+//                                                   bDesc,
+//                                                   compDesc,
+//                                                   location,
+//                                                   type);
+//      compDesc.setRegionDesc(regionDesc);
+//
+//      return make(regionDesc);
+//    }
+//    catch (Throwable t)
+//    {
+//      return make(t, RegionDesc.class);
+//    }
+    return null;
   }
 
 

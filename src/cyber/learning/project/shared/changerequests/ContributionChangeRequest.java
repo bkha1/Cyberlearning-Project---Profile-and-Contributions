@@ -1,49 +1,42 @@
 package cyber.learning.project.shared.changerequests;
 
-import java.io.Serializable;
-
+import cyber.learning.project.shared.descs.AccountDesc;
+import cyber.learning.project.shared.descs.ComponentDesc;
 import cyber.learning.project.shared.descs.ContributionDesc;
 
-@SuppressWarnings("serial")
-public final class ContributionChangeRequest implements Serializable
+
+
+public interface ContributionChangeRequest
 {
-  public ContributionChangeRequest() {}
+  int getContributionID();
 
 
-  public ContributionChangeRequest(ContributionDesc source,
-                                   int newAcceptanceStatus,
-                                   int newVoteCount)
-  {
-    source_ = source;
-    newAcceptanceStatus_ = newAcceptanceStatus;
-    newVoteCount_ = newVoteCount;
-  }
+  int getTargetComponentID();
 
 
-  public int getContributionID()
-  {
-    return source_.getID();
-  }
+  int getProposedComponentID();
 
 
-  public ContributionDesc getContributionSource()
-  {
-    return source_;
-  }
-
-  public int getNewAcceptanceStatus()
-  {
-    return newAcceptanceStatus_;
-  }
+  int getContributorID();
 
 
-  public int getNewVoteCount()
-  {
-    return newVoteCount_;
-  }
+  String getChangeComment();
 
 
-  private ContributionDesc source_;
-  private int newAcceptanceStatus_;
-  private int newVoteCount_;
+  int getVotes();
+
+
+  int getAcceptanceStatus();
+
+
+  ContributionDesc getContribution();
+
+
+  ComponentDesc getTargetComponent();
+
+
+  ComponentDesc getProposedComponent();
+
+
+  AccountDesc getContributor();
 }

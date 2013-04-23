@@ -1,22 +1,31 @@
 package cyber.learning.project.shared.changerequests;
 
-import cyber.learning.project.shared.descs.BookDesc;
-import cyber.learning.project.shared.descs.ComponentChangeRequest;
+import java.io.Serializable;
 
-public final class NewRegionChangeRequest implements RegionChangeRequest
+import cyber.learning.project.shared.descs.ComponentChangeRequest;
+import cyber.learning.project.shared.descs.PageDesc;
+import cyber.learning.project.shared.descs.RegionDesc;
+
+
+@SuppressWarnings("serial")
+public final class NewRegionChangeRequest implements RegionChangeRequest,
+                                                     Serializable
 {
   public NewRegionChangeRequest() {}
 
 
-  public NewRegionChangeRequest(BookDesc container,
-                                int regionType,
-                                String location,
-                                ComponentChangeRequest compCR)
+  public NewRegionChangeRequest(
+    PageDesc container,
+    int regionType,
+    String location,
+    boolean isCanonical,
+    Iterable<? extends ComponentChangeRequest> modifiedComponents)
   {
     container_ = container;
     location_ = location;
     type_ = regionType;
-    compCR_ = compCR;
+    isCanonical_ = isCanonical;
+    modified_ = modifiedComponents;
   }
 
 
@@ -28,9 +37,9 @@ public final class NewRegionChangeRequest implements RegionChangeRequest
 
 
   @Override
-  public BookDesc getContainingBook()
+  public int getContainingPageID()
   {
-    return container_;
+    return container_.getID();
   }
 
 
@@ -42,21 +51,43 @@ public final class NewRegionChangeRequest implements RegionChangeRequest
 
 
   @Override
-  public int getType()
+  public int getRegionType()
   {
     return type_;
   }
 
 
   @Override
-  public ComponentChangeRequest getComponentChangeRequest()
+  public boolean isCanonical()
   {
-    return compCR_;
+    return isCanonical_;
   }
 
 
-  private BookDesc container_;
-  private int type_;
+  @Override
+  public Iterable<? extends ComponentChangeRequest> getModifiedComponents()
+  {
+    return modified_;
+  }
+
+
+  @Override
+  public RegionDesc getRegion()
+  {
+    return null;
+  }
+
+
+  @Override
+  public PageDesc getContainingPage()
+  {
+    return container_;
+  }
+
+
   private String location_;
-  private ComponentChangeRequest compCR_;
+  private int type_;
+  private boolean isCanonical_;
+  private Iterable<? extends ComponentChangeRequest> modified_;
+  private PageDesc container_;
 }
