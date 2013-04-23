@@ -1,30 +1,27 @@
 package cyber.learning.project.shared.changerequests;
 
+import cyber.learning.project.shared.descs.AccountDesc;
+import cyber.learning.project.shared.descs.BookDesc;
+
 public interface BookChangeRequest
 {
-  int getComponentID();
-
-
   int getContainingBookID();
-
-
-  int getContainingBookOwnerID();
 
 
   int getContributorID();
 
 
+  boolean isContributorTheOwner();
+
+
+  Iterable<? extends PageChangeRequest> getModifiedPages();
+
+
   String getChangeComment();
 
 
-  int getRegionType();
+  BookDesc getContaingBook();
 
 
-  String getLocation();
-
-
-  int getContentType();
-
-
-  String getContentValue();
+  AccountDesc getContributor();
 }

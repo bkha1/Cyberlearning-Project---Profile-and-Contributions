@@ -6,8 +6,17 @@ public interface ComponentChangeRequest
   int getComponentID();
 
 
-  int getType();
+  int getContainingRegionID();
+
+
+  int getComponentType();
 
 
   String getValue();
+
+
+  ComponentDesc getComponent();
+
+
+  RegionDesc getContainingRegion();
 }
