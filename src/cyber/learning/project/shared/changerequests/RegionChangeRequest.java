@@ -23,7 +23,7 @@ public interface RegionChangeRequest
   boolean isCanonical();
 
 
-  Iterable<? extends ComponentChangeRequest> getModifiedComponents();
+  ComponentChangeRequest getModifiedComponent();
 
 
   RegionDesc getRegion();
