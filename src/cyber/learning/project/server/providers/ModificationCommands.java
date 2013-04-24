@@ -24,4 +24,16 @@ final class ModificationCommands
       "\"value\"" +
     ") " +
     "VALUES (?1,?2,?3)";
+  public static final String CREATE_CONTRIBUTION =
+    "INSERT INTO \"contributions\" " +
+    "(" +
+      "\"target_comp_id\"," +
+      "\"proposed_comp_id\"," +
+      "\"account_id\"," +
+      "\"change_comment\"," +
+      "\"timestamp\"," +
+      "\"votes\"," +
+      "\"acceptance_status" +
+    ")" +
+    "VALUES (?1,?2,?3,?4,?5,?6,?7)";
 }

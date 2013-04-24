@@ -1,13 +1,8 @@
 package cyber.learning.project.server.providers;
 
-import static cyber.learning.project.server.PersistenceManager.getMultistagedDatabaseConnection;
-import static cyber.learning.project.server.PersistenceManager.makeBatchParameterizedCommandFor;
-import static cyber.learning.project.server.PersistenceManager.makeParameterizedCommandFor;
-import static cyber.learning.project.server.PersistenceManager.searchFor;
-import static cyber.learning.project.shared.CallbackPayload.make;
-import static cyber.learning.project.shared.Enumerations.AcceptanceStatus.ACCEPTED;
-import static cyber.learning.project.shared.Enumerations.AcceptanceStatus.PENDING;
-import static cyber.learning.project.shared.Enumerations.AcceptanceStatus.REJECTED;
+import static cyber.learning.project.server.PersistenceManager.*;
+import static cyber.learning.project.shared.CallbackPayload.*;
+import static cyber.learning.project.shared.Enumerations.AcceptanceStatus.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -194,7 +189,7 @@ public final class ContributionServiceProvider
             ") \"tmp1\" ON \"tmp1\".\"target_comp_id\"=\"components\".\"comp_id\" " +
           ") \"tmp2\" ON \"tmp2\".\"proposed_comp_id\"=\"components\".\"comp_id\" " +
       ") \"tmp3\" ON \"tmp3\".\"account_id\"=\"accounts\".\"account_id\"";
-;
+
   private static final String UPDATE =
     "UPDATE \"contributions\" " +
     "SET \"votes\" = ?1, " +

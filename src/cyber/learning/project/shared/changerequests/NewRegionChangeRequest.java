@@ -19,13 +19,13 @@ public final class NewRegionChangeRequest implements RegionChangeRequest,
     int regionType,
     String location,
     boolean isCanonical,
-    Iterable<? extends ComponentChangeRequest> modifiedComponents)
+    ComponentChangeRequest modifiedComponent)
   {
     container_ = container;
     location_ = location;
     type_ = regionType;
     isCanonical_ = isCanonical;
-    modified_ = modifiedComponents;
+    modified_ = modifiedComponent;
   }
 
 
@@ -65,7 +65,7 @@ public final class NewRegionChangeRequest implements RegionChangeRequest,
 
 
   @Override
-  public Iterable<? extends ComponentChangeRequest> getModifiedComponents()
+  public ComponentChangeRequest getModifiedComponent()
   {
     return modified_;
   }
@@ -88,6 +88,6 @@ public final class NewRegionChangeRequest implements RegionChangeRequest,
   private String location_;
   private int type_;
   private boolean isCanonical_;
-  private Iterable<? extends ComponentChangeRequest> modified_;
+  private ComponentChangeRequest modified_;
   private PageDesc container_;
 }
