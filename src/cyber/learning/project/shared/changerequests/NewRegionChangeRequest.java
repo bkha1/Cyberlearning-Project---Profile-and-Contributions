@@ -2,7 +2,7 @@ package cyber.learning.project.shared.changerequests;
 
 import java.io.Serializable;
 
-import cyber.learning.project.shared.descs.ComponentChangeRequest;
+import cyber.learning.project.shared.changerequests.ComponentChangeRequest;
 import cyber.learning.project.shared.descs.PageDesc;
 import cyber.learning.project.shared.descs.RegionDesc;
 

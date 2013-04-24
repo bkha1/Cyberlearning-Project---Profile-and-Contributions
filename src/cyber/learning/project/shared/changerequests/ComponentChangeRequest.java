@@ -1,4 +1,7 @@
-package cyber.learning.project.shared.descs;
+package cyber.learning.project.shared.changerequests;
+
+import cyber.learning.project.shared.descs.ComponentDesc;
+import cyber.learning.project.shared.descs.RegionDesc;
 
 
 public interface ComponentChangeRequest
