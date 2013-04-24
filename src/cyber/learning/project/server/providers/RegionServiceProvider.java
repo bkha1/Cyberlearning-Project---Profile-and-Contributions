@@ -1,8 +1,7 @@
 package cyber.learning.project.server.providers;
 
-import static cyber.learning.project.server.PersistenceManager.makeParameterizedCommandFor;
-import static cyber.learning.project.server.PersistenceManager.searchFor;
-import static cyber.learning.project.shared.CallbackPayload.make;
+import static cyber.learning.project.server.PersistenceManager.*;
+import static cyber.learning.project.shared.CallbackPayload.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,8 +15,8 @@ import cyber.learning.project.server.PersistenceManager.QueryTupleResultSink;
 import cyber.learning.project.server.SQLCommand;
 import cyber.learning.project.shared.CallbackPayload;
 import cyber.learning.project.shared.changerequests.RegionChangeRequest;
-import cyber.learning.project.shared.descs.BookDesc;
 import cyber.learning.project.shared.descs.ComponentDesc;
+import cyber.learning.project.shared.descs.PageDesc;
 import cyber.learning.project.shared.descs.RegionDesc;
 
 
@@ -51,7 +50,7 @@ public final class RegionServiceProvider extends RemoteServiceServlet
 
   @Override
   public
-  CallbackPayload<RegionDesc[]> getCanonicalRegionsForBook(BookDesc container)
+  CallbackPayload<RegionDesc[]> getCanonicalRegionsForBook(PageDesc container)
   {
     return get(container, true);
   }
@@ -59,7 +58,7 @@ public final class RegionServiceProvider extends RemoteServiceServlet
 
   @Override
   public
-  CallbackPayload<RegionDesc[]> getProposedRegionsForBook(BookDesc container)
+  CallbackPayload<RegionDesc[]> getProposedRegionsForBook(PageDesc container)
   {
     return get(container, true);
   }
@@ -110,7 +109,7 @@ public final class RegionServiceProvider extends RemoteServiceServlet
   }
 
 
-  private static CallbackPayload<RegionDesc[]> get(final BookDesc container,
+  private static CallbackPayload<RegionDesc[]> get(final PageDesc container,
                                                    boolean isCanonical)
   {
     try
@@ -134,9 +133,9 @@ public final class RegionServiceProvider extends RemoteServiceServlet
             final RegionDesc rDesc =
               new RegionDesc(tuple.getInt("rid"),
                              container,
-                             cDesc,
                              tuple.getString("loc"),
-                             tuple.getInt("r_type"));
+                             tuple.getInt("r_type"),
+                             true);
             cDesc.setRegionDesc(rDesc);
             regions.add(rDesc);
           }
