@@ -1,9 +1,10 @@
 package cyber.learning.project.client;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -21,6 +22,8 @@ import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import cyber.learning.project.client.services.ContributionService;
+import cyber.learning.project.client.services.ContributionServiceAsync;
 import cyber.learning.project.shared.CallbackPayload;
 import cyber.learning.project.shared.descs.AccountDesc;
 import cyber.learning.project.shared.descs.ComponentDesc;
@@ -33,6 +36,7 @@ final class ContributionsPanel extends TabPanel
   private final AccountDesc editor_;
   //private ContributionDesc selectedItem = new ContributionDesc();
 
+  private ArrayList<ContributionDesc> testList = new ArrayList<ContributionDesc>();
   private ArrayList<ContributionDesc> acceptedList = new ArrayList<ContributionDesc>();
   private ArrayList<ContributionDesc> rejectedList = new ArrayList<ContributionDesc>();
 
@@ -41,6 +45,43 @@ final class ContributionsPanel extends TabPanel
 
     setSize("1000px", "500px");
 
+    final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
+      new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
+      {
+
+        @Override
+        public void onFailure(Throwable arg0) {
+          // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onSuccess(CallbackPayload<ContributionDesc[]> payload)
+        {
+
+          if(payload.hasResult())
+          {
+            //payload.getResult();
+            //new ArrayList(Arrays.asList(myArray));
+            testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+            //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+            //populatePendingPanelWith(pending);
+          }
+          else
+          {
+            //error processing goes here
+          }
+
+        }
+
+      };
+
+    final ContributionServiceAsync svc = GWT.create(ContributionService.class);
+    svc.getProposedContributionsFor(component, callback);
+    svc.getHistoricalContributionsFor(component, true, callback);
+    svc.getHistoricalContributionsFor(component, false, callback);
+
+    /*
     //dummy accounts
     AccountDesc testEditor1 = new AccountDesc(1, "testUser1");
     AccountDesc testEditor2 = new AccountDesc(2, "testUser2");
@@ -58,21 +99,15 @@ final class ContributionsPanel extends TabPanel
     ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testComp2, testEditor2, "How about some delicious turtle soup??", new Date(System.currentTimeMillis()),2,0);
     ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testComp3, testEditor3, "RUN! IT'S ROBERT FROST!", new Date(System.currentTimeMillis()),3,0);
     ContributionDesc testContribution4 = new ContributionDesc(104, testComp4, testComp4, testEditor4, "Well, what possible harm could one insane, mutant tentacle do?", new Date(System.currentTimeMillis()),4,0);
-
-    /*
-    ContributionDesc[] testContributions = new ContributionDesc[2];
-    testContributions[0] = testContribution1;
-    testContributions[1] = testContribution2;
     */
 
-    /*ArrayList<ContributionDesc> testcontr;
-    testcontr = new ArrayList<ContributionDesc>;*/
-
+    /*
     ArrayList<ContributionDesc> testList = new ArrayList<ContributionDesc>();
     testList.add(testContribution1);
     testList.add(testContribution2);
     testList.add(testContribution3);
     testList.add(testContribution4);
+    */
 
     //ArrayList<ContributionDesc> testAcceptedList = new ArrayList<ContributionDesc>();
     //ArrayList<ContributionDesc> testRejectedList = new ArrayList<ContributionDesc>();
@@ -93,6 +128,7 @@ final class ContributionsPanel extends TabPanel
     selectTab(0);
     addSelectionHandler(new LoadPanel(this));
 
+    /*
     final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
       new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
       {
@@ -114,7 +150,7 @@ final class ContributionsPanel extends TabPanel
 
         }
 
-      };
+      };*/
 
     component_ = component;
     editor_ = editor;
