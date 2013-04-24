@@ -40,6 +40,8 @@ final class ContributionsPanel extends TabPanel
   private ArrayList<ContributionDesc> acceptedList = new ArrayList<ContributionDesc>();
   private ArrayList<ContributionDesc> rejectedList = new ArrayList<ContributionDesc>();
 
+  ContributionDesc[] testArray;
+
   final ContributionServiceAsync svc = GWT.create(ContributionService.class);
 
   public ContributionsPanel(ComponentDesc component, AccountDesc editor)
@@ -47,7 +49,9 @@ final class ContributionsPanel extends TabPanel
 
     setSize("1000px", "500px");
 
-    final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
+    //final ArrayList<ContributionDesc> testList0 = new ArrayList<ContributionDesc>();
+
+     AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
       new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
       {
 
@@ -57,21 +61,36 @@ final class ContributionsPanel extends TabPanel
 
         }
 
+
+
         @Override
         public void onSuccess(CallbackPayload<ContributionDesc[]> payload)
         {
 
           if(payload.hasResult())
           {
-            //payload.getResult();
+            //testArray = payload.getResult();
             //new ArrayList(Arrays.asList(myArray));
             //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
             //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
             for(int i = 0; i < payload.getResult().length; i++)
             {
+
               item = payload.getResult()[i];
+              //AccountDesc testEditor = item.getContributor();
+              //ComponentDesc testComponent = item.getTargetedComponent();
+              //ContributionDesc testContribution = new ContributionDesc(item.getID(),testComponent,testComponent,testEditor,item.getChangeComment(),item.getContributionTime(),item.getVotes(),item.getAcceptanceStatusInt());
               testList.add(item);
-              //System.out.println(payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
+              for(Iterator<ContributionDesc> n = testList.iterator(); n.hasNext();)
+              {
+                //ContributionDesc item = i.next();
+                item = n.next();
+                System.out.println("what is in testlist");
+                System.out.println(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - id: " + item.getID());
+              }
+
+              //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
+              //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
 
             }
           }
@@ -89,6 +108,7 @@ final class ContributionsPanel extends TabPanel
     svc.getHistoricalContributionsFor(component, true, callback);
     svc.getHistoricalContributionsFor(component, false, callback);
 
+    System.out.println("Attempting to list contents of testList:");
     for(Iterator<ContributionDesc> i = testList.iterator(); i.hasNext();)
     {
       //ContributionDesc item = i.next();
@@ -129,13 +149,10 @@ final class ContributionsPanel extends TabPanel
 
 
 
-    //add(getLoadingPanel(), "Pending");
     add(getPendingPanel(testList), "Pending");
 
-    //add(getLoadingPanel(), "Accepted");
     add(getHistoricalPanel(acceptedList), "Accepted");
 
-    //add(getLoadingPanel(), "Rejected");
     add(getHistoricalPanel(rejectedList), "Rejected");
 
 
