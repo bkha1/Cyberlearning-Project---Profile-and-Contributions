@@ -1,18 +1,12 @@
 package cyber.learning.project.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 
-import cyber.learning.project.client.services.ContributionService;
-import cyber.learning.project.client.services.ContributionServiceAsync;
-import cyber.learning.project.shared.CallbackPayload;
 import cyber.learning.project.shared.descs.AccountDesc;
 import cyber.learning.project.shared.descs.ComponentDesc;
-import cyber.learning.project.shared.descs.ContributionDesc;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -132,6 +126,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,"meh"), new AccountDesc(1,"meh"))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
 	  //outer.add(new EditablePanel());
 
+	  /*
 	  //code to test GWT-RPC
 	  final ContributionServiceAsync csa = GWT.create(ContributionService.class);
 
@@ -141,7 +136,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	    @Override
 	    public void onSuccess(CallbackPayload<ContributionDesc[]> arg0)
 	    {
-	      System.out.println("TEST");//arg0.getResult()[0].getTargetedComponent().getContentValue());
+	      System.out.println("END TEST");//arg0.getResult()[0].getTargetedComponent().getContentValue());
 	    }
 
 	    @Override
@@ -151,6 +146,9 @@ public class CyberLearning implements EntryPoint {//test comment
 	    }
 
 	    });
+	    */
+
+	  System.out.println("END PROGRAM");
 	}
 
 //	final class EditablePanel extends Composite

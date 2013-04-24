@@ -49,9 +49,13 @@ final class ContributionsPanel extends TabPanel
 
     setSize("1000px", "500px");
 
+    add(getPendingPanel(testList), "Pending");
+    add(getHistoricalPanel(acceptedList), "Accepted");
+    add(getHistoricalPanel(rejectedList), "Rejected");
+
     //final ArrayList<ContributionDesc> testList0 = new ArrayList<ContributionDesc>();
 
-     AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
+     final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
       new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
       {
 
@@ -89,10 +93,24 @@ final class ContributionsPanel extends TabPanel
                 System.out.println(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - id: " + item.getID());
               }
 
+
+
+              //add(getHistoricalPanel(acceptedList), "Accepted");
+
+              //add(getHistoricalPanel(rejectedList), "Rejected");
+
               //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
               //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
 
             }
+
+            remove(2);
+            remove(1);
+            remove(0);
+
+            add(getPendingPanel(testList), "Pending");
+            add(getHistoricalPanel(acceptedList), "Accepted");
+            add(getHistoricalPanel(rejectedList), "Rejected");
           }
           else
           {
@@ -103,10 +121,125 @@ final class ContributionsPanel extends TabPanel
 
       };
 
-    //final ContributionServiceAsync svc = GWT.create(ContributionService.class);
+      final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback2 =
+        new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
+        {
+
+          @Override
+          public void onFailure(Throwable arg0) {
+            // TODO Auto-generated method stub
+
+          }
+
+
+
+          @Override
+          public void onSuccess(CallbackPayload<ContributionDesc[]> payload)
+          {
+
+            if(payload.hasResult())
+            {
+              //testArray = payload.getResult();
+              //new ArrayList(Arrays.asList(myArray));
+              //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+              //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+              for(int i = 0; i < payload.getResult().length; i++)
+              {
+
+                item = payload.getResult()[i];
+                //AccountDesc testEditor = item.getContributor();
+                //ComponentDesc testComponent = item.getTargetedComponent();
+                //ContributionDesc testContribution = new ContributionDesc(item.getID(),testComponent,testComponent,testEditor,item.getChangeComment(),item.getContributionTime(),item.getVotes(),item.getAcceptanceStatusInt());
+                acceptedList.add(item);
+
+                //add(getPendingPanel(testList), "Pending");
+
+
+
+                //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
+                //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
+
+              }
+
+              remove(2);
+              remove(1);
+              remove(0);
+
+              add(getPendingPanel(testList), "Pending");
+              add(getHistoricalPanel(acceptedList), "Accepted");
+              add(getHistoricalPanel(rejectedList), "Rejected");
+
+              //add(getHistoricalPanel(rejectedList), "Rejected");
+            }
+            else
+            {
+              //error processing goes here
+            }
+
+          }
+
+        };
+
+        final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback3 =
+          new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
+          {
+
+            @Override
+            public void onFailure(Throwable arg0) {
+              // TODO Auto-generated method stub
+
+            }
+
+
+
+            @Override
+            public void onSuccess(CallbackPayload<ContributionDesc[]> payload)
+            {
+
+              if(payload.hasResult())
+              {
+                //testArray = payload.getResult();
+                //new ArrayList(Arrays.asList(myArray));
+                //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+                //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+                for(int i = 0; i < payload.getResult().length; i++)
+                {
+
+                  item = payload.getResult()[i];
+                  //AccountDesc testEditor = item.getContributor();
+                  //ComponentDesc testComponent = item.getTargetedComponent();
+                  //ContributionDesc testContribution = new ContributionDesc(item.getID(),testComponent,testComponent,testEditor,item.getChangeComment(),item.getContributionTime(),item.getVotes(),item.getAcceptanceStatusInt());
+                  rejectedList.add(item);
+
+                  //add(getPendingPanel(testList), "Pending");
+
+
+
+                  //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
+                  //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
+
+                }
+
+                remove(2);
+                remove(1);
+                remove(0);
+
+                add(getPendingPanel(testList), "Pending");
+                add(getHistoricalPanel(acceptedList), "Accepted");
+                add(getHistoricalPanel(rejectedList), "Rejected");
+              }
+              else
+              {
+                //error processing goes here
+              }
+
+            }
+
+          };
+
     svc.getProposedContributionsFor(component, callback);
-    svc.getHistoricalContributionsFor(component, true, callback);
-    svc.getHistoricalContributionsFor(component, false, callback);
+    svc.getHistoricalContributionsFor(component, true, callback2);
+    svc.getHistoricalContributionsFor(component, false, callback3);
 
     System.out.println("Attempting to list contents of testList:");
     for(Iterator<ContributionDesc> i = testList.iterator(); i.hasNext();)
@@ -116,7 +249,8 @@ final class ContributionsPanel extends TabPanel
       System.out.println(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - id: " + item.getID());
     }
 
-    /*
+
+/*
     //dummy accounts
     AccountDesc testEditor1 = new AccountDesc(1, "testUser1");
     AccountDesc testEditor2 = new AccountDesc(2, "testUser2");
@@ -134,30 +268,28 @@ final class ContributionsPanel extends TabPanel
     ContributionDesc testContribution2 = new ContributionDesc(102, testComp2, testComp2, testEditor2, "How about some delicious turtle soup??", new Date(System.currentTimeMillis()),2,0);
     ContributionDesc testContribution3 = new ContributionDesc(103, testComp3, testComp3, testEditor3, "RUN! IT'S ROBERT FROST!", new Date(System.currentTimeMillis()),3,0);
     ContributionDesc testContribution4 = new ContributionDesc(104, testComp4, testComp4, testEditor4, "Well, what possible harm could one insane, mutant tentacle do?", new Date(System.currentTimeMillis()),4,0);
-    */
 
-    /*
+
+
     ArrayList<ContributionDesc> testList = new ArrayList<ContributionDesc>();
     testList.add(testContribution1);
     testList.add(testContribution2);
     testList.add(testContribution3);
     testList.add(testContribution4);
     */
-
-    //ArrayList<ContributionDesc> testAcceptedList = new ArrayList<ContributionDesc>();
-    //ArrayList<ContributionDesc> testRejectedList = new ArrayList<ContributionDesc>();
-
-
-
+/*
     add(getPendingPanel(testList), "Pending");
 
     add(getHistoricalPanel(acceptedList), "Accepted");
 
     add(getHistoricalPanel(rejectedList), "Rejected");
+    */
 
 
 
-    selectTab(0);
+
+
+    //selectTab(0);
     addSelectionHandler(new LoadPanel(this));
 
     /*
