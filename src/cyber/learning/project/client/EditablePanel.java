@@ -46,7 +46,7 @@ final class EditablePanel extends HorizontalPanel
    * Declare variables
    */
   SplitLayoutPanel contentPanel = new SplitLayoutPanel();
-  String selectedText; //Brian added -bkha1
+  String selectedText; // Brian added -bkha1
   boolean sndOn = false;
   boolean uploadVisible = false;
   boolean selectTemplateVisible = false;
