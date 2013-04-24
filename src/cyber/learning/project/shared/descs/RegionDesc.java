@@ -34,7 +34,7 @@ public final class RegionDesc extends BaseDesc
   }
 
 
-  public PageDesc getContainingBook()
+  public PageDesc getContainingPage()
   {
     return container_;
   }

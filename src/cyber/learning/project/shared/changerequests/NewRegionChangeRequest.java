@@ -2,7 +2,6 @@ package cyber.learning.project.shared.changerequests;
 
 import java.io.Serializable;
 
-import cyber.learning.project.shared.changerequests.ComponentChangeRequest;
 import cyber.learning.project.shared.descs.PageDesc;
 import cyber.learning.project.shared.descs.RegionDesc;
 
@@ -14,12 +13,11 @@ public final class NewRegionChangeRequest implements RegionChangeRequest,
   public NewRegionChangeRequest() {}
 
 
-  public NewRegionChangeRequest(
-    PageDesc container,
-    int regionType,
-    String location,
-    boolean isCanonical,
-    ComponentChangeRequest modifiedComponent)
+  public NewRegionChangeRequest(PageDesc container,
+                                int regionType,
+                                String location,
+                                boolean isCanonical,
+                                ComponentChangeRequest modifiedComponent)
   {
     container_ = container;
     location_ = location;
