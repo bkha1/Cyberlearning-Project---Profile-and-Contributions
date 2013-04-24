@@ -63,6 +63,52 @@ public class CyberLearning implements EntryPoint {//test comment
 //		BLANK
 //	}
 
+//	String selectedText; // Brian added -bkha1
+//	boolean sndOn = false;
+//	boolean uploadVisible = false;
+//	boolean selectTemplateVisible = false;
+//	SoundController sController = new SoundController(); //sound stuff - brian - bkha1
+//	Sound sound; //= sController.createSound(Sound.MIME_TYPE_AUDIO_OGG,"https://dl.dropbox.com/u/22130680/testfolder/air.ogg");
+//	String sndLink;//will contain the url to the sound
+//	TextArea sndArea = new TextArea();
+//	TextArea someText = new TextArea();//moved this from inside onModuleLoad - Brian - bkha1
+//	Image img;
+//
+//
+//	 PopupPanel templateSelectionPopup, positionSelectionPopup;
+//	 ArrayList<MySplitPanel> pages = new ArrayList<MySplitPanel>();
+//	 MySplitPanel curMySplitPanel = new MySplitPanel();
+//	 int currentPage = 0;
+//	 Label pageNumLabel;
+
+
+	/**
+	 * The message displayed to the user when the server cannot be reached or
+	 * returns an error.
+	 */
+	private static final String SERVER_ERROR = "An error occurred while "
+			+ "attempting to contact the server. Please check your network "
+			+ "connection and try again.";
+
+	private boolean toolbarVisible = false;
+	//private boolean resizeEnabled = false;
+	private String uploadFileName = "";
+
+	public enum fileType {
+	  TEXT,
+	  VIDEO,
+		IMAGE,
+		SOUND
+	};
+
+	private enum templateType {
+		TITLE_PAGE,
+		TXT_IMG,
+		TXT_VIDEO,
+		BLANK
+	}
+
+
 	/**
 	 * This is the entry point method.
 	 */
