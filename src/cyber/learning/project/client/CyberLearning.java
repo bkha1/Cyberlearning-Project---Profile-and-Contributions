@@ -50,7 +50,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	 * Declare variables
 	 */
 	SplitLayoutPanel contentPanel = new SplitLayoutPanel();
-	String selectedText; //Brian added -bkha1
+	String selectedText; // Brian added -bkha1
 	boolean sndOn = false;
 	boolean uploadVisible = false;
 	boolean selectTemplateVisible = false;
