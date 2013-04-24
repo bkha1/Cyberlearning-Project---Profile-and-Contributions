@@ -1,6 +1,10 @@
 package cyber.learning.project.shared.descs;
 
-abstract class BaseDesc
+import java.io.Serializable;
+
+
+@SuppressWarnings("serial")
+abstract class BaseDesc implements Serializable
 {
   public BaseDesc() {}
 

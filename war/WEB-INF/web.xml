@@ -11,6 +11,17 @@
     <url-pattern>/cyberlearning/upload</url-pattern>
   </servlet-mapping>
   
+  
+  <servlet>
+    <servlet-name>contributionService</servlet-name>
+    <servlet-class>cyber.learning.project.server.providers.ContributionServiceProvider</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>contributionService</servlet-name>
+    <url-pattern>/cyberlearning/contribution</url-pattern>
+  </servlet-mapping>  
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>CyberLearning.html</welcome-file>
