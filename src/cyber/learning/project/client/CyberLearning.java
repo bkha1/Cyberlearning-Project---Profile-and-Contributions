@@ -1,6 +1,7 @@
 package cyber.learning.project.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -127,7 +128,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	  rootPanel.add(outer);
 	  //outer.add(loadProposalPane());
 	  //outer.add(SearchUI.createSearchUI());
-	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,""))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
+	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,"meh"), new AccountDesc(1,"meh"))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
 	  //outer.add(new EditablePanel());
 
 	  //code to test GWT-RPC
@@ -139,7 +140,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	    @Override
 	    public void onSuccess(CallbackPayload<ContributionDesc[]> arg0)
 	    {
-	      System.out.println("");
+	      System.out.println("TEST");//arg0.getResult()[0].getTargetedComponent().getContentValue());
 	    }
 
 	    @Override

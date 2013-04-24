@@ -1,7 +1,6 @@
 package cyber.learning.project.client;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import com.google.gwt.core.shared.GWT;
@@ -35,6 +34,7 @@ final class ContributionsPanel extends TabPanel
   private final ComponentDesc component_;
   private final AccountDesc editor_;
   //private ContributionDesc selectedItem = new ContributionDesc();
+  ContributionDesc item = new ContributionDesc();
 
   private ArrayList<ContributionDesc> testList = new ArrayList<ContributionDesc>();
   private ArrayList<ContributionDesc> acceptedList = new ArrayList<ContributionDesc>();
@@ -65,9 +65,15 @@ final class ContributionsPanel extends TabPanel
           {
             //payload.getResult();
             //new ArrayList(Arrays.asList(myArray));
-            testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
+            //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
             //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
-            //populatePendingPanelWith(pending);
+            for(int i = 0; i < payload.getResult().length; i++)
+            {
+              item = payload.getResult()[i];
+              testList.add(item);
+              //System.out.println(payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
+
+            }
           }
           else
           {
@@ -82,6 +88,13 @@ final class ContributionsPanel extends TabPanel
     svc.getProposedContributionsFor(component, callback);
     svc.getHistoricalContributionsFor(component, true, callback);
     svc.getHistoricalContributionsFor(component, false, callback);
+
+    for(Iterator<ContributionDesc> i = testList.iterator(); i.hasNext();)
+    {
+      //ContributionDesc item = i.next();
+      item = i.next();
+      System.out.println(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - id: " + item.getID());
+    }
 
     /*
     //dummy accounts
@@ -168,7 +181,7 @@ final class ContributionsPanel extends TabPanel
     return panel;
   }
 
-  ContributionDesc item = new ContributionDesc();
+  //ContributionDesc item = new ContributionDesc();
 
   @SuppressWarnings("unused")
   private Panel getPendingPanel(final Iterable<ContributionDesc> contributions) //final Iterable<ContributionDesc> acceptedList, final Iterable<ContributionDesc> rejectedList)//TODO: add two more iterable arguments for accepted and rejected contributions
