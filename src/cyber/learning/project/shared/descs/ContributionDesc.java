@@ -67,6 +67,11 @@ public final class ContributionDesc extends BaseDesc
     return votes_;
   }
 
+  public int getAcceptanceStatusInt()
+  {
+    return acceptanceStatus_;
+  }
+
 
   public AcceptanceStatus getAcceptanceStatus()
   {

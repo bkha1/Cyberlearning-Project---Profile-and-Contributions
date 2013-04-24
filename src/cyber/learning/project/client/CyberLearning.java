@@ -128,6 +128,7 @@ public class CyberLearning implements EntryPoint {//test comment
 	  rootPanel.add(outer);
 	  //outer.add(loadProposalPane());
 	  //outer.add(SearchUI.createSearchUI());
+	  System.out.println("Initializing Contributions Panel");
 	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,"meh"), new AccountDesc(1,"meh"))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
 	  //outer.add(new EditablePanel());
 
