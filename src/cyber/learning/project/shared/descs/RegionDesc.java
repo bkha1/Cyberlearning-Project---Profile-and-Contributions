@@ -14,20 +14,27 @@ public final class RegionDesc extends BaseDesc
 
 
   public RegionDesc(int id,
-                    BookDesc container,
-                    ComponentDesc content,
+                    PageDesc container,
                     String location,
-                    int type)
+                    int type,
+                    boolean isCanonical)
   {
     super(id);
     container_ = container;
-    content_ = content;
     location_ = location;
     type_ = type;
+    isCanonical_ = isCanonical;
   }
 
 
-  public BookDesc getContainingBook()
+  public RegionDesc setComponent(ComponentDesc content)
+  {
+    content_ = content;
+    return this;
+  }
+
+
+  public PageDesc getContainingBook()
   {
     return container_;
   }
@@ -51,8 +58,15 @@ public final class RegionDesc extends BaseDesc
   }
 
 
-  private BookDesc container_;
+  public boolean isCanonical()
+  {
+    return isCanonical_;
+  }
+
+
+  private PageDesc container_;
   private ComponentDesc content_;
   private String location_;
   private int type_;
+  private boolean isCanonical_;
 }

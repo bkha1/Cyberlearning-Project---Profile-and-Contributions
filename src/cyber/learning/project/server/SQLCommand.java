@@ -1,6 +1,6 @@
 package cyber.learning.project.server;
 
-import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static java.sql.Statement.*;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -285,6 +285,17 @@ public final class SQLCommand
   public void executeBatch() throws SQLException
   {
     parameterizedCommand_.executeBatch();
+  }
+
+
+  /**
+   * Dispose of the current command and release any captured resources.
+   *
+   * @throws SQLException if an error occurred while dispoing the command
+   */
+  public void close() throws SQLException
+  {
+    parameterizedCommand_.close();
   }
 
 
