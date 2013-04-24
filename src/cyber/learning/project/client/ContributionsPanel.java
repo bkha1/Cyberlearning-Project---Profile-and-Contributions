@@ -40,6 +40,8 @@ final class ContributionsPanel extends TabPanel
   private ArrayList<ContributionDesc> acceptedList = new ArrayList<ContributionDesc>();
   private ArrayList<ContributionDesc> rejectedList = new ArrayList<ContributionDesc>();
 
+  final ContributionServiceAsync svc = GWT.create(ContributionService.class);
+
   public ContributionsPanel(ComponentDesc component, AccountDesc editor)
   {
 
@@ -76,7 +78,7 @@ final class ContributionsPanel extends TabPanel
 
       };
 
-    final ContributionServiceAsync svc = GWT.create(ContributionService.class);
+    //final ContributionServiceAsync svc = GWT.create(ContributionService.class);
     svc.getProposedContributionsFor(component, callback);
     svc.getHistoricalContributionsFor(component, true, callback);
     svc.getHistoricalContributionsFor(component, false, callback);
@@ -299,6 +301,9 @@ final class ContributionsPanel extends TabPanel
         remove(1);
         add(getHistoricalPanel(acceptedList), "Accepted");
         add(getHistoricalPanel(rejectedList), "Rejected");
+        //svc.updateContributionsAcceptance(changeRequests, callback)
+        //ContributionDesc[] bar = acceptedList.toArray(new ContributionDesc[0]);
+        //bar[0] = new UpdateContributionChangeRequest(true, 1, bar[2]);
 
       }
     }
