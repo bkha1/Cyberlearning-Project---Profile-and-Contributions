@@ -40,9 +40,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
 
-import cyber.learning.project.shared.descs.AccountDesc;
-import cyber.learning.project.shared.descs.ComponentDesc;
-
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -111,8 +108,8 @@ public class CyberLearning implements EntryPoint {//test comment
 	  rootPanel.add(outer);
 	  //outer.add(loadProposalPane());
 	  //outer.add(SearchUI.createSearchUI());
-	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,""))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
-	  //loadEditablePane();
+	  //outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,""))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
+	  loadEditablePane();
 
 	}
 
