@@ -11,10 +11,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import cyber.learning.project.server.SQLCommand;
 import cyber.learning.project.shared.changerequests.BookChangeRequest;
+import cyber.learning.project.shared.changerequests.ComponentChangeRequest;
 import cyber.learning.project.shared.changerequests.PageChangeRequest;
 import cyber.learning.project.shared.changerequests.RegionChangeRequest;
 import cyber.learning.project.shared.descs.AccountDesc;
-import cyber.learning.project.shared.descs.ComponentChangeRequest;
 import cyber.learning.project.shared.descs.ComponentDesc;
 import cyber.learning.project.shared.descs.ContributionDesc;
 import cyber.learning.project.shared.descs.PageDesc;
@@ -25,8 +25,7 @@ import cyber.learning.project.shared.descs.RegionDesc;
 @SuppressWarnings("serial")
 public final class BookServiceProvider extends RemoteServiceServlet
 {
-  @SuppressWarnings("unused")
-  private static void persist(BookChangeRequest update)
+  public static void persist(BookChangeRequest update)
     throws SQLException
   {
     final ConstructionContext ctx = new ConstructionContext(update);
@@ -160,7 +159,10 @@ public final class BookServiceProvider extends RemoteServiceServlet
         context.addComponentDesc(newComp);
       }
 
-      return newRegion.setComponent(newComp);
+      newRegion.setComponent(newComp);
+      newComp.setRegionDesc(newRegion);
+
+      return newRegion;
     }
     finally
     {
