@@ -2,15 +2,36 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>accountService</servlet-name>
-    <servlet-class>cyber.learning.project.server.providers.AccountServiceProvider</servlet-class>
+    <servlet-name>greetServlet</servlet-name>
+    <servlet-class>cyber.learning.project.server.GreetingServiceImpl</servlet-class>
   </servlet>
+  
   <servlet-mapping>
-    <servlet-name>accountService</servlet-name>
-    <url-pattern>/cyberlearning/account</url-pattern>
+    <servlet-name>greetServlet</servlet-name>
+    <url-pattern>/cyberlearning/greet</url-pattern>
   </servlet-mapping>
-
-
+  
+  
+  <servlet>
+    <servlet-name>storeService</servlet-name>
+    <servlet-class>cyber.learning.project.server.StoreServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>storeService</servlet-name>
+    <url-pattern>/cyberlearning/store</url-pattern>
+  </servlet-mapping>  
+  
+    <servlet>
+    <servlet-name>uploadServlet</servlet-name>
+    <servlet-class>cyber.learning.project.server.MyFormHandler</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>uploadServlet</servlet-name>
+    <url-pattern>/cyberlearning/upload</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>CyberLearning.html</welcome-file>
