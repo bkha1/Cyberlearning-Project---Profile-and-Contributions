@@ -19,7 +19,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ClickListener;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormHandler;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -41,7 +40,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.youtube.client.YouTubeEmbeddedPlayer;
 
 
-final class EditablePanel extends Composite
+final class EditablePanel extends HorizontalPanel
 {
   /**
    * Declare variables
@@ -85,6 +84,7 @@ final class EditablePanel extends Composite
 
   public EditablePanel()
   {
+    super();
     loadEditablePane();
   }
   private void loadEditablePane()

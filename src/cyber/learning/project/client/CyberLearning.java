@@ -5,9 +5,6 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 
-import cyber.learning.project.shared.descs.AccountDesc;
-import cyber.learning.project.shared.descs.ComponentDesc;
-
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -122,8 +119,8 @@ public class CyberLearning implements EntryPoint {//test comment
 	  rootPanel.add(outer);
 	  //outer.add(loadProposalPane());
 	  //outer.add(SearchUI.createSearchUI());
-	  outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,""))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
-	  //outer.add(new EditablePanel());
+	  //outer.add(new ContributionsPanel(new ComponentDesc(1,1,""), new AccountDesc(1,""))); //this is used to test ContributionsPanel.java, comment this out and load another pane if you wish - bkha1
+	  outer.add(new EditablePanel());
 
 	}
 
