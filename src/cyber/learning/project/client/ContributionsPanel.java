@@ -52,8 +52,7 @@ final class ContributionsPanel extends TabPanel
     add(getPendingPanel(testList), "Pending");
     add(getHistoricalPanel(acceptedList), "Accepted");
     add(getHistoricalPanel(rejectedList), "Rejected");
-
-    //final ArrayList<ContributionDesc> testList0 = new ArrayList<ContributionDesc>();
+    selectTab(0);
 
      final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
       new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
@@ -73,34 +72,17 @@ final class ContributionsPanel extends TabPanel
 
           if(payload.hasResult())
           {
-            //testArray = payload.getResult();
-            //new ArrayList(Arrays.asList(myArray));
-            //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
-            //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
             for(int i = 0; i < payload.getResult().length; i++)
             {
 
               item = payload.getResult()[i];
-              //AccountDesc testEditor = item.getContributor();
-              //ComponentDesc testComponent = item.getTargetedComponent();
-              //ContributionDesc testContribution = new ContributionDesc(item.getID(),testComponent,testComponent,testEditor,item.getChangeComment(),item.getContributionTime(),item.getVotes(),item.getAcceptanceStatusInt());
               testList.add(item);
               for(Iterator<ContributionDesc> n = testList.iterator(); n.hasNext();)
               {
-                //ContributionDesc item = i.next();
                 item = n.next();
                 System.out.println("what is in testlist");
                 System.out.println(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - id: " + item.getID());
               }
-
-
-
-              //add(getHistoricalPanel(acceptedList), "Accepted");
-
-              //add(getHistoricalPanel(rejectedList), "Rejected");
-
-              //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
-              //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
 
             }
 
@@ -111,6 +93,7 @@ final class ContributionsPanel extends TabPanel
             add(getPendingPanel(testList), "Pending");
             add(getHistoricalPanel(acceptedList), "Accepted");
             add(getHistoricalPanel(rejectedList), "Rejected");
+            selectTab(0);
           }
           else
           {
@@ -139,26 +122,10 @@ final class ContributionsPanel extends TabPanel
 
             if(payload.hasResult())
             {
-              //testArray = payload.getResult();
-              //new ArrayList(Arrays.asList(myArray));
-              //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
-              //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
               for(int i = 0; i < payload.getResult().length; i++)
               {
-
                 item = payload.getResult()[i];
-                //AccountDesc testEditor = item.getContributor();
-                //ComponentDesc testComponent = item.getTargetedComponent();
-                //ContributionDesc testContribution = new ContributionDesc(item.getID(),testComponent,testComponent,testEditor,item.getChangeComment(),item.getContributionTime(),item.getVotes(),item.getAcceptanceStatusInt());
                 acceptedList.add(item);
-
-                //add(getPendingPanel(testList), "Pending");
-
-
-
-                //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
-                //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
-
               }
 
               remove(2);
@@ -168,8 +135,7 @@ final class ContributionsPanel extends TabPanel
               add(getPendingPanel(testList), "Pending");
               add(getHistoricalPanel(acceptedList), "Accepted");
               add(getHistoricalPanel(rejectedList), "Rejected");
-
-              //add(getHistoricalPanel(rejectedList), "Rejected");
+              selectTab(0);
             }
             else
             {
@@ -198,26 +164,10 @@ final class ContributionsPanel extends TabPanel
 
               if(payload.hasResult())
               {
-                //testArray = payload.getResult();
-                //new ArrayList(Arrays.asList(myArray));
-                //testList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
-                //acceptedList = new ArrayList<ContributionDesc>(Arrays.asList(payload.getResult()));
                 for(int i = 0; i < payload.getResult().length; i++)
                 {
-
                   item = payload.getResult()[i];
-                  //AccountDesc testEditor = item.getContributor();
-                  //ComponentDesc testComponent = item.getTargetedComponent();
-                  //ContributionDesc testContribution = new ContributionDesc(item.getID(),testComponent,testComponent,testEditor,item.getChangeComment(),item.getContributionTime(),item.getVotes(),item.getAcceptanceStatusInt());
                   rejectedList.add(item);
-
-                  //add(getPendingPanel(testList), "Pending");
-
-
-
-                  //System.out.println("STUFF: " + payload.getResult()[i].getAcceptanceStatus() + " " + payload.getResult()[i].getChangeComment() + " " + payload.getResult()[i].getContributor().getUsername());
-                  //System.out.println("STUFF: " + testContribution.getID() + " " + testContribution.getAcceptanceStatus() + " " + testContribution.getChangeComment() + " " + testContribution.getContributor().getUsername());
-
                 }
 
                 remove(2);
@@ -227,6 +177,7 @@ final class ContributionsPanel extends TabPanel
                 add(getPendingPanel(testList), "Pending");
                 add(getHistoricalPanel(acceptedList), "Accepted");
                 add(getHistoricalPanel(rejectedList), "Rejected");
+                selectTab(0);
               }
               else
               {
@@ -237,25 +188,19 @@ final class ContributionsPanel extends TabPanel
 
           };
 
+    //grabbing data
     svc.getProposedContributionsFor(component, callback);
     svc.getHistoricalContributionsFor(component, true, callback2);
     svc.getHistoricalContributionsFor(component, false, callback3);
 
-    System.out.println("Attempting to list contents of testList:");
-    for(Iterator<ContributionDesc> i = testList.iterator(); i.hasNext();)
-    {
-      //ContributionDesc item = i.next();
-      item = i.next();
-      System.out.println(item.getContributionTime().toString() + " - " + item.getContributor().getUsername() + " - id: " + item.getID());
-    }
-
 
 /*
+
     //dummy accounts
-    AccountDesc testEditor1 = new AccountDesc(1, "testUser1");
-    AccountDesc testEditor2 = new AccountDesc(2, "testUser2");
-    AccountDesc testEditor3 = new AccountDesc(3, "testUser3");
-    AccountDesc testEditor4 = new AccountDesc(3, "testUser4");
+    AccountDesc testEditor1 = new AccountDesc(1, "Guybrush");
+    AccountDesc testEditor2 = new AccountDesc(2, "Raz");
+    AccountDesc testEditor3 = new AccountDesc(3, "Manny");
+    AccountDesc testEditor4 = new AccountDesc(3, "Bernard");
 
     //dummy components
     ComponentDesc testComp1 = new ComponentDesc(1, 2, "Monkey Island 2: LeChuck's Revenge is an adventure game developed and published by LucasArts in 1991. It was the second game of the Monkey Island series, following The Secret of Monkey Island, and the sixth LucasArts game to use the SCUMM engine. It was the first game to use the iMUSE sound system.");//text type
@@ -276,45 +221,24 @@ final class ContributionsPanel extends TabPanel
     testList.add(testContribution2);
     testList.add(testContribution3);
     testList.add(testContribution4);
-    */
-/*
+
+
     add(getPendingPanel(testList), "Pending");
 
     add(getHistoricalPanel(acceptedList), "Accepted");
 
     add(getHistoricalPanel(rejectedList), "Rejected");
+
+    selectTab(0);
     */
 
 
 
 
 
-    //selectTab(0);
+
+
     addSelectionHandler(new LoadPanel(this));
-
-    /*
-    final AsyncCallback<CallbackPayload<ContributionDesc[]>> callback =
-      new AsyncCallback<CallbackPayload<ContributionDesc[]>>()
-      {
-
-        @Override
-        public void onFailure(Throwable arg0) {
-          // TODO Auto-generated method stub
-
-        }
-
-        @Override
-        public void onSuccess(CallbackPayload<ContributionDesc[]> arg0)
-        {
-
-          if(arg0.hasResult())
-          {
-            arg0.getResult();
-          }
-
-        }
-
-      };*/
 
     component_ = component;
     editor_ = editor;
